@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymapp/app.dart';
 import 'package:gymapp/applications/Pages/account_pages.dart';
 import 'package:gymapp/applications/Pages/chart_page.dart';
 import 'package:gymapp/applications/Pages/create_schedule_page.dart';
@@ -59,6 +60,8 @@ class NavigationDrawer extends StatelessWidget {
               title: const Text('Home'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const App()));
               },
             ),
             ListTile(
@@ -104,7 +107,7 @@ class NavigationDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const Account()));
+                    builder: (context) => const AccountPage()));
               },
             ),
             ListTile(
