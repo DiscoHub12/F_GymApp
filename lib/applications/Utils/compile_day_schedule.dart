@@ -31,7 +31,7 @@ class _MyCompileDaySchedule extends State<CompileDaySchedule> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8),
-      height: 350,
+      height: 400,
       width: 400,
       child: SingleChildScrollView(
         child: Column(
@@ -40,10 +40,12 @@ class _MyCompileDaySchedule extends State<CompileDaySchedule> {
             _firstTextName(),
             const SizedBox(height: 10),
             _firstInputField('Muscolo', nomeMuscolo),
-            const SizedBox(height: 15), 
+            const SizedBox(height: 15),
             const SizedBox(height: 10),
-            _lastRowButtons(
-                nomeMuscolo, nomeEsercizio, context),
+            _lastRowButtons(nomeMuscolo, nomeEsercizio, context),
+            const SizedBox(height: 15),
+            _buildPriceField('Peso', peso),
+            
           ],
         ),
       ),
