@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gymapp/applications/Models/account.dart';
-import 'package:gymapp/applications/Pages/account_pages.dart';
+import 'package:gymapp/applications/Pages/account_pages/modify_account_pages.dart';
 // ignore: library_prefixes
-import '../../Other/image_string.dart';
-import '../Utils/drawer.dart' as Drawer;
-import '../Utils/settings_widget.dart';
+import '../../Utils/drawer.dart' as Drawer;
+import 'settings_widget.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -35,7 +33,7 @@ class _MySettings extends State<Settings> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child: const Image(
-                        image: AssetImage(tProfileImage),
+                        image: AssetImage('Assets/imageProfile.png'),
                       ),
                     ),
                   ),
@@ -49,7 +47,7 @@ class _MySettings extends State<Settings> {
                             borderRadius: BorderRadius.circular(100),
                             color: Colors.orange,
                           ),
-                          child: Icon(
+                          child: const Icon(
                             Icons.create_outlined,
                             size: 20.0,
                             color: Colors.black,
@@ -61,7 +59,7 @@ class _MySettings extends State<Settings> {
               ),
               Text(
                 'Nome',
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
               Text(
                 'Email',
@@ -75,7 +73,7 @@ class _MySettings extends State<Settings> {
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const AccountPage()));
+                        builder: (context) => const ModifyAccount()));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,

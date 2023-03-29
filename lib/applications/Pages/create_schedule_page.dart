@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gymapp/applications/Models/day_schedule.dart';
 // ignore: library_prefixes
 import '../Utils/compile_day_schedule.dart';
+// ignore: library_prefixes
 import '../Utils/drawer.dart' as Drawer;
 
 class CreateSchedule extends StatefulWidget {

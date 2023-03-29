@@ -26,4 +26,7 @@ class _MyFavouriteSchedule extends State<FavouriteSchedule> {
       ),
     );
   }
+
+  //Qui ci dovrà andare una lista di tutte le schede segnate come favorite 
+  //Oppure giorni.,
 }
