@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/app.dart';
-import 'package:gymapp/applications/Pages/account_pages.dart';
+import 'package:gymapp/applications/Pages/account_pages/account_pages.dart';
 import 'package:gymapp/applications/Pages/chart_page.dart';
 import 'package:gymapp/applications/Pages/create_schedule_page.dart';
 import 'package:gymapp/applications/Pages/schedule_page.dart';
-import 'package:gymapp/applications/Pages/settings_pages.dart';
+import 'package:gymapp/applications/Pages/settings_pages/settings_pages.dart';
 
 import '../Pages/favourite_page.dart';
 
@@ -34,7 +34,8 @@ class NavigationDrawer extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 52,
-              backgroundColor: Colors.black,
+              backgroundImage: AssetImage('Assets/imageProfile.png'),
+              
             ),
             SizedBox(
               height: 12,
