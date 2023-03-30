@@ -10,6 +10,7 @@ class App extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
+        centerTitle: true,
         backgroundColor: Colors.orange,
       ),
       drawer: const Drawer.NavigationDrawer(),

@@ -3,7 +3,7 @@ import 'package:gymapp/app.dart';
 import 'package:gymapp/applications/Pages/account_pages/account_pages.dart';
 import 'package:gymapp/applications/Pages/chart_page.dart';
 import 'package:gymapp/applications/Pages/create_schedule_page.dart';
-import 'package:gymapp/applications/Pages/schedule_page.dart';
+import 'package:gymapp/applications/Pages/workout_page.dart';
 import 'package:gymapp/applications/Pages/settings_pages/settings_pages.dart';
 
 import '../Pages/favourite_page.dart';
@@ -35,7 +35,6 @@ class NavigationDrawer extends StatelessWidget {
             CircleAvatar(
               radius: 52,
               backgroundImage: AssetImage('Assets/imageProfile.png'),
-              
             ),
             SizedBox(
               height: 12,
@@ -61,31 +60,31 @@ class NavigationDrawer extends StatelessWidget {
               title: const Text('Home'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const App()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => const App()));
               },
             ),
             ListTile(
               leading: const Icon(Icons.schedule),
-              title: const Text('Schedule'),
+              title: const Text('Workout'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const Schedule()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const WorkoutPage()));
               },
             ),
             ListTile(
               leading: const Icon(Icons.add),
-              title: const Text('Add'),
+              title: const Text('New Workout'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const CreateSchedule()));
+                    builder: (context) => CreateSchedule()));
               },
             ),
             ListTile(
               leading: const Icon(Icons.bar_chart),
-              title: const Text('Graphics'),
+              title: const Text('Chart'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
@@ -102,7 +101,8 @@ class NavigationDrawer extends StatelessWidget {
               },
             ),
             const Divider(color: Colors.black),
-            ListTile(
+            /**
+           ListTile(
               leading: const Icon(Icons.account_box_rounded),
               title: const Text('Account'),
               onTap: () {
@@ -111,13 +111,14 @@ class NavigationDrawer extends StatelessWidget {
                     builder: (context) => const AccountPage()));
               },
             ),
+            */
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const Settings()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const Settings()));
               },
             ),
           ],
