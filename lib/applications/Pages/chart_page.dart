@@ -16,6 +16,7 @@ class _MyChartSchedule extends State<ChartSchedule> {
       drawer: const Drawer.NavigationDrawer(),
       appBar: AppBar(
         title: const Text('Chart'),
+        centerTitle: true,
         backgroundColor: Colors.orange,
       ),
       body: const Column(

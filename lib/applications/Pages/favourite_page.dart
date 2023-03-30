@@ -16,6 +16,7 @@ class _MyFavouriteSchedule extends State<FavouriteSchedule> {
       drawer: const Drawer.NavigationDrawer(),
       appBar: AppBar(
         title: const Text('Favourite'),
+        centerTitle: true,
         backgroundColor: Colors.orange,
       ),
       body: const Column(
