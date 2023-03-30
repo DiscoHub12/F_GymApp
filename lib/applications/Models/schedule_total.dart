@@ -1,13 +1,13 @@
 import 'package:gymapp/applications/Models/day_schedule.dart';
 
-class Schedule {
+class Workout {
   //Attributes class:
   String nome;
-  int numero;
+  int giorni;
   List<DaySchedule> listaGiorni;
 
   //Constructor Object:
-  Schedule(this.nome, this.listaGiorni, this.numero);
+  Workout(this.nome, this.listaGiorni, this.giorni);
 
   //Get and Set methods and Other :
   String getNome() {
@@ -19,11 +19,11 @@ class Schedule {
   }
 
   int getNumero() {
-    return numero;
+    return giorni;
   }
 
   void setNumero(int numero) {
-    this.numero = numero;
+    giorni = numero;
   }
 
   List<DaySchedule> getListaGiorni() {
