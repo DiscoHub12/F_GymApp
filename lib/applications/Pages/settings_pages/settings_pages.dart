@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gymapp/applications/Pages/account_pages/modify_account_pages.dart';
 // ignore: library_prefixes
 import '../../Utils/drawer.dart' as Drawer;
+import '../account_pages/account_pages.dart';
 import 'settings_widget.dart';
 
 class Settings extends StatefulWidget {
@@ -18,6 +18,7 @@ class _MySettings extends State<Settings> {
       drawer: const Drawer.NavigationDrawer(),
       appBar: AppBar(
         title: const Text('Settings'),
+        centerTitle: true,
         backgroundColor: Colors.orange,
       ),
       body: SingleChildScrollView(
@@ -37,21 +38,6 @@ class _MySettings extends State<Settings> {
                       ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                      child: Container(
-                          width: 35,
-                          height: 35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: Colors.orange,
-                          ),
-                          child: const Icon(
-                            Icons.create_outlined,
-                            size: 20.0,
-                            color: Colors.black,
-                          )))
                 ],
               ),
               const SizedBox(
@@ -68,37 +54,29 @@ class _MySettings extends State<Settings> {
               const SizedBox(
                 height: 20,
               ),
-              SizedBox(
-                width: 200,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const ModifyAccount()));
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    side: BorderSide.none,
-                    shape: const StadiumBorder(),
-                  ),
-                  child: const Text(
-                    'Edit Profile',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
+              const Divider(
+                color: Colors.black,
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Divider(),
               const SizedBox(
                 height: 10,
               ),
               SettingsMenuWidget(
-                  title: 'Settings', icon: Icons.settings, onPress: () {}),
+                  title: 'Account',
+                  icon: Icons.account_box_rounded,
+                  onPress: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const AccountPage()));
+                  }),
               SettingsMenuWidget(
-                  title: 'Billing Details',
-                  icon: Icons.settings,
-                  onPress: () {}),
+                  title: 'Languages', icon: Icons.settings, onPress: () {}),
+              SettingsMenuWidget(
+                  title: 'Privacy', icon: Icons.language, onPress: () {}),
+              SettingsMenuWidget(
+                  title: 'FeedBack', icon: Icons.privacy_tip, onPress: () {}),
+              SettingsMenuWidget(
+                  title: 'Licenses', icon: Icons.feedback, onPress: () {}),
+              SettingsMenuWidget(
+                  title: 'Information', icon: Icons.info, onPress: () {}),
               const Divider(color: Colors.black),
               SettingsMenuWidget(
                   title: 'Quit',
@@ -112,4 +90,35 @@ class _MySettings extends State<Settings> {
       ),
     );
   }
+
+  //Widget for this clas:
+  Widget _containerInformation(String nomeInfo, String nome, icon) => Container(
+        height: 60,
+        width: 400,
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 216, 212, 205),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Row(
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Icon(icon),
+            ),
+            Text(
+              nomeInfo,
+              style: const TextStyle(fontSize: 19),
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  nome,
+                  style: const TextStyle(fontSize: 19),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
 }
