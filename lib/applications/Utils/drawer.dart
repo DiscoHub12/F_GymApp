@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gymapp/app.dart';
 import 'package:gymapp/applications/Pages/account_pages/account_pages.dart';
 import 'package:gymapp/applications/Pages/chart_page.dart';
-import 'package:gymapp/applications/Pages/create_schedule_page.dart';
+import 'package:gymapp/applications/Pages/create_workout_page.dart';
 import 'package:gymapp/applications/Pages/workout_page.dart';
 import 'package:gymapp/applications/Pages/settings_pages/settings_pages.dart';
 
