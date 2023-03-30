@@ -14,9 +14,10 @@ class _MyAccountPage extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer.NavigationDrawer(),
+      
       appBar: AppBar(
         title: const Text('Account'),
+        centerTitle: true,
         backgroundColor: Colors.orange,
       ),
       body: SingleChildScrollView(
@@ -45,7 +46,11 @@ class _MyAccountPage extends State<AccountPage> {
               const SizedBox(
                 height: 15,
               ),
-              _containerInformation('Email', 'La mia email', Icons.person),
+              _containerInformation('Cognome', 'Il Mio Cognome', Icons.person),
+              const SizedBox(
+                height: 15,
+              ),
+              _containerInformation('Email', 'La mia email', Icons.email),
               const SizedBox(
                 height: 15,
               ),
@@ -65,7 +70,7 @@ class _MyAccountPage extends State<AccountPage> {
   Widget _containerInformation(String nomeInfo, String nome, icon) => Container(
         height: 60,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 217, 162, 79),
+          color: const Color.fromARGB(255, 216, 212, 205),
           borderRadius: BorderRadius.circular(10.0),
           
         ),

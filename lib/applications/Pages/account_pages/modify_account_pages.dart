@@ -32,6 +32,7 @@ class _MyModifyAccount extends State<ModifyAccount> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Update'),
+        centerTitle: true,
         backgroundColor: Colors.orange,
       ),
       body: SingleChildScrollView(
