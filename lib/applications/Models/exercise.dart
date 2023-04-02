@@ -4,12 +4,12 @@ class Exercise {
   //Attributes class:
   String nomeEsercizio;
   String ripetizioni;
-  Double peso;
+  double peso;
 
   //Constructor Object:
   Exercise(this.nomeEsercizio, this.ripetizioni, this.peso);
 
-  //Get and Set Methods : 
+  //Get and Set Methods :
   String getNomeEsercizio() {
     return nomeEsercizio;
   }
@@ -26,11 +26,11 @@ class Exercise {
     this.ripetizioni = ripetizioni;
   }
 
-  Double getPeso() {
+  double getPeso() {
     return peso;
   }
 
-  void setPeso(Double peso) {
+  void setPeso(double peso) {
     this.peso = peso;
   }
 }

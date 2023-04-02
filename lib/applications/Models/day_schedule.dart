@@ -2,29 +2,20 @@ import 'package:gymapp/applications/Models/exercise.dart';
 
 class DaySchedule {
   //Attributes class:
-  String muscoloUno;
-  String muscoloDue;
+  String muscoliAllenati;
   List<Exercise> esercizi;
   DateTime lastUsage;
 
   //Constructor Object:
-  DaySchedule(this.muscoloUno, this.muscoloDue, this.esercizi, this.lastUsage);
+  DaySchedule(this.muscoliAllenati, this.esercizi, this.lastUsage);
 
   //Get and Set Methods and Other :
-  String getMuscoloUno() {
-    return muscoloUno;
+  String getMuscoliAllenati() {
+    return muscoliAllenati;
   }
 
-  void setMuscoloUno(String muscolo) {
-    muscoloUno = muscolo;
-  }
-
-  String getMuscoloDue() {
-    return muscoloDue;
-  }
-
-  void setMuscoloDue(String muscolo) {
-    muscoloDue = muscolo;
+  void setMuscoliAllenati(String muscoli) {
+    muscoliAllenati = muscoli;
   }
 
   List<Exercise> getEsercizi() {
