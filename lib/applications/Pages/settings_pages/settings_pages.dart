@@ -90,35 +90,4 @@ class _MySettings extends State<Settings> {
       ),
     );
   }
-
-  //Widget for this clas:
-  Widget _containerInformation(String nomeInfo, String nome, icon) => Container(
-        height: 60,
-        width: 400,
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 216, 212, 205),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Row(
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Icon(icon),
-            ),
-            Text(
-              nomeInfo,
-              style: const TextStyle(fontSize: 19),
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  nome,
-                  style: const TextStyle(fontSize: 19),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
 }
