@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/app.dart';
-import 'package:gymapp/applications/Pages/account_pages/account_pages.dart';
 import 'package:gymapp/applications/Pages/chart_page.dart';
-import 'package:gymapp/applications/Pages/create_workout_page.dart';
+import 'package:gymapp/applications/Pages/create_workout/my_create_workout.dart';
 import 'package:gymapp/applications/Pages/workout_page.dart';
 import 'package:gymapp/applications/Pages/settings_pages/settings_pages.dart';
 
@@ -69,8 +68,8 @@ class NavigationDrawer extends StatelessWidget {
               title: const Text('Workout'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const WorkoutPage()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const WorkoutPage()));
               },
             ),
             ListTile(
@@ -79,7 +78,7 @@ class NavigationDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => CreateSchedule()));
+                    builder: (context) => const MyCreateSchedule()));
               },
             ),
             ListTile(
