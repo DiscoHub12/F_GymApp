@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../Models/schedule_total.dart';
+import '../../Models/workout.dart';
 
 class CreateSchedule extends StatefulWidget {
   final Workout? workout;

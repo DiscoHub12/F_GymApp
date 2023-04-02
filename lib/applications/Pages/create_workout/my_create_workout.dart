@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/applications/Models/day_schedule.dart';
-import 'package:gymapp/applications/Models/schedule_total.dart';
+import 'package:gymapp/applications/Models/workout.dart';
 import 'package:gymapp/applications/Pages/create_workout/compile_day_worrkout.dart';
 
 import '../../Models/exercise.dart';
+import '../../Utils/print_message.dart';
 
 class MyCreateSchedule extends StatefulWidget {
   const MyCreateSchedule({super.key});
@@ -13,15 +14,20 @@ class MyCreateSchedule extends StatefulWidget {
 }
 
 class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
+  //Object type  PrintStatus:
+  PrintStatus statusMessage = PrintStatus();
+
   final TextEditingController _nameWorkout = TextEditingController();
   final TextEditingController _numberDays = TextEditingController();
 
   int days = 0;
+  int count = 0;
 
   bool showOk = false;
 
-  final List<Exercise> _exerciseDay = [];
-  final TextEditingController numberExercise = TextEditingController();
+  late List<Exercise> _exerciseDay = [];
+  final TextEditingController _numberExercise = TextEditingController();
+  final TextEditingController _muscles = TextEditingController();
   // ignore: unused_field
   final List<DaySchedule> _daySchedule = [];
   // ignore: unused_field
@@ -60,23 +66,37 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
                 : const SizedBox(
                     height: 20,
                   ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: days,
-                  itemBuilder: (context, index) {
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                      ),
-                      child: Text('Compile Day ${index + 1}'),
-                      onPressed: () {
-                        _dialogNumberExercise(context);
-                      },
-                    );
-                  }),
-            )
+            SizedBox(
+              height: 480,
+              width: 200,
+              child: Expanded(
+                child: ListView.builder(
+                    itemCount: days,
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    itemBuilder: (context, index) {
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orange,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12))),
+                        child: Text('Compile Day ${index + 1}'),
+                        onPressed: () {
+                          _dialogNumberExercise(context, index + 1);
+                        },
+                      );
+                    }),
+              ),
+            ),
           ],
         ),
+      ),
+      resizeToAvoidBottomInset: false,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _saveAll(context);
+        },
+        backgroundColor: Colors.orange,
+        child: const Icon(Icons.save),
       ),
     );
   }
@@ -137,30 +157,43 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
         },
       );
 
-  Widget _requestNumberExercise(BuildContext context) => Container(
+  Widget _requestNumberExercise(BuildContext context, index) => Container(
         padding: const EdgeInsets.all(8),
-        height: 160,
+        height: 260,
         width: 300,
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               const SizedBox(height: 10),
+              Text(
+                'Day $index',
+                style: const TextStyle(fontSize: 23),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              _formWidgetString(
+                  'Muscle(s)?', 'Muscles', 'Enter a valid Muscles', _muscles),
+              const SizedBox(height: 13),
               _formWidgetNumberExercise('Number of Exercise ? ', 'Number',
-                  'Enter positive number', numberExercise),
+                  'Enter positive number', _numberExercise),
               const SizedBox(
                 height: 16,
               ),
               ElevatedButton(
-                onPressed: () {
-                  int days = int.parse(numberExercise.value.text);
-                  Navigator.pop(context);
-                  for (int i = 0; i < days; i++) {
-                    _showCompileForm(context);
-                  }
-                },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-                child: const Icon(Icons.add),
-              ),
+                  onPressed: () {
+                    int days = int.parse(_numberExercise.value.text);
+                    Navigator.pop(context);
+                    for (int i = 0; i < days; i++) {
+                      _showCompileForm(context);
+                    }
+                    _muscles.clear();
+                    _closeExerciseCompiling(context);
+                    count++;
+                  },
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+                  child: const Text('Compile')),
             ],
           ),
         ),
@@ -196,6 +229,12 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
   void _saveDays() {
     days = (int.parse(_numberDays.text));
     showOk = true;
+    _newWorkout = Workout(_nameWorkout.text, days, _daySchedule);
+    // ignore: avoid_print, prefer_interpolation_to_compose_strings
+    print('WORKOUT : \n + ' +
+        _nameWorkout.text +
+        "Numer of Days : " +
+        days.toString());
     setState(() {});
   }
 
@@ -213,12 +252,12 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
         });
   }
 
-  void _dialogNumberExercise(BuildContext context) {
+  void _dialogNumberExercise(BuildContext context, index) {
     showDialog(
         context: context,
         builder: (_) {
           return AlertDialog(
-            content: _requestNumberExercise(context),
+            content: _requestNumberExercise(context, index),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -228,10 +267,37 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
 
   void _addExercises(Exercise schedule) {
     _exerciseDay.add(schedule);
-    numberExercise.clear();
+    _numberExercise.clear();
     setState(() {});
     // ignore: avoid_print
     print(
         'Aggiunto : \n${schedule.nomeEsercizio}\n${schedule.ripetizioni}\n${schedule.peso}');
+  }
+
+  void _closeExerciseCompiling(BuildContext context) {
+    String muscles = _muscles.text;
+    DaySchedule tmp = DaySchedule(muscles, _exerciseDay);
+    if (_newWorkout.listaGiorni.isEmpty) {
+      List<DaySchedule> tmpList = [];
+      tmpList.add(tmp);
+    } else {
+      _newWorkout.addGiorno(tmp);
+    }
+    // ignore: avoid_print, prefer_interpolation_to_compose_strings
+    print('Aggiungo giorno : \n Numero Esercizi : ' +
+        _numberExercise.text +
+        "\nMuscolo allenato : " +
+        _muscles.text +
+        "\nEsercizi : " +
+        _exerciseDay.toString());
+    _exerciseDay = [];
+    _numberExercise.clear();
+    _muscles.clear();
+    Navigator.pop(context);
+  }
+
+  _saveAll(BuildContext context) {
+    statusMessage.printCorrect(context, 'Workout add successfully');
+    Navigator.pop(context);
   }
 }
