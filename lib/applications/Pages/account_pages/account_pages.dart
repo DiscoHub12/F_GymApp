@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/applications/Pages/account_pages/modify_account_pages.dart';
 // ignore: library_prefixes
-import '../../Utils/drawer.dart' as Drawer;
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -14,7 +13,6 @@ class _MyAccountPage extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: AppBar(
         title: const Text('Account'),
         centerTitle: true,
@@ -42,11 +40,11 @@ class _MyAccountPage extends State<AccountPage> {
               const SizedBox(
                 height: 50,
               ),
-              _containerInformation('Nome', 'Il Mio nomme', Icons.person),
+              _containerInformation('Name', 'Il Mio nomme', Icons.person),
               const SizedBox(
                 height: 15,
               ),
-              _containerInformation('Cognome', 'Il Mio Cognome', Icons.person),
+              _containerInformation('Surname', 'Il Mio Cognome', Icons.person),
               const SizedBox(
                 height: 15,
               ),
@@ -54,7 +52,7 @@ class _MyAccountPage extends State<AccountPage> {
               const SizedBox(
                 height: 15,
               ),
-              _containerInformation('Eta', 'La mia Eta', Icons.date_range),
+              _containerInformation('Age', 'La mia Eta', Icons.date_range),
               const SizedBox(
                 height: 15,
               ),
@@ -70,28 +68,27 @@ class _MyAccountPage extends State<AccountPage> {
   Widget _containerInformation(String nomeInfo, String nome, icon) => Container(
         height: 60,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 216, 212, 205),
           borderRadius: BorderRadius.circular(10.0),
-          
         ),
-        
         child: Row(
           children: <Widget>[
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Icon(icon),
             ),
-            Text(
-              nomeInfo,
-              style: const TextStyle(fontSize: 19),
-            ),
+            Text(nomeInfo,
+                style: const TextStyle(
+                  fontSize: 19,
+                ),
+                textAlign: TextAlign.center),
             Expanded(
               child: Align(
                 alignment: Alignment.center,
-                child: Text(
-                  nome,
-                  style: const TextStyle(fontSize: 19),
-                ),
+                child: Text(nome,
+                    style: const TextStyle(
+                      fontSize: 19,
+                    ),
+                    textAlign: TextAlign.center),
               ),
             ),
           ],
