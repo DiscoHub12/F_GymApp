@@ -8,16 +8,16 @@ import '../../Utils/print_message.dart';
 /// of an Expense. It is invoked by pressing
 /// a button in the specific part of the program
 /// for creating an expense.
-class CompileExpense extends StatefulWidget {
+class CompileExercise extends StatefulWidget {
   final Function(Exercise) addExercise;
 
-  const CompileExpense(this.addExercise, {super.key});
+  const CompileExercise(this.addExercise, {super.key});
 
   @override
-  State<CompileExpense> createState() => _MyCompileExpense();
+  State<CompileExercise> createState() => _MyCompileExercise();
 }
 
-class _MyCompileExpense extends State<CompileExpense> {
+class _MyCompileExercise extends State<CompileExercise> {
   //Controller Attributes for Name (DataExpense) and Price (DataExpense):
   TextEditingController muscoliAllenati = TextEditingController();
   List<Exercise> esercizi = [];
@@ -69,9 +69,11 @@ class _MyCompileExpense extends State<CompileExpense> {
         controller: controller,
         keyboardType: TextInputType.name,
         decoration: InputDecoration(
-          hintText: hintText,
-          labelText: labelText,
-        ),
+            hintText: hintText,
+            labelText: labelText,
+            enabledBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.orange),
+            )),
         validator: (value) {
           if (value!.isEmpty) {
             return errorText;
@@ -90,9 +92,11 @@ class _MyCompileExpense extends State<CompileExpense> {
         controller: controller,
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
-          hintText: hintText,
-          labelText: labelText,
-        ),
+            hintText: hintText,
+            labelText: labelText,
+            enabledBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.orange),
+            )),
       );
 
   Widget _lastRowButtons(
@@ -104,12 +108,14 @@ class _MyCompileExpense extends State<CompileExpense> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           ElevatedButton(
-              onPressed: () =>
-                  _clearInput(controller1, controller2, controller3),
-              child: const Text('Clear')),
+            onPressed: () => _clearInput(controller1, controller2, controller3),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+            child: const Text('Clear'),
+          ),
           ElevatedButton(
               onPressed: () => _addDayExercises(context),
-              child: const Text('Save first Day')),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+              child: const Text('Save exercise')),
         ],
       );
 

@@ -185,6 +185,7 @@ for (int j = 0; j < widget.workout!.listaGiorni[i].length; j++) {
     );
   }
 
+  // ignore: unused_element
   Widget _firstText() => const Text(
         'Create a Workout',
         style: TextStyle(fontSize: 18),

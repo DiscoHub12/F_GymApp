@@ -22,7 +22,9 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
 
   final List<Exercise> _exerciseDay = [];
   final TextEditingController numberExercise = TextEditingController();
+  // ignore: unused_field
   final List<DaySchedule> _daySchedule = [];
+  // ignore: unused_field
   late final Workout _newWorkout;
 
   @override
@@ -63,6 +65,9 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
                   itemCount: days,
                   itemBuilder: (context, index) {
                     return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orange,
+                      ),
                       child: Text('Compile Day ${index + 1}'),
                       onPressed: () {
                         _dialogNumberExercise(context);
@@ -76,6 +81,11 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
     );
   }
 
+  /// For simplicity, without having
+  /// to instantiate and create objects
+  /// directly within the build method,
+  /// they are created out separately for a simpler
+  /// code structure and modular.
   Widget _formWidgetString(
           hintText, labelText, errorText, TextEditingController controller) =>
       TextFormField(
@@ -129,41 +139,60 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
 
   Widget _requestNumberExercise(BuildContext context) => Container(
         padding: const EdgeInsets.all(8),
-        height: 200,
-        width: 330,
+        height: 160,
+        width: 300,
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               const SizedBox(height: 10),
-              _formWidgetNumberExercise(
-                  'Number of Exercise ? ', 'Number', numberExercise),
+              _formWidgetNumberExercise('Number of Exercise ? ', 'Number',
+                  'Enter positive number', numberExercise),
               const SizedBox(
                 height: 16,
               ),
               ElevatedButton(
-                  onPressed: () {
-                    int days = int.parse(numberExercise.value.text);
-                    for (int i = 0; i < days; i++) {
-                      _showCompileForm(context);
-                    }
-                  },
-                  child: const Icon(Icons.add))
+                onPressed: () {
+                  int days = int.parse(numberExercise.value.text);
+                  Navigator.pop(context);
+                  for (int i = 0; i < days; i++) {
+                    _showCompileForm(context);
+                  }
+                },
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+                child: const Icon(Icons.add),
+              ),
             ],
           ),
         ),
       );
 
   Widget _formWidgetNumberExercise(
-          hintText, labelText, TextEditingController controller) =>
+          hintText, labelText, errorText, TextEditingController controller) =>
       TextFormField(
         controller: controller,
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
-          hintText: hintText,
-          labelText: labelText,
-        ),
+            labelText: labelText,
+            labelStyle: const TextStyle(color: Colors.black),
+            hintText: hintText,
+            hintStyle: const TextStyle(color: Color.fromARGB(255, 59, 36, 36)),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                borderSide: const BorderSide(
+                  color: Colors.orange,
+                )),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                borderSide: const BorderSide(color: Colors.black, width: 1.0))),
+        validator: (value) {
+          if (value!.isEmpty) {
+            return errorText;
+          }
+          return null;
+        },
       );
 
+  //---------------INTERNAL METHODS--------------
   void _saveDays() {
     days = (int.parse(_numberDays.text));
     showOk = true;
@@ -176,7 +205,7 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
         context: context,
         builder: (_) {
           return AlertDialog(
-            content: CompileExpense(_addFirstDataExpense),
+            content: CompileExercise(_addExercises),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -197,9 +226,10 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
         });
   }
 
-  void _addFirstDataExpense(Exercise schedule) {
+  void _addExercises(Exercise schedule) {
     _exerciseDay.add(schedule);
     numberExercise.clear();
+    setState(() {});
     // ignore: avoid_print
     print(
         'Aggiunto : \n${schedule.nomeEsercizio}\n${schedule.ripetizioni}\n${schedule.peso}');
