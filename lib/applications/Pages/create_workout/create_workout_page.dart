@@ -1,309 +1,251 @@
 import 'package:flutter/material.dart';
-import '../../Models/workout.dart';
+import 'package:gymapp/applications/Models/day_schedule.dart';
+import 'package:gymapp/applications/Models/workout.dart';
+import 'package:gymapp/applications/Pages/create_workout/compile_day_worrkout.dart';
+import 'package:gymapp/applications/StoreData/boxes_workout.dart';
 
-class CreateSchedule extends StatefulWidget {
-  final Workout? workout;
+import '../../Models/exercise.dart';
+import '../../Utils/print_message.dart';
 
-  const CreateSchedule({Key? key, this.workout}) : super(key: key);
+class MyCreateSchedule extends StatefulWidget {
+  const MyCreateSchedule({super.key});
 
   @override
-  State<CreateSchedule> createState() => _MyCreateSchedule();
+  State<MyCreateSchedule> createState() => _MyTwoCreateSchedule();
 }
 
-class _MyCreateSchedule extends State<CreateSchedule> {
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _daysController = TextEditingController();
-  final List<List<TextEditingController>> _exerciseControllers = [];
+class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
+  //Object type  PrintStatus:
+  PrintStatus statusMessage = PrintStatus();
 
-  @override
-  void initState() {
-    super.initState();
-    if (widget.workout != null) {
-      _nameController.text = widget.workout!.nome;
-      _daysController.text = widget.workout!.giorni.toString();
-      for (int i = 0; i < widget.workout!.giorni; i++) {
-        _exerciseControllers.add([]);
-        /**
-         * 
-for (int j = 0; j < widget.workout!.listaGiorni[i].length; j++) {
-          _exerciseControllers[i].add(
-              TextEditingController(text: widget.workout!.exercises[i][j]));
-        }
-         */
-      }
-    } else {
-      _exerciseControllers.add([]);
-    }
-  }
+  final TextEditingController _nameWorkout = TextEditingController();
+  final TextEditingController _numberDays = TextEditingController();
+
+  int days = 0;
+  int count = 0;
+
+  bool showOk = false;
+
+  late List<Exercise> _exerciseDay = [];
+  final TextEditingController _numberExercise = TextEditingController();
+  final TextEditingController _muscles = TextEditingController();
+  // ignore: unused_field
+  late List<DaySchedule> _daySchedule = [];
+  // ignore: unused_field
+  late final Workout _newWorkout;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.workout == null ? 'New Workout' : 'Edit Workout'),
+        title: const Text('New Workout'),
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Workout Name'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter a workout name';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _daysController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Number of Days'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter the number of days';
-                  }
-                  int days = int.tryParse(value) ?? 0;
-                  if (days <= 0) {
-                    return 'Please enter a positive number';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  int days = int.tryParse(value) ?? 0;
-                  while (_exerciseControllers.length < days) {
-                    _exerciseControllers.add([]);
-                  }
-                  while (_exerciseControllers.length > days &&
-                      _exerciseControllers.length > 1) {
-                    _exerciseControllers.removeLast();
-                  }
-                },
-              ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _exerciseControllers.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Day ${index + 1}'),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: _exerciseControllers[index].length,
-                          itemBuilder: (context, exerciseIndex) {
-                            return Row(
-                              children: [
-                                Expanded(
-                                  child: TextFormField(
-                                    controller: _exerciseControllers[index]
-                                        [exerciseIndex],
-                                    decoration: InputDecoration(
-                                      labelText:
-                                          'Exercise ${exerciseIndex + 1}',
-                                      suffixText: 'kg',
-                                    ),
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.delete),
-                                  onPressed: () {
-                                    setState(() {
-                                      _exerciseControllers[index]
-                                          .removeAt(exerciseIndex);
-                                    });
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          child: const Text('Add Exercise'),
-                          onPressed: () {
-                            setState(() {
-                              _exerciseControllers[index]
-                                  .add(TextEditingController());
-                            });
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                      ],
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-              Center(
-                child: ElevatedButton(
-                  child:
-                      Text(widget.workout == null ? 'Create' : 'Save Changes'),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      List<List<String>> exercises = [];
-                      for (int i = 0; i < _exerciseControllers.length; i++) {
-                        List<String> dayExercises = [];
-                        for (int j = 0;
-                            j < _exerciseControllers[i].length;
-                            j++) {
-                          dayExercises.add(_exerciseControllers[i][j].text);
-                        }
-                        exercises.add(dayExercises);
-                      }
-                      /**
-                      Workout workout = Workout(
-                        name: _nameController.text,
-                        days: int.parse(_daysController.text),
-                        exercises: exercises,
-                      );
-                       */
-                      if (widget.workout == null) {
-                        // Save new workout
-                      } else {
-                        // Update existing workout
-                      }
-                      Navigator.pop(context);
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  // ignore: unused_element
-  Widget _firstText() => const Text(
-        'Create a Workout',
-        style: TextStyle(fontSize: 18),
-      );
-}
-
-
-/**
-class CreateSchedule extends StatefulWidget {
-  const CreateSchedule({super.key});
-
-  @override
-  State<CreateSchedule> createState() => _MyCreateSchedule();
-}
-
-class _MyCreateSchedule extends State<CreateSchedule> {
-  //Text Input :
-  TextEditingController nomeScheda = TextEditingController();
-  TextEditingController numeroGiorni = TextEditingController();
-  List<DaySchedule> giorniScheda = [];
-
-  //Principal Widget :
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const Drawer.NavigationDrawer(),
-      appBar: AppBar(
-        title: const Text('Add Schedule'),
-        centerTitle: true,
-        backgroundColor: Colors.orange,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             const SizedBox(
-              height: 16.0,
+              height: 16,
             ),
-            textWelcome(),
+            _formWidgetString('Name Workout', 'Name',
+                'Please enter a Workout name', _nameWorkout),
             const SizedBox(
-              height: 8,
+              height: 10,
             ),
-            textNome(),
-            const SizedBox(
-              height: 10.0,
+            _formWidgetNumber('Number of Days', 'Number',
+                'Please enter a positive Number', _numberDays),
+            !showOk
+                ? ElevatedButton(
+                    onPressed: () => _saveDays(),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orange),
+                    child: const Text('OK'),
+                  )
+                : const SizedBox(
+                    height: 20,
+                  ),
+            SizedBox(
+              height: 480,
+              width: 200,
+              child: Expanded(
+                child: ListView.builder(
+                    itemCount: days,
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    itemBuilder: (context, index) {
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orange,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12))),
+                        child: Text('Compile Day ${index + 1}'),
+                        onPressed: () {
+                          _dialogNumberExercise(context, index + 1);
+                        },
+                      );
+                    }),
+              ),
             ),
-            inputNome(),
-            const SizedBox(
-              height: 10.0,
-            ),
-            textNumeroGiorni(),
-            const SizedBox(
-              height: 10.0,
-            ),
-            inputNumeroGiorni(),
-            const SizedBox(
-              height: 20.0,
-            ),
-            buttonCompileSchedule(),
           ],
         ),
       ),
+      resizeToAvoidBottomInset: false,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _saveAll(context);
+        },
+        backgroundColor: Colors.orange,
+        child: const Icon(Icons.save),
+      ),
     );
   }
 
-  //Other Widget :
-  Widget textWelcome() => const Text(
-        'Crea la tua scheda di allenamento',
-        style: TextStyle(
-          fontSize: 21,
+  /// For simplicity, without having
+  /// to instantiate and create objects
+  /// directly within the build method,
+  /// they are created out separately for a simpler
+  /// code structure and modular.
+  Widget _formWidgetString(
+          hintText, labelText, errorText, TextEditingController controller) =>
+      TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+            labelText: labelText,
+            labelStyle: const TextStyle(color: Colors.black),
+            hintText: hintText,
+            hintStyle: const TextStyle(color: Color.fromARGB(255, 59, 36, 36)),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                borderSide: const BorderSide(
+                  color: Colors.orange,
+                )),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                borderSide: const BorderSide(color: Colors.black, width: 1.0))),
+        validator: (value) {
+          if (value!.isEmpty) {
+            return errorText;
+          }
+          return null;
+        },
+      );
+
+  Widget _formWidgetNumber(
+          hintText, labelText, errorText, TextEditingController controller) =>
+      TextFormField(
+        controller: controller,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+            labelText: labelText,
+            labelStyle: const TextStyle(color: Colors.black),
+            hintText: hintText,
+            hintStyle: const TextStyle(color: Color.fromARGB(255, 59, 36, 36)),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                borderSide: const BorderSide(
+                  color: Colors.orange,
+                )),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                borderSide: const BorderSide(color: Colors.black, width: 1.0))),
+        validator: (value) {
+          if (value!.isEmpty) {
+            return errorText;
+          }
+          return null;
+        },
+      );
+
+  Widget _requestNumberExercise(BuildContext context, index) => Container(
+        padding: const EdgeInsets.all(8),
+        height: 260,
+        width: 300,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              const SizedBox(height: 10),
+              Text(
+                'Day $index',
+                style: const TextStyle(fontSize: 23),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              _formWidgetString(
+                  'Muscle(s)?', 'Muscles', 'Enter a valid Muscles', _muscles),
+              const SizedBox(height: 13),
+              _formWidgetNumberExercise('Number of Exercise ? ', 'Number',
+                  'Enter positive number', _numberExercise),
+              const SizedBox(
+                height: 16,
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    int days = int.parse(_numberExercise.value.text);
+                    Navigator.pop(context);
+                    for (int i = 0; i < days; i++) {
+                      _showCompileForm(context);
+                      count++;
+                    }
+                    _muscles.clear();
+                    _closeExerciseCompiling(context);
+                  },
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+                  child: const Text('Compile')),
+            ],
+          ),
         ),
       );
 
-  Widget textNome() => const Text(
-        'Nome Scheda',
-        style: TextStyle(fontSize: 16.0),
-      );
-
-  Widget inputNome() => TextFormField(
-        textCapitalization: TextCapitalization.words,
-        decoration: const InputDecoration(
-            border: UnderlineInputBorder(),
-            filled: true,
-            hintText: 'Nome della Scheda',
-            labelText: 'Nome *'),
-        controller: nomeScheda,
-      );
-
-  Widget textNumeroGiorni() => const Text(
-        'Numero giorni di allenamento',
-        style: TextStyle(fontSize: 16.0),
-      );
-
-  Widget inputNumeroGiorni() => TextFormField(
+  Widget _formWidgetNumberExercise(
+          hintText, labelText, errorText, TextEditingController controller) =>
+      TextFormField(
+        controller: controller,
         keyboardType: TextInputType.number,
-        decoration: const InputDecoration(
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.orange),
-            ),
-            filled: true,
-            hintText: 'Numero Allenamenti',
-            labelText: 'Numero *'),
-        controller: numeroGiorni,
+        decoration: InputDecoration(
+            labelText: labelText,
+            labelStyle: const TextStyle(color: Colors.black),
+            hintText: hintText,
+            hintStyle: const TextStyle(color: Color.fromARGB(255, 59, 36, 36)),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                borderSide: const BorderSide(
+                  color: Colors.orange,
+                )),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                borderSide: const BorderSide(color: Colors.black, width: 1.0))),
+        validator: (value) {
+          if (value!.isEmpty) {
+            return errorText;
+          }
+          return null;
+        },
       );
 
-  Widget buttonCompileSchedule() => ElevatedButton(
-      onPressed: () => _showCompileForm(context),
-      child: const Text('Compila Scheda'));
+  //---------------INTERNAL METHODS--------------
+  void _saveDays() {
+    days = (int.parse(_numberDays.text));
+    showOk = true;
+    _newWorkout = Workout(_nameWorkout.text, days, _daySchedule);
+    // ignore: avoid_print, prefer_interpolation_to_compose_strings
+    print('WORKOUT : \n + ' +
+        _nameWorkout.text +
+        "Numer of Days : " +
+        days.toString());
+    setState(() {});
+  }
 
-  //Methods for this Page :
+  //METHOD FOR THIS CLASS:
   void _showCompileForm(BuildContext context) {
     showDialog(
         context: context,
         builder: (_) {
           return AlertDialog(
-            content: CompileDaySchedule(_addFirstDataExpense),
+            content: CompileExercise(_addExercises),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -311,11 +253,69 @@ class _MyCreateSchedule extends State<CreateSchedule> {
         });
   }
 
-  void _addFirstDataExpense(DaySchedule daySchedule) {
-    setState(() {
-      giorniScheda.add(daySchedule);
-    });
+  void _dialogNumberExercise(BuildContext context, index) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            content: _requestNumberExercise(context, index),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          );
+        });
+  }
+
+  void _addExercises(Exercise schedule) {
+    _exerciseDay.add(schedule);
+    _numberExercise.clear();
+    setState(() {});
+    // ignore: avoid_print
+    print(
+        'Aggiunto : \n${schedule.nomeEsercizio}\n${schedule.ripetizioni}\n${schedule.peso}');
+  }
+
+  void _closeExerciseCompiling(BuildContext context) {
+    String muscles = _muscles.text;
+    DaySchedule tmp = DaySchedule(muscles, _exerciseDay);
+    if (_newWorkout.listaGiorni.isEmpty) {
+      List<DaySchedule> tmpList = [];
+      tmpList.add(tmp);
+    } else {
+      _newWorkout.addGiorno(tmp);
+    }
+    // ignore: avoid_print, prefer_interpolation_to_compose_strings
+    print('Aggiungo giorno : \n Numero Esercizi : ' +
+        _numberExercise.text +
+        "\nMuscolo allenato : " +
+        _muscles.value.text +
+        "\nEsercizi : " +
+        _exerciseDay.toString());
+    _exerciseDay = [];
+    _numberExercise.clear();
+    _muscles.clear();
+    Navigator.pop(context);
+  }
+
+  void _saveAll(BuildContext context) async {
+    //Add into the Database :
+    final box = BoxesWorkout.getWorkout();
+    box.add(_newWorkout);
+    statusMessage.printCorrect(context, 'Workout add successfully');
+    _clearAll();
+    Navigator.of(context, rootNavigator: true).pop(context);
+  }
+
+  void _clearAll() {
+    _nameWorkout.clear();
+    _numberDays.clear();
+    days = 0;
+    count = 0;
+    showOk = false;
+    _exerciseDay = [];
+    _numberExercise.clear();
+    _muscles.clear();
+    // ignore: unused_field
+    _daySchedule = [];
   }
 }
-
- */
