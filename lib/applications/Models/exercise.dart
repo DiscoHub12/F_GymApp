@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class Exercise {
   //Attributes class:
   String nomeEsercizio;
