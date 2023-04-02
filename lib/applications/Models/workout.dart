@@ -1,13 +1,21 @@
 import 'package:gymapp/applications/Models/day_schedule.dart';
+import 'package:hive/hive.dart';
 
-class Workout {
-  //Attributes class:
+part 'workout.g.dart';
+
+@HiveType(typeId: 3)
+class Workout extends HiveObject {
+  @HiveField(0)
   String nome;
+
+  @HiveField(1)
   int giorni;
+
+  @HiveField(2)
   List<DaySchedule> listaGiorni;
 
   //Constructor Object:
-  Workout(this.nome, this.listaGiorni, this.giorni);
+  Workout(this.nome, this.giorni, this.listaGiorni);
 
   //Get and Set methods and Other :
   String getNome() {

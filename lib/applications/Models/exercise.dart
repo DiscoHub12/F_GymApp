@@ -1,7 +1,14 @@
-class Exercise {
-  //Attributes class:
+import 'package:hive/hive.dart';
+
+part 'exercise.g.dart';
+
+@HiveType(typeId: 2)
+class Exercise extends HiveObject {
+  @HiveField(0)
   String nomeEsercizio;
+  @HiveField(1)
   String ripetizioni;
+  @HiveField(2)
   double peso;
 
   //Constructor Object:

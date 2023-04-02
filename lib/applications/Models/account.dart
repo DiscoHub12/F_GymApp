@@ -1,11 +1,26 @@
 import 'dart:io';
+import 'package:hive/hive.dart';
 
-class Account {
+part 'account.g.dart';
+
+@HiveType(typeId: 0)
+class Account extends HiveObject {
+  @HiveField(0)
   String nome;
+
+  @HiveField(1)
   String cognome;
+
+  @HiveField(2)
   String email;
+
+  @HiveField(3)
   DateTime dataIscrizione;
+
+  @HiveField(4)
   DateTime eta;
+
+  @HiveField(5)
   File profileImage;
 
   Account(this.nome, this.cognome, this.email, this.dataIscrizione, this.eta,
