@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:gymapp/applications/Data/boxes_workout.dart';
 import 'package:gymapp/applications/Models/day_schedule.dart';
 import 'package:gymapp/applications/Models/workout.dart';
 import 'package:gymapp/applications/Pages/create_workout/compile_day_worrkout.dart';
-import 'package:gymapp/applications/StoreData/boxes_workout.dart';
 
 import '../../Models/exercise.dart';
 import '../../Utils/print_message.dart';
+// ignore: library_prefixes
+import '../../Utils/drawer.dart' as Drawer;
 
 class MyCreateSchedule extends StatefulWidget {
   const MyCreateSchedule({super.key});
@@ -37,9 +39,12 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const Drawer.NavigationDrawer(),
       appBar: AppBar(
+        
         title: const Text('New Workout'),
         centerTitle: true,
+        
         backgroundColor: Colors.orange,
       ),
       body: Padding(
@@ -185,12 +190,12 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
                   onPressed: () {
                     int days = int.parse(_numberExercise.value.text);
                     Navigator.pop(context);
-                    for (int i = 0; i < days; i++) {
+                    for (int i = 0; i <= days; i++) {
                       _showCompileForm(context);
                       count++;
                     }
-                    _muscles.clear();
                     _closeExerciseCompiling(context);
+                    _muscles.clear();
                   },
                   style:
                       ElevatedButton.styleFrom(backgroundColor: Colors.orange),
@@ -297,7 +302,7 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
     Navigator.pop(context);
   }
 
-  void _saveAll(BuildContext context) async {
+  void _saveAll(BuildContext context) {
     //Add into the Database :
     final box = BoxesWorkout.getWorkout();
     box.add(_newWorkout);
