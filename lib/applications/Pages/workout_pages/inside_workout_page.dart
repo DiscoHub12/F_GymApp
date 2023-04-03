@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: library_prefixes
 import '../../Models/workout.dart';
+// ignore: library_prefixes
 import '../../Utils/drawer.dart' as Drawer;
 
 class InsideWorkout extends StatefulWidget {
