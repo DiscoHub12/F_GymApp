@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/applications/Data/boxes_workout.dart';
-import 'package:gymapp/applications/Pages/create_workout/create_workout_page.dart';
 import 'package:gymapp/applications/Pages/create_workout/definetive_create_workout_page.dart';
 import 'package:gymapp/applications/Pages/workout_pages/inside_workout_page.dart';
 // ignore: library_prefixes

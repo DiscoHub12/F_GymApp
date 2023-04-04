@@ -12,7 +12,7 @@ class DaySchedule extends HiveObject {
   List<Exercise> esercizi;
 
   @HiveField(2)
-  late DateTime lastUsage;
+  DateTime? lastUsage;
 
   //Constructor Object:
   DaySchedule(this.muscoliAllenati, this.esercizi);
@@ -43,10 +43,10 @@ class DaySchedule extends HiveObject {
   }
 
   DateTime getLastUsage() {
-    return lastUsage;
+    return lastUsage!;
   }
 
-  void setLastUsage(DateTime date) {
+  void setLastUsage(date) {
     lastUsage = date;
   }
 

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import '../../Models/day_schedule.dart';
 import '../../Models/exercise.dart';
 import '../../Models/workout.dart';
-// ignore: library_prefixes
-import '../../Utils/drawer.dart' as Drawer;
 
 class InsideWorkout extends StatefulWidget {
   const InsideWorkout({super.key, required this.workout});
