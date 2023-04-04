@@ -306,6 +306,7 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
     //Add into the Database :
     final box = BoxesWorkout.getWorkout();
     box.add(_newWorkout);
+    _printAllSchedule(_newWorkout);
     statusMessage.printCorrect(context, 'Workout add successfully');
     _clearAll();
     Navigator.of(context, rootNavigator: true).pop(context);
@@ -322,5 +323,19 @@ class _MyTwoCreateSchedule extends State<MyCreateSchedule> {
     _muscles.clear();
     // ignore: unused_field
     _daySchedule = [];
+  }
+
+  void _printAllSchedule(Workout workout){
+    print("Workout created : \n Nome Workout : " + workout.nome + "\nGiorni Totali : " + workout.listaGiorni.length.toString() + "\n GIORNI : "); 
+    for(int i = 0; i <= workout.giorni; i++){
+      _printExercise(workout.listaGiorni[i]);
+    }
+  }
+
+  void _printExercise(DaySchedule schedule){
+    print("Day : " + schedule.muscoliAllenati);
+    for(int i = 0; i < schedule.esercizi.length; i++ ){
+      print("Esercizio : \n" + schedule.esercizi[i].nomeEsercizio);
+    }
   }
 }
