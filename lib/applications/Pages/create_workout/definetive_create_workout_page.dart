@@ -274,26 +274,12 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              ElevatedButton(
-                                  onPressed: () {
-                                    _aggiungiEsercizio(indexGiorno);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.orange,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12))),
-                                  child: const Text("Add Exercise")),
-                              ElevatedButton(
-                                  onPressed: () {
-                                    _salvaGiorno(indexGiorno);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.orange,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12))),
-                                  child: const Text("Save Day")),
+                              _elevated(() {
+                                _aggiungiEsercizio(indexGiorno);
+                              }, 'Add Exercise'),
+                              _elevated(() {
+                                _salvaGiorno(indexGiorno);
+                              }, 'Save day'),
                             ],
                           ),
                           const SizedBox(
@@ -307,13 +293,7 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
                 height: 23.0,
               ),
               Center(
-                child: ElevatedButton(
-                    onPressed: _aggiungiGiorno,
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12))),
-                    child: const Text("Aggiungi giorno")),
+                child: _elevated(_aggiungiGiorno, 'Aggiungi Giorno'),
               )
             ],
           ),
@@ -321,6 +301,16 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
       ),
     );
   }
+
+  //WIDGET FOR THIS CLASS
+  Widget _elevated(onPressed, String text) => ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.orange,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12))),
+        child: Text(text),
+      );
 
   /// Method for this Widget Component (Page):
   @override
@@ -332,6 +322,11 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
   }
 
   void _aggiungiGiorno() {
+    if (_workoutCreated == null || _workoutCreated!.listaGiorni.isEmpty) {
+      List<DaySchedule> giorni = [];
+      _workoutCreated =
+          Workout(_nameWorkout.text, int.parse(_dayWorkout.value.text), giorni);
+    }
     setState(() {
       List<Exercise> exerciseDay = [];
       _CompleteDay controllerDay = _CompleteDay();
@@ -374,18 +369,6 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
     });
   }
 
-  Future<void> _salvaScheda() async {
-    final box = BoxesWorkout.getWorkout();
-    _workoutCreated = Workout(_nameWorkout.value.text,
-        _controllerMap.entries.length, _controllerMap.keys.toList());
-    await box.add(_workoutCreated!);
-    // ignore: use_build_context_synchronously
-    statusMessage.printCorrect(context, 'Workout Created.');
-    // ignore: use_build_context_synchronously
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const App()));
-  }
-
   void _salvaGiorno(int indexGiorno) {
     String muscoliAllenati =
         _controllerMap.entries.elementAt(indexGiorno).value.muscles.text;
@@ -405,7 +388,6 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
               .exercises
               .elementAt(i)
               .nomeEsercizio
-              .value
               .text,
           _controllerMap.entries
               .elementAt(indexGiorno)
@@ -413,7 +395,6 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
               .exercises
               .elementAt(i)
               .reps
-              .value
               .text,
           double.parse(_controllerMap.entries
               .elementAt(indexGiorno)
@@ -421,11 +402,11 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
               .exercises
               .elementAt(i)
               .width
-              .value
               .text));
       exerciseDay.add(tmp);
     }
     DaySchedule newDaySchedule = DaySchedule(muscoliAllenati, exerciseDay);
+    newDaySchedule.setLastUsage(null);
     if (_workoutCreated!.listaGiorni.isEmpty) {
       List<DaySchedule> daysSchedule = [];
       _workoutCreated!.setListaGiorni(daysSchedule);
@@ -435,6 +416,37 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
     }
 
     print("Giorno salvato");
+  }
+
+  Future<void> _salvaScheda() async {
+    final box = BoxesWorkout.getWorkout();
+    _workoutCreated = Workout(_nameWorkout.value.text,
+        _controllerMap.entries.length, _controllerMap.keys.toList());
+    await box.add(_workoutCreated!);
+    print('WORKOUT CREATO.\n Nome Workout : ' +
+        _workoutCreated!.nome +
+        "\nNumero Giorni : " +
+        _workoutCreated!.giorni.toString() +
+        "\n");
+    _stampaEsercizi(_workoutCreated!);
+    // ignore: use_build_context_synchronously
+    statusMessage.printCorrect(context, 'Workout Created.');
+    // ignore: use_build_context_synchronously
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const App()));
+  }
+}
+
+void _stampaEsercizi(Workout workout) {
+  for (int i = 0; i < workout.listaGiorni.length; i++) {
+    print("ESERCIZIO NUMERO : " +
+        i.toString() +
+        "\n Muscoli allenati : " +
+        workout.listaGiorni[i].muscoliAllenati);
+    for (int j = 0; j < workout.listaGiorni[i].esercizi.length; j++) {
+      print(
+          "Esercizio numero $j : \n${workout.listaGiorni[i].esercizi[j].nomeEsercizio}\nRipetizioni : ${workout.listaGiorni[i].esercizi[j].ripetizioni}\n Peso : ${workout.listaGiorni[i].esercizi[j].peso}");
+    }
   }
 }
 
