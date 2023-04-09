@@ -3,6 +3,7 @@ import 'package:gymapp/applications/Data/boxes_workout.dart';
 import 'package:gymapp/applications/Pages/create_workout/definetive_create_workout_page.dart';
 import 'package:gymapp/applications/Pages/workout_pages/inside_workout_page.dart';
 // ignore: library_prefixes
+import '../../Models/workout.dart';
 import '../../Utils/drawer.dart' as Drawer;
 
 class WorkoutPage extends StatefulWidget {
@@ -29,6 +30,7 @@ class _MyWoroutPage extends State<WorkoutPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       drawer: const Drawer.NavigationDrawer(),
       appBar: AppBar(
@@ -36,68 +38,177 @@ class _MyWoroutPage extends State<WorkoutPage> {
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
-      body: !isEmpty
-          ? SingleChildScrollView(
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.75,
-                child: ListView.builder(
-                  itemCount: box.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      child: ListTile(
-                        title: Text(box.getAt(index)!.nome),
-                        subtitle: Text('Giorni : ${box.getAt(index)!.giorni}'),
-                        trailing: GestureDetector(
-                          child: const Icon(Icons.delete, color: Colors.red),
-                          onTap: () {
-                            _dialogNumberExercise(
-                                context, index, box.getAt(index)!.nome);
-                          },
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => InsideWorkout(
-                                        workout: box.getAt(index)!,
-                                      )));
-                        },
+      body: SizedBox(
+        width: size.width,
+        height: size.height,
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+                child: Container(
+              width: size.width,
+              height: size.height / 3,
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.horizontal(
+                    left: Radius.circular(10),
+                    right: Radius.circular(10),
+                  ),
+                  gradient: LinearGradient(colors: [
+                    Color.fromARGB(255, 255, 161, 20),
+                    Color.fromARGB(255, 251, 199, 122),
+
+                    /**
+                     * Color(0xff8d70fe),
+                    Color(0xff2da9ef),
+                     */
+                  ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
+              child: const Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 60,
+                  ),
+                  Text(
+                    'Schedule',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  ListTile(
+                    leading: Text(
+                      '26',
+                      style: TextStyle(
+                        fontSize: 52,
+                        color: Colors.black,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                    title: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 4.0),
+                      child: Text(
+                        'Agustus',
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    subtitle: Text(
+                      '2022',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Center(
-                  child: Text(
-                    "You don't have any Workout",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            )),
+            Positioned(
+                top: size.height / 4.5,
+                left: 16,
+                child: Container(
+                  width: size.width - 32,
+                  height: size.height / 1.4,
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 236, 233, 233),
+                    borderRadius: BorderRadius.horizontal(
+                      left: Radius.circular(10),
+                      right: Radius.circular(10),
+                    ),
                   ),
-                ),
-                const Center(
-                  child: Text(
-                    "Create",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: !isEmpty
+                        ? SingleChildScrollView(
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.75,
+                              child: ListView.builder(
+                                itemCount: box.length,
+                                itemBuilder: (context, index) {
+                                  return Card(
+                                    child: ListTile(
+                                      title: Text(box.getAt(index)!.nome),
+                                      subtitle: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                              'Giorni : ${box.getAt(index)!.giorni}'),
+                                          const SizedBox(
+                                            width: 25.0,
+                                          ),
+                                          Text(
+                                              'Total Exercise : ${totalExercise(box.getAt(index)!)}')
+                                        ],
+                                      ),
+                                      trailing: GestureDetector(
+                                        child: const Icon(Icons.delete,
+                                            color: Colors.red),
+                                        onTap: () {
+                                          _dialogNumberExercise(context, index,
+                                              box.getAt(index)!.nome);
+                                        },
+                                      ),
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    InsideWorkout(
+                                                      workout:
+                                                          box.getAt(index)!,
+                                                    )));
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Center(
+                                child: Text(
+                                  "You don't have any Workout",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              const Center(
+                                child: Text(
+                                  "Create",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const DefinitiveCreate()));
+                                    setState(() {});
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.orange,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12))),
+                                  child: const Icon(Icons.create))
+                            ],
+                          ),
                   ),
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const DefinitiveCreate()));
-                      setState(() {});
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12))),
-                    child: const Icon(Icons.create))
-              ],
-            ),
+                ))
+          ],
+        ),
+      ),
     );
   }
 
@@ -141,5 +252,26 @@ class _MyWoroutPage extends State<WorkoutPage> {
             ),
           );
         });
+  }
+
+  int totalExercise(Workout workout) {
+    int totalExercise = 0;
+    for (int i = 0; i < workout.listaGiorni.length; i++) {
+      totalExercise += workout.listaGiorni.elementAt(i).esercizi.length;
+    }
+    return totalExercise;
+  }
+
+  DateTime? lastWorkoutDay() {
+    var lastWorkoutDay = box.getAt(0)!.listaGiorni.elementAt(0).lastUsage;
+    for (var i = 0; i < box.length; i++) {
+      for (var j = 0; j < box.getAt(i)!.listaGiorni.length; j++) {
+        if (box.getAt(i)!.listaGiorni.elementAt(j).lastUsage!.millisecond >
+            lastWorkoutDay!.millisecond) {
+          lastWorkoutDay = box.getAt(i)!.listaGiorni.elementAt(j).lastUsage;
+        }
+      }
+    }
+    return lastWorkoutDay;
   }
 }
