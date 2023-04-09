@@ -19,7 +19,7 @@ class DayScheduleAdapter extends TypeAdapter<DaySchedule> {
     return DaySchedule(
       fields[0] as String,
       (fields[1] as List).cast<Exercise>(),
-    )..lastUsage = fields[2] as DateTime;
+    )..lastUsage = fields[2] as DateTime?;
   }
 
   @override

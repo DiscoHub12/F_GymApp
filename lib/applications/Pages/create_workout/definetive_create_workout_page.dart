@@ -26,7 +26,7 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
   final TextEditingController _nameWorkout = TextEditingController();
   final TextEditingController _dayWorkout = TextEditingController();
 
-  final Map<DaySchedule, _CompleteDay> _controllerMap = Map();
+  final Map<DaySchedule, _CompleteDay> _controllerMap = {};
 
   @override
   Widget build(BuildContext context) {
@@ -332,6 +332,7 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
       _CompleteDay controllerDay = _CompleteDay();
       _controllerMap.putIfAbsent(
           DaySchedule("", exerciseDay), () => controllerDay);
+      // ignore: avoid_print
       print('Ho aggiunto un giorno');
     });
   }
@@ -341,6 +342,7 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
       DaySchedule daySchedule =
           _controllerMap.entries.elementAt(indexGiorno).key;
       _controllerMap.remove(daySchedule);
+      // ignore: avoid_print
       print('Ho rimosso un giorno');
     });
   }
@@ -354,7 +356,8 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
       var controllerDay = _controllerMap.entries.elementAt(indexGiorno).value;
       controllerDay.addExercise(controllerExercises);
       _controllerMap.update(daySchedule, (value) => controllerDay);
-      print('Ho aggiunto un Esercizio al giorno : ' + indexGiorno.toString());
+      // ignore: avoid_print
+      print('Ho aggiunto un Esercizio al giorno : $indexGiorno');
     });
   }
 
@@ -365,7 +368,7 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
       DaySchedule daySchedule =
           _controllerMap.entries.elementAt(indexGiorno).key;
       _controllerMap.update(daySchedule, (value) => controllerDay);
-      print('Ho rimosso un Esercizio al giorno : ' + indexGiorno.toString());
+      print('Ho rimosso un Esercizio al giorno : $indexGiorno');
     });
   }
 
@@ -410,26 +413,17 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
     if (_workoutCreated!.listaGiorni.isEmpty) {
       List<DaySchedule> daysSchedule = [];
       _workoutCreated!.setListaGiorni(daysSchedule);
-      _workoutCreated!.addGiorno(newDaySchedule);
-    } else {
-      _workoutCreated!.addGiorno(newDaySchedule);
     }
-
-    print("Giorno salvato");
+    _workoutCreated!.addGiorno(newDaySchedule);
+    print("Giorno salvato.");
+    _stampaWorkout(_workoutCreated!);
   }
 
   Future<void> _salvaScheda() async {
     final box = BoxesWorkout.getWorkout();
-    _workoutCreated = Workout(_nameWorkout.value.text,
-        _controllerMap.entries.length, _controllerMap.keys.toList());
     await box.add(_workoutCreated!);
-    print('WORKOUT CREATO.\n Nome Workout : ' +
-        _workoutCreated!.nome +
-        "\nNumero Giorni : " +
-        _workoutCreated!.giorni.toString() +
-        "\n");
-    _stampaEsercizi(_workoutCreated!);
-    // ignore: use_build_context_synchronously
+    _stampaWorkout(_workoutCreated!);
+    // ignore: use_build_context_synchronouslys, use_build_context_synchronously
     statusMessage.printCorrect(context, 'Workout Created.');
     // ignore: use_build_context_synchronously
     Navigator.of(context)
@@ -437,16 +431,20 @@ class _MyDefinitiveCreate extends State<DefinitiveCreate> {
   }
 }
 
-void _stampaEsercizi(Workout workout) {
+void _stampaWorkout(Workout workout) {
+  print(
+      "WORKOUT CREATO.\n Nome Workout : ${workout.nome}\nNumero Giorni : ${workout.giorni.toString()}");
   for (int i = 0; i < workout.listaGiorni.length; i++) {
-    print("ESERCIZIO NUMERO : " +
-        i.toString() +
-        "\n Muscoli allenati : " +
-        workout.listaGiorni[i].muscoliAllenati);
-    for (int j = 0; j < workout.listaGiorni[i].esercizi.length; j++) {
-      print(
-          "Esercizio numero $j : \n${workout.listaGiorni[i].esercizi[j].nomeEsercizio}\nRipetizioni : ${workout.listaGiorni[i].esercizi[j].ripetizioni}\n Peso : ${workout.listaGiorni[i].esercizi[j].peso}");
-    }
+    print(
+        "DETTAGLIO GIORNO : \n Muscoli allenati : ${workout.listaGiorni.elementAt(i).muscoliAllenati} \n");
+    _stampaGiorno(workout.listaGiorni.elementAt(i));
+  }
+}
+
+void _stampaGiorno(DaySchedule schedule) {
+  for (int i = 0; i < schedule.esercizi.length; i++) {
+    print(
+        "Esercizio numero : ${i + 1}\n Nome esercizio :  ${schedule.esercizi.elementAt(i).nomeEsercizio}\n Ripetizioni ${schedule.esercizi.elementAt(i).ripetizioni} \n Peso :  ${schedule.esercizi.elementAt(i).peso}");
   }
 }
 
