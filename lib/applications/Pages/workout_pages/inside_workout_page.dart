@@ -23,7 +23,7 @@ class _MyInsideWorkout extends State<InsideWorkout> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF4C4C4C), Color(0xFF2A2A2A)],
+            colors: [Color.fromARGB(255, 255, 177, 60), Color.fromARGB(255, 255, 94, 0)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
