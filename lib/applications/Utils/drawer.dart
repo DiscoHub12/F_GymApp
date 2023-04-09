@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/app.dart';
 import 'package:gymapp/applications/Pages/chart_page.dart';
-import 'package:gymapp/applications/Pages/create_workout/create_workout_page.dart';
-import 'package:gymapp/applications/Pages/workout_page.dart';
+import 'package:gymapp/applications/Pages/create_workout/definetive_create_workout_page.dart';
+import 'package:gymapp/applications/Pages/workout_pages/workout_page.dart';
 import 'package:gymapp/applications/Pages/settings_pages/settings_pages.dart';
 
 import '../Pages/favourite_page.dart';
@@ -78,7 +78,7 @@ class NavigationDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const MyCreateSchedule()));
+                    builder: (context) => const DefinitiveCreate()));
               },
             ),
             ListTile(
@@ -100,17 +100,6 @@ class NavigationDrawer extends StatelessWidget {
               },
             ),
             const Divider(color: Colors.black),
-            /**
-           ListTile(
-              leading: const Icon(Icons.account_box_rounded),
-              title: const Text('Account'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const AccountPage()));
-              },
-            ),
-            */
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),

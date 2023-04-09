@@ -4,6 +4,7 @@ import 'package:gymapp/applications/Models/account.dart';
 import 'package:gymapp/applications/Models/day_schedule.dart';
 import 'package:gymapp/applications/Models/exercise.dart';
 import 'package:gymapp/applications/Models/workout.dart';
+// ignore: unnecessary_import
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -16,9 +17,9 @@ void main() async {
   Hive.registerAdapter(ExerciseAdapter());
   Hive.registerAdapter(WorkoutAdapter());
   //Open the Hive Box :
-  await Hive.openBox('getAccount');
-  await Hive.openBox('getExercise');
-  await Hive.openBox('getDaySchedule');
-  await Hive.openBox('getWorkout');
+  await Hive.openBox<Account>('getAccount');
+  await Hive.openBox<Exercise>('getExercise');
+  await Hive.openBox<DaySchedule>('getDaySchedule');
+  await Hive.openBox<Workout>('getWorkout');
   runApp(const MaterialApp(home: App()));
 }
