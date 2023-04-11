@@ -4,14 +4,14 @@ import '../../Utils/drawer.dart' as Drawer;
 import '../account_pages/account_pages.dart';
 import 'settings_widget.dart';
 
-class Settings extends StatefulWidget {
-  const Settings({super.key});
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
 
   @override
-  State<Settings> createState() => _MySettings();
+  State<SettingsPage> createState() => _MySettingsPage();
 }
 
-class _MySettings extends State<Settings> {
+class _MySettingsPage extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
