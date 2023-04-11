@@ -8,14 +8,14 @@ import 'package:path_provider/path_provider.dart';
 // ignore: library_prefixes
 import '../../../app.dart';
 
-class ModifyAccount extends StatefulWidget {
-  const ModifyAccount({super.key});
+class ModifyAccountPage extends StatefulWidget {
+  const ModifyAccountPage({super.key});
 
   @override
-  State<ModifyAccount> createState() => _MyModifyAccount();
+  State<ModifyAccountPage> createState() => _MyModifyAccountPage();
 }
 
-class _MyModifyAccount extends State<ModifyAccount> {
+class _MyModifyAccountPage extends State<ModifyAccountPage> {
   //TextEditingController for Input:
   final TextEditingController name = TextEditingController();
   final TextEditingController cognome = TextEditingController();

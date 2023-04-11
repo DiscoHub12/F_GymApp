@@ -102,8 +102,8 @@ class _MyAccountPage extends State<AccountPage> {
           backgroundColor: Colors.orange,
         ),
         onPressed: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const ModifyAccount()));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const ModifyAccountPage()));
         },
       );
 }
