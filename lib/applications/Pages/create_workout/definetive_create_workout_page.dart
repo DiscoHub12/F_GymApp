@@ -9,14 +9,14 @@ import '../../Models/workout.dart';
 // ignore: library_prefixes
 import '../../Utils/drawer.dart' as Drawer;
 
-class DefinitiveCreate extends StatefulWidget {
-  const DefinitiveCreate({super.key});
+class CreateWorkoutPage extends StatefulWidget {
+  const CreateWorkoutPage({super.key});
 
   @override
-  State<StatefulWidget> createState() => _MyDefinitiveCreate();
+  State<StatefulWidget> createState() => _MyCreateWorkoutPage();
 }
 
-class _MyDefinitiveCreate extends State<DefinitiveCreate> {
+class _MyCreateWorkoutPage extends State<CreateWorkoutPage> {
   final PrintStatus statusMessage = PrintStatus();
 
   final List<DaySchedule> tmp = [];
