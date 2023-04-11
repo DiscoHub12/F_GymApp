@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gymapp/app.dart';
 import 'package:gymapp/applications/Pages/chart_page.dart';
 import 'package:gymapp/applications/Pages/create_workout/definetive_create_workout_page.dart';
+import 'package:gymapp/applications/Pages/data_information.dart';
 import 'package:gymapp/applications/Pages/workout_pages/workout_page.dart';
 import 'package:gymapp/applications/Pages/settings_pages/settings_pages.dart';
 
@@ -78,7 +79,7 @@ class NavigationDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const DefinitiveCreate()));
+                    builder: (context) => const CreateWorkoutPage()));
               },
             ),
             ListTile(
@@ -86,8 +87,8 @@ class NavigationDrawer extends StatelessWidget {
               title: const Text('Chart'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ChartSchedule()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const ChartPage()));
               },
             ),
             ListTile(
@@ -96,7 +97,16 @@ class NavigationDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const FavouriteSchedule()));
+                    builder: (context) => const FavouriteWorkoutPage()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info_outline),
+              title: const Text('Data info'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const DataInfo()));
               },
             ),
             const Divider(color: Colors.black),
@@ -105,8 +115,8 @@ class NavigationDrawer extends StatelessWidget {
               title: const Text('Settings'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const Settings()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SettingsPage()));
               },
             ),
           ],
