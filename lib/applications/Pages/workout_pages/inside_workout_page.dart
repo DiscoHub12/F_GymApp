@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:gymapp/applications/Pages/workout_pages/start_workout.dart';
 // ignore: library_prefixes
 import '../../Models/day_schedule.dart';
 import '../../Models/exercise.dart';
 import '../../Models/workout.dart';
 
-class InsideWorkout extends StatefulWidget {
-  const InsideWorkout({super.key, required this.workout});
+class InsideWorkoutPage extends StatefulWidget {
+  const InsideWorkoutPage({super.key, required this.workout});
 
   final Workout workout;
 
   @override
-  State<InsideWorkout> createState() => _MyInsideWorkout();
+  State<InsideWorkoutPage> createState() => _MyInsideWorkoutPage();
 }
 
-class _MyInsideWorkout extends State<InsideWorkout> {
+class _MyInsideWorkoutPage extends State<InsideWorkoutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.workout.nome),
+        backgroundColor: Colors.orange,
+        centerTitle: true,
       ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color.fromARGB(255, 255, 177, 60), Color.fromARGB(255, 255, 94, 0)],
+            colors: [
+              Color.fromARGB(255, 255, 186, 83),
+              Color.fromARGB(255, 199, 119, 0)
+            ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -33,27 +39,47 @@ class _MyInsideWorkout extends State<InsideWorkout> {
           itemBuilder: (context, index) {
             DaySchedule day = widget.workout.listaGiorni[index];
             return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
-                Text(
-                  "Day ${index + 1}: ${day.muscoliAllenati}",
-                  style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Text(
+                      "Day ${index + 1}: ${day.muscoliAllenati}",
+                      style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white),
+                    ),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => StartWorkout(
+                                        daySchedule: day,
+                                      )));
+                        },
+                        child: const Text(
+                          'Start Workout',
+                          style: TextStyle(color: Colors.black),
+                        ))
+                  ],
                 ),
                 const SizedBox(height: 10),
                 ListView.builder(
                   shrinkWrap: true,
-                  physics: const  ClampingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   itemCount: day.esercizi.length,
                   itemBuilder: (context, index) {
                     Exercise exercise = day.esercizi[index];
                     return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 6.0, horizontal: 5),
                       child: Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(10),
@@ -85,13 +111,6 @@ class _MyInsideWorkout extends State<InsideWorkout> {
                                   ),
                                 ],
                               ),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.arrow_forward_ios),
-                              onPressed: () {
-                                // Do something when the user presses the arrow button
-                              },
-                              color: Colors.white,
                             ),
                           ],
                         ),
