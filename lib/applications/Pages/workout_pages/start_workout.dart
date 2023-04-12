@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 // ignore: library_prefixes
 import '../../Models/day_schedule.dart';
-import '../../Models/exercise.dart';
-import '../../Models/workout.dart';
 
 class StartWorkout extends StatefulWidget {
   const StartWorkout({super.key, required this.daySchedule});
