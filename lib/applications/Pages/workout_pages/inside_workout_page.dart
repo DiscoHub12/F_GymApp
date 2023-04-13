@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gymapp/applications/Pages/workout_pages/edit_workout_page.dart';
+import 'package:gymapp/applications/Pages/create_workout/edit_workout_page.dart';
 import 'package:gymapp/applications/Pages/workout_pages/start_workout.dart';
 // ignore: library_prefixes
 import '../../Models/day_schedule.dart';
@@ -16,6 +16,7 @@ class InsideWorkoutPage extends StatefulWidget {
 }
 
 class _MyInsideWorkoutPage extends State<InsideWorkoutPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -23,14 +24,17 @@ class _MyInsideWorkoutPage extends State<InsideWorkoutPage> {
         backgroundColor: Colors.orange,
         centerTitle: true,
         actions: <Widget>[
-          ElevatedButton(
+          TextButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => EditWorkoutPage(
                           workout: widget.workout,
                         )));
               },
-              child: const Icon(Icons.update_outlined))
+              child: const Text(
+                'Edit',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ))
         ],
       ),
       body: Container(
