@@ -1,9 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:gymapp/app.dart';
-import 'package:gymapp/applications/Data/boxes_account.dart';
-import 'package:gymapp/applications/Models/account.dart';
 import 'package:intl/intl.dart';
 // ignore: library_prefixes
 
@@ -16,12 +11,7 @@ class CreateAccount extends StatefulWidget {
 
 class _MyCreateAccount extends State<CreateAccount> {
   final _formKey = GlobalKey<FormState>();
-  late String _name;
-  late String _surname;
-  late String _email;
   late TextEditingController dateController = TextEditingController();
-
-  final _boxAccount = BoxesAccount.getAccount();
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +56,7 @@ class _MyCreateAccount extends State<CreateAccount> {
                           }
                           return null;
                         },
-                        onSaved: (value) {
-                          _name = value!;
-                        },
+                        onSaved: (value) {},
                       ),
                       TextFormField(
                         decoration: const InputDecoration(
@@ -80,9 +68,7 @@ class _MyCreateAccount extends State<CreateAccount> {
                           }
                           return null;
                         },
-                        onSaved: (value) {
-                          _surname = value!;
-                        },
+                        onSaved: (value) {},
                       ),
                       TextFormField(
                         decoration: const InputDecoration(
@@ -94,15 +80,13 @@ class _MyCreateAccount extends State<CreateAccount> {
                           }
                           return null;
                         },
-                        onSaved: (value) {
-                          _email = value!;
-                        },
+                        onSaved: (value) {},
                       ),
                       _showCalendar(context),
                       const SizedBox(height: 16.0),
                       ElevatedButton(
                         onPressed: _submit,
-                        child: Text("Registrati"),
+                        child: const Text("Registrati"),
                       ),
                     ],
                   ),
@@ -141,14 +125,6 @@ class _MyCreateAccount extends State<CreateAccount> {
   void _submit() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      var file;
-      Account account =
-          // ignore: cast_from_nullable_always_fails
-          Account(_name, _surname, _email, DateTime.now(), dateController.text,
-              file as File);
-      _boxAccount.add(account);
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const App()));
       //TODO: eseguire l'azione di registrazione con i dati inseriti
     }
   }

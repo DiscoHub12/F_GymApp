@@ -53,11 +53,11 @@ class _MyCreateWorkoutPage extends State<CreateWorkoutPage> {
               TextFormField(
                 controller: _nameWorkout,
                 decoration: const InputDecoration(
-                  labelText: 'Nome',
+                  labelText: 'Name',
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Inserisci un nome valido';
+                    return 'Enter a valid name';
                   }
                   return null;
                 },
@@ -66,15 +66,15 @@ class _MyCreateWorkoutPage extends State<CreateWorkoutPage> {
               TextFormField(
                 controller: _dayWorkout,
                 decoration: const InputDecoration(
-                  labelText: "Numero di giorni",
+                  labelText: "Number of days",
                 ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Inserisci il numero di giorni";
+                    return "Enter number of days";
                   }
                   if (int.tryParse(value) == null) {
-                    return "Inserisci un numero valido";
+                    return "Enter a valid number";
                   }
                   return null;
                 },
@@ -105,7 +105,7 @@ class _MyCreateWorkoutPage extends State<CreateWorkoutPage> {
                               Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
-                                  "Giorno ${indexGiorno + 1}",
+                                  "Day ${indexGiorno + 1}",
                                   style: const TextStyle(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.bold),
@@ -120,7 +120,7 @@ class _MyCreateWorkoutPage extends State<CreateWorkoutPage> {
                               )
                             ],
                           ),
-                          Container(
+                          SizedBox(
                             width: 300,
                             child: TextFormField(
                               decoration: const InputDecoration(
@@ -166,7 +166,7 @@ class _MyCreateWorkoutPage extends State<CreateWorkoutPage> {
                                           Padding(
                                             padding: const EdgeInsets.all(16.0),
                                             child: Text(
-                                              "Esercizio ${indexEsercizio + 1}",
+                                              "Exercise ${indexEsercizio + 1}",
                                               style: const TextStyle(
                                                 fontSize: 16.0,
                                                 fontWeight: FontWeight.bold,
@@ -190,7 +190,7 @@ class _MyCreateWorkoutPage extends State<CreateWorkoutPage> {
                                           children: <Widget>[
                                             TextFormField(
                                               decoration: const InputDecoration(
-                                                labelText: "Name Exercise",
+                                                labelText: "Exercise name",
                                               ),
                                               initialValue: _controllerMap
                                                   .entries
@@ -293,7 +293,7 @@ class _MyCreateWorkoutPage extends State<CreateWorkoutPage> {
                 height: 23.0,
               ),
               Center(
-                child: _elevated(_aggiungiGiorno, 'Aggiungi Giorno'),
+                child: _elevated(_aggiungiGiorno, 'Add Day'),
               )
             ],
           ),
