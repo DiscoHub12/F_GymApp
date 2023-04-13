@@ -18,7 +18,7 @@ class Account extends HiveObject {
   DateTime dataIscrizione;
 
   @HiveField(4)
-  DateTime eta;
+  String eta;
 
   @HiveField(5)
   File profileImage;
@@ -54,7 +54,7 @@ class Account extends HiveObject {
     return dataIscrizione;
   }
 
-  DateTime getEta() {
+  String getEta() {
     return eta;
   }
 

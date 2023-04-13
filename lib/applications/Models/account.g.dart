@@ -21,7 +21,7 @@ class AccountAdapter extends TypeAdapter<Account> {
       fields[1] as String,
       fields[2] as String,
       fields[3] as DateTime,
-      fields[4] as DateTime,
+      fields[4] as String,
       fields[5] as File,
     );
   }
