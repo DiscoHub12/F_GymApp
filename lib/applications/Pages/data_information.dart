@@ -24,7 +24,13 @@ class _MyDataInfo extends State<DataInfo> {
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
-      body: Padding(
+      body: Container(),
+    );
+  }
+}
+
+/**
+ * Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -85,6 +91,4 @@ class _MyDataInfo extends State<DataInfo> {
           ],
         ),
       ),
-    );
-  }
-}
+ */
