@@ -24,5 +24,13 @@ void main() async {
   await Hive.openBox<DaySchedule>('getDaySchedule');
   await Hive.openBox<Workout>('getWorkout');
   await Hive.openBox<FavouriteWorkout>('getFavouriteWorkout');
+  /**
+  var boxAccount = BoxesAccount.getAccount();
+  if (boxAccount.isEmpty) {
+    runApp(const CreateAccount());
+  } else {
+    runApp(const MaterialApp(home: App()));
+  }
+   */
   runApp(const MaterialApp(home: App()));
 }

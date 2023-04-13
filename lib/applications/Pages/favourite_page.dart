@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gymapp/applications/Data/boxex_favourite.dart';
+import 'package:gymapp/applications/Data/boxes_favourite.dart';
 import 'package:gymapp/applications/Models/workout.dart';
 // ignore: library_prefixes
 import '../Utils/drawer.dart' as Drawer;
