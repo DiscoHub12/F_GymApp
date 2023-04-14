@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gymapp/applications/Pages/create_workout/edit_workout_page.dart';
+import 'package:gymapp/applications/Pages/workout_pages/edit_workout_pages/edit_workout_page.dart';
 import 'package:gymapp/applications/Pages/workout_pages/start_workout.dart';
 // ignore: library_prefixes
 import '../../Models/day_schedule.dart';

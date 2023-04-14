@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gymapp/applications/Data/boxes_workout.dart';
 import 'package:gymapp/applications/Data/boxes_favourite.dart';
 import 'package:gymapp/applications/Models/favourite_list_workout.dart';
-import 'package:gymapp/applications/Pages/create_workout/definetive_create_workout_page.dart';
+import 'package:gymapp/applications/Pages/workout_pages/create_workout/create_workout_page.dart';
 import 'package:gymapp/applications/Pages/workout_pages/inside_workout_page.dart';
 import 'package:gymapp/applications/Utils/print_message.dart';
 // ignore: library_prefixes
 import '../../Models/workout.dart';
+// ignore: library_prefixes
 import '../../Utils/drawer.dart' as Drawer;
 
 class WorkoutPage extends StatefulWidget {
@@ -20,6 +21,7 @@ class _MyWoroutPage extends State<WorkoutPage> {
   bool isEmpty = false;
 
   final _box = BoxesWorkout.getWorkout();
+  // ignore: non_constant_identifier_names
   final _box_favourite = BoxesFavourite.getWorkout();
   final _date = DateTime.now();
 
@@ -37,7 +39,7 @@ class _MyWoroutPage extends State<WorkoutPage> {
       List<Workout> workoutFavourite = [];
       FavouriteWorkout favourite = FavouriteWorkout(workoutFavourite);
       _box_favourite.add(favourite);
-      print('Ho creato la lista di allenamenti preferiti.');
+      //print('Ho creato la lista di allenamenti preferiti.');
     }
   }
 
