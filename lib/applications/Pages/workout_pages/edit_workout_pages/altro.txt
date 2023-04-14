@@ -1,0 +1,208 @@
+
+class EditDayPage extends StatefulWidget {
+  final DaySchedule day;
+
+  const EditDayPage({super.key, required this.day});
+
+  @override
+  State<EditDayPage> createState() => _EditDayPageState();
+}
+
+class _EditDayPageState extends State<EditDayPage> {
+  final _formKey = GlobalKey<FormState>();
+  late String _muscoliAllenati;
+  late List<Exercise> _esercizi;
+  final List<_CompleteExercise> _controllerExercise = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _muscoliAllenati = widget.day.muscoliAllenati;
+    _esercizi = widget.day.esercizi;
+    for (int i = 0; i < _esercizi.length; i++) {
+      print("ESERCIZIO $i : ");
+      var completeExercise = _CompleteExercise();
+      completeExercise.nomeEsercizio.text = _esercizi[i].nomeEsercizio;
+      print("Nome : ${completeExercise.nomeEsercizio.text}");
+      completeExercise.reps.text = _esercizi[i].ripetizioni;
+      print("Ripetizioni : ${completeExercise.reps.text}");
+      //double parsedValue = double.tryParse(_esercizi[i].peso.toString()) ?? 0.0;
+      completeExercise.width.text =
+          _esercizi[i].peso.toString(); //parsedValue.toString();
+      print("Peso : ${completeExercise.width.text}");
+      _controllerExercise.add(completeExercise);
+    }
+    print('Lunghezza controller : ${_controllerExercise.length}');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Edit ${widget.day.muscoliAllenati}"),
+          centerTitle: true,
+          backgroundColor: Colors.orange,
+        ),
+        body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+                key: _formKey,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        initialValue: _muscoliAllenati,
+                        decoration: const InputDecoration(
+                          labelText: "Muscles",
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Enter muscles";
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _muscoliAllenati = value!;
+                        },
+                      ),
+                      const SizedBox(height: 16.0),
+                      Text(
+                        "Esercizi",
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      Expanded(
+                          child: ListView.builder(
+                              itemCount: _esercizi.length,
+                              itemBuilder: (context, index) {
+                                return Row(children: [
+                                  Expanded(
+                                    child: TextFormField(
+                                      initialValue:
+                                          _esercizi[index].nomeEsercizio,
+                                      decoration: const InputDecoration(
+                                        labelText: "Exercise name",
+                                      ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "Enter exercise name";
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        _esercizi[index].nomeEsercizio = value!;
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16.0),
+                                  Expanded(
+                                    child: TextFormField(
+                                      initialValue:
+                                          _esercizi[index].ripetizioni,
+                                      decoration: const InputDecoration(
+                                        labelText: "Reps",
+                                      ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "Enter reps";
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        _esercizi[index].ripetizioni = value!;
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16.0),
+                                  Expanded(
+                                    child: TextFormField(
+                                      initialValue:
+                                          _esercizi[index].peso.toString(),
+                                      keyboardType: TextInputType.number,
+                                      decoration: const InputDecoration(
+                                        labelText: "Weight",
+                                      ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "Enter weight";
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        _esercizi[index].peso =
+                                            double.parse(value!);
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 16,
+                                  ),
+                                  IconButton(
+                                      onPressed: () => _removeExercise(index),
+                                      icon: const Icon(Icons.delete))
+                                ]);
+                              })),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          ElevatedButton(
+                            onPressed: () {
+                              _addExercise();
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange),
+                            child: const Text('Add Exercise'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              _saveTwo(context);
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange),
+                            child: const Text('Save'),
+                          )
+                        ],
+                      ),
+                    ]))));
+  }
+
+  void _addExercise() {
+    var completeExercise = _CompleteExercise();
+    _controllerExercise.add(completeExercise);
+    setState(() {
+      _esercizi.add(Exercise("", "", 0.0));
+    });
+    print(
+        "Indice esercizi : ${_esercizi.length}. \nIndice altro : ${_controllerExercise.length}");
+  }
+
+  void _removeExercise(int index) {
+    setState(() {
+      _esercizi.removeAt(index);
+      _controllerExercise.removeAt(index);
+    });
+  }
+
+  void _saveTwo(BuildContext context) {
+    List<Exercise> updated = [];
+    print(
+        "Save Two methods : \nNumero Esercizi : ${_esercizi.length}.\nLunghezza Controller : ${_controllerExercise.length}");
+    for (int i = _esercizi.length; i < _controllerExercise.length; i++) {
+      print("ESERCIZIO FINALE $i");
+      Exercise exerciseTmp = Exercise(
+          _controllerExercise.elementAt(i).nomeEsercizio.value.text,
+          _controllerExercise.elementAt(i).reps.value.text,
+          double.parse(_controllerExercise.elementAt(i).width.value.text) ??
+              0.0);
+      print("Nome : ${exerciseTmp.nomeEsercizio}");
+      print("Ripetizioni : ${exerciseTmp.ripetizioni}");
+      print("Peso : ${exerciseTmp.peso}");
+      _esercizi.add(exerciseTmp);
+    }
+    widget.day.esercizi = _esercizi;
+    widget.day.muscoliAllenati = _muscoliAllenati;
+    _controllerExercise.clear();
+    _esercizi.clear();
+    Navigator.pop(context);
+    print("Corretto.");
+  }
+}
