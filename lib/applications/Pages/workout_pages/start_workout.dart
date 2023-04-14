@@ -19,7 +19,7 @@ class _MyStartWorkout extends State<StartWorkout> {
         title: Text(widget.daySchedule.muscoliAllenati),
         centerTitle: true,
         backgroundColor: Colors.orange,
-        actions: <Widget>[],
+        actions: const <Widget>[],
       ),
       body: Container(),
     );
