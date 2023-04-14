@@ -26,9 +26,9 @@ class _MyFavouriteWorkoutPage extends State<FavouriteWorkoutPage> {
       isEmpty = false;
     }
     for (int i = 0; i < _boxFavourite.getAt(0)!.workoutList.length; i++) {
-      print('WORKOUT $i DETAILS : ' +
-          "\n Nome Workout : " +
-          _boxFavourite.getAt(0)!.workoutList.elementAt(i).nome);
+      //print('WORKOUT $i DETAILS : ' +
+      // "\n Nome Workout : " +
+      //_boxFavourite.getAt(0)!.workoutList.elementAt(i).nome);
     }
   }
 
