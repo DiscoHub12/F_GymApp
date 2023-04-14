@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/app.dart';
 import 'package:gymapp/applications/Pages/chart_page.dart';
-import 'package:gymapp/applications/Pages/create_workout/definetive_create_workout_page.dart';
+import 'package:gymapp/applications/Pages/workout_pages/create_workout/create_workout_page.dart';
 import 'package:gymapp/applications/Pages/data_information.dart';
 import 'package:gymapp/applications/Pages/workout_pages/workout_page.dart';
 import 'package:gymapp/applications/Pages/settings_pages/settings_pages.dart';
