@@ -125,7 +125,6 @@ class _MyCreateAccount extends State<CreateAccount> {
   void _submit() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      //TODO: eseguire l'azione di registrazione con i dati inseriti
     }
   }
 }
