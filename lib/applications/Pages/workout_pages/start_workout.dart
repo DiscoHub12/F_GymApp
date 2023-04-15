@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:gymapp/applications/Data/boxes_exercise.dart';
 // ignore: library_prefixes
 import '../../Models/day_schedule.dart';
-import '../../Models/exercise.dart';
 
 class StartWorkout extends StatefulWidget {
   const StartWorkout({super.key, required this.daySchedule});

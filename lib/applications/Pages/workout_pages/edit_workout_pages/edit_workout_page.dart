@@ -2,7 +2,6 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:gymapp/applications/Models/exercise.dart';
 import 'package:gymapp/applications/Pages/workout_pages/edit_workout_pages/edit_day_page.dart';
-import 'package:gymapp/applications/Pages/workout_pages/inside_workout_page.dart';
 import 'package:gymapp/applications/Pages/workout_pages/workout_page.dart';
 import '../../../Models/day_schedule.dart';
 import '../../../Models/workout.dart';
@@ -20,7 +19,6 @@ class _MyEditWorkoutPage extends State<EditWorkoutPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _daysController = TextEditingController();
   List<DaySchedule> _days = [];
-  List<TextEditingController> _nameNewDays = [];
 
   @override
   void initState() {
