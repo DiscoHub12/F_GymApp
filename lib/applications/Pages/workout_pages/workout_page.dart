@@ -151,7 +151,7 @@ class _MyWoroutPage extends State<WorkoutPage> {
                                               MainAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                                'Day : ${_box.getAt(index)!.giorni}'),
+                                                'Day : ${_box.getAt(index)!.listaGiorni.length}'),
                                             const SizedBox(
                                               width: 25.0,
                                             ),
