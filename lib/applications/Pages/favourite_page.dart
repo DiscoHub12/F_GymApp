@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/applications/Data/boxes_favourite.dart';
 import 'package:gymapp/applications/Models/workout.dart';
+import 'package:gymapp/applications/Pages/workout_pages/inside_workout_page.dart';
 // ignore: library_prefixes
 import '../Utils/drawer.dart' as Drawer;
 
@@ -95,28 +96,37 @@ class ListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) => SlideTransition(
         position: Tween<Offset>(begin: const Offset(-1, 0), end: Offset.zero)
             .animate(CurvedAnimation(parent: animation, curve: Curves.easeIn)),
-        child: buildItem(),
+        child: buildItem(context),
       );
 
-  Widget buildItem() => Container(
-        margin: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: const Color.fromARGB(255, 231, 229, 229)),
-        child: ListTile(
-          contentPadding: const EdgeInsets.all(10.0),
-          title: Text(
-            workout.nome,
-            style: const TextStyle(fontSize: 18, color: Colors.black),
-          ),
-          subtitle: Text('Total day : ${workout.giorni}'),
-          trailing: IconButton(
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.red,
-              size: 30,
+  Widget buildItem(BuildContext context) => GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => InsideWorkoutPage(
+                    workout: workout,
+                  )));
+        },
+        child: Container(
+          margin: const EdgeInsets.all(13),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(11),
+              border: Border.all(width: 1, color: Colors.orange),
+              color: const Color.fromARGB(255, 235, 233, 233)),
+          child: ListTile(
+            contentPadding: const EdgeInsets.all(8.0),
+            title: Text(
+              workout.nome,
+              style: const TextStyle(fontSize: 18, color: Colors.black),
             ),
-            onPressed: onClicked,
+            subtitle: Text('Total day : ${workout.giorni}'),
+            trailing: IconButton(
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.red,
+                size: 30,
+              ),
+              onPressed: onClicked,
+            ),
           ),
         ),
       );
