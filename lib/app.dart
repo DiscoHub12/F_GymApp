@@ -13,7 +13,7 @@ class App extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
-      drawer: const Drawer.NavigationDrawer(),
+      drawer: Drawer.NavigationDrawer(),
       body: const Column(
         children: <Widget>[Text('HELLO')],
       ),

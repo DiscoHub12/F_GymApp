@@ -36,7 +36,7 @@ class _MyFavouriteWorkoutPage extends State<FavouriteWorkoutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer.NavigationDrawer(),
+      drawer: Drawer.NavigationDrawer(),
       appBar: AppBar(
         title: const Text('Favourite'),
         centerTitle: true,

@@ -47,7 +47,7 @@ class _MyWoroutPage extends State<WorkoutPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      drawer: const Drawer.NavigationDrawer(),
+      drawer: Drawer.NavigationDrawer(),
       appBar: AppBar(
         title: const Text('Workout'),
         centerTitle: true,

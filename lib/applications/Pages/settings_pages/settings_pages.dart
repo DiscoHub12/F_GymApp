@@ -15,7 +15,7 @@ class _MySettingsPage extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer.NavigationDrawer(),
+      drawer: Drawer.NavigationDrawer(),
       appBar: AppBar(
         title: const Text('Settings'),
         centerTitle: true,

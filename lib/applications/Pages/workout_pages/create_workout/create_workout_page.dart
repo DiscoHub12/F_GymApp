@@ -31,7 +31,7 @@ class _MyCreateWorkoutPage extends State<CreateWorkoutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer.NavigationDrawer(),
+      drawer: Drawer.NavigationDrawer(),
       appBar: AppBar(
         title: const Text('New Workout'),
         centerTitle: true,

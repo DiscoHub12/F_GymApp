@@ -13,7 +13,7 @@ class _MyChartPage extends State<ChartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer.NavigationDrawer(),
+      drawer: Drawer.NavigationDrawer(),
       appBar: AppBar(
         title: const Text('Chart'),
         centerTitle: true,
