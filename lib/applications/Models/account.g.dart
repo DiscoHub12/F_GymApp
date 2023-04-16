@@ -21,7 +21,7 @@ class AccountAdapter extends TypeAdapter<Account> {
       fields[1] as String,
       fields[2] as String,
       fields[3] as DateTime,
-      fields[4] as String,
+      fields[4] as DateTime,
       fields[5] as File,
     );
   }
@@ -39,7 +39,7 @@ class AccountAdapter extends TypeAdapter<Account> {
       ..writeByte(3)
       ..write(obj.dataIscrizione)
       ..writeByte(4)
-      ..write(obj.eta)
+      ..write(obj.dataNascita)
       ..writeByte(5)
       ..write(obj.profileImage);
   }

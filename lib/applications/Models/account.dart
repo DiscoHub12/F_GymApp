@@ -18,13 +18,13 @@ class Account extends HiveObject {
   DateTime dataIscrizione;
 
   @HiveField(4)
-  String eta;
+  DateTime dataNascita;
 
   @HiveField(5)
   File profileImage;
 
-  Account(this.nome, this.cognome, this.email, this.dataIscrizione, this.eta,
-      this.profileImage);
+  Account(this.nome, this.cognome, this.email, this.dataIscrizione,
+      this.dataNascita, this.profileImage);
 
   String getNome() {
     return nome;
@@ -54,8 +54,8 @@ class Account extends HiveObject {
     return dataIscrizione;
   }
 
-  String getEta() {
-    return eta;
+  DateTime getEta() {
+    return dataNascita;
   }
 
   File getImageProfile() {
