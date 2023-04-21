@@ -26,33 +26,9 @@ class _MySettingsPage extends State<SettingsPage> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              Stack(
-                children: [
-                  SizedBox(
-                    width: 120,
-                    height: 120,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: const Image(
-                        image: AssetImage('Assets/imageProfile.png'),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              
               const SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Nome',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              Text(
-                'Email',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              const SizedBox(
-                height: 20,
+                height: 40,
               ),
               const Divider(
                 color: Colors.black,

@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../app.dart';
 import '../../Data/boxes_account.dart';
+import '../change_image_page.dart';
 // ignore: library_prefixes
 
 class CreateAccount extends StatefulWidget {
@@ -30,6 +31,7 @@ class _MyCreateAccount extends State<CreateAccount> {
   final TextEditingController _emailController = TextEditingController();
 
   bool choiceBirthDay = false;
+  late File _pickedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +78,13 @@ class _MyCreateAccount extends State<CreateAccount> {
                                     child: !choiceImage
                                         ? Image.asset(
                                             'Assets/nullBackground.png')
-                                        : Image.file(file))),
+                                        : Image.file(_pickedImage))),
                             Positioned(
                               bottom: 0,
                               right: 0,
                               child: GestureDetector(
                                 onTap: () {
-                                  getGallery();
+                                  _pickImage();
                                 },
                                 child: Container(
                                     width: 35,
@@ -161,7 +163,7 @@ class _MyCreateAccount extends State<CreateAccount> {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.orange),
                         child: Text(
-                            '${dateTime.year}/${dateTime.month}/${dateTime.day}'),
+                            '${dateTime.day}/${dateTime.month}/${dateTime.year}'),
                       ),
                       const SizedBox(height: 16.0),
                       ElevatedButton(
@@ -197,19 +199,20 @@ class _MyCreateAccount extends State<CreateAccount> {
         );
       });
 
-  void getGallery() async {
-    // ignore: deprecated_member_use
-    var img = await image.getImage(source: ImageSource.gallery);
-    setState(() {
-      file = File(img!.path);
-      choiceImage = true;
-    });
+  void _pickImage() async {
+    final pickedImage = await ProfileImagePicker.pickImage();
+    if (pickedImage != null) {
+      setState(() {
+        _pickedImage = pickedImage;
+        choiceImage = true;
+      });
+    }
   }
 
   void _submit() async {
     var finalFile;
     if (choiceImage) {
-      finalFile = file;
+      finalFile = _pickedImage;
     } else {
       finalFile = File('Assets/nullBackground.png');
     }
@@ -229,6 +232,7 @@ class _MyCreateAccount extends State<CreateAccount> {
       var boxAccount = BoxesAccount.getAccount();
       await boxAccount.add(myAccount);
 
+      // ignore: avoid_print
       print('Account inserito:\n'
           'Nome: ${myAccount.nome}\n'
           'Cognome: ${myAccount.cognome}\n'

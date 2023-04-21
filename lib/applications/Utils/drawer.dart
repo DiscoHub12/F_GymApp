@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/app.dart';
 import 'package:gymapp/applications/Data/boxes_account.dart';
+import 'package:gymapp/applications/Models/FileAdapter/file_adapter.dart';
 import 'package:gymapp/applications/Pages/chart_page.dart';
+import 'package:gymapp/applications/Pages/change_image_page.dart';
 import 'package:gymapp/applications/Pages/workout_pages/create_workout/create_workout_page.dart';
 import 'package:gymapp/applications/Pages/data_information.dart';
 import 'package:gymapp/applications/Pages/workout_pages/workout_page.dart';
@@ -11,6 +13,9 @@ import '../Pages/favourite_page.dart';
 
 class NavigationDrawer extends StatelessWidget {
   NavigationDrawer({Key? key}) : super(key: key);
+
+  late final box = BoxesAccount.getAccount();
+  final FileAdapter fileImage = FileAdapter();
 
   @override
   Widget build(BuildContext context) {
@@ -31,22 +36,36 @@ class NavigationDrawer extends StatelessWidget {
           top: 24 + MediaQuery.of(context).padding.top,
           bottom: 24,
         ),
-        child: const Column(
+        child: Column(
           children: [
-            CircleAvatar(
-              radius: 52,
-              backgroundImage: AssetImage('Assets/imageProfile.png'),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ProfileImagePage()));
+              },
+              child: SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image.file(box.getAt(0)!.profileImage))),
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Text(
-              'Name',
-              style: TextStyle(fontSize: 28, color: Colors.white),
+              box.getAt(0)!.nome,
+              style: const TextStyle(
+                  fontSize: 28,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w300),
             ),
             Text(
-              'Email',
-              style: TextStyle(fontSize: 16, color: Colors.white),
+              box.getAt(0)!.email,
+              style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400),
             ),
           ],
         ),
@@ -106,8 +125,8 @@ class NavigationDrawer extends StatelessWidget {
               title: const Text('Data info'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const DataInfo()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const DataInfoPage()));
               },
             ),
             const Divider(color: Colors.black),
@@ -120,6 +139,7 @@ class NavigationDrawer extends StatelessWidget {
                     builder: (context) => const SettingsPage()));
               },
             ),
+            
           ],
         ),
       );

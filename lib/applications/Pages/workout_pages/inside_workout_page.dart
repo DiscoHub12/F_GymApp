@@ -75,7 +75,7 @@ class _MyInsideWorkoutPage extends State<InsideWorkoutPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => StartWorkout(
+                                  builder: (context) => StartWorkoutPage(
                                         daySchedule: day,
                                       )));
                         },

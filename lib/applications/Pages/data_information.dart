@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/applications/Pages/account_pages/account_pages.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 // ignore: library_prefixes
+import '../Data/boxes_account.dart';
 import '../Utils/costants.dart';
 // ignore: library_prefixes
 import '../Utils/drawer.dart' as Drawer;
 
-class DataInfo extends StatefulWidget {
-  const DataInfo({super.key});
+class DataInfoPage extends StatefulWidget {
+  const DataInfoPage({super.key});
 
   @override
-  State<DataInfo> createState() => _MyDataInfo();
+  State<DataInfoPage> createState() => _MyDataInfoPage();
 }
 
-class _MyDataInfo extends State<DataInfo> {
-  final String username = "Username";
-  final int numSchede = 10;
-  final String lastWorkout = "1";
-  final String lastSchedule = "Schedule";
+class _MyDataInfoPage extends State<DataInfoPage> {
+  late final box = BoxesAccount.getAccount();
 
   @override
   void initState() {
@@ -73,11 +72,12 @@ class _MyDataInfo extends State<DataInfo> {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const AccountPage()));
                     },
-                    child: const CircleAvatar(
-                      radius: 30,
-                      backgroundColor: kSecondaryColor,
-                      backgroundImage: AssetImage('Assets/student_profile.png'),
-                    ),
+                    child: SizedBox(
+                        width: 80,
+                        height: 80,
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Image.file(box.getAt(0)!.profileImage))),
                   ),
                   const SizedBox(
                     width: 30,
@@ -87,10 +87,13 @@ class _MyDataInfo extends State<DataInfo> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Aisha Mirza',
+                        '${box.getAt(0)!.nome}  ${box.getAt(0)!.cognome}',
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
-                      Text('Class X-II A | Roll no: 12',
+                      Text(box.getAt(0)!.email,
+                          style: Theme.of(context).textTheme.titleSmall),
+                      Text(
+                          'Registered on : ${getFormatDate(box.getAt(0)!.getDataIscrizione())}',
                           style: Theme.of(context).textTheme.titleSmall),
                     ],
                   )
@@ -143,6 +146,10 @@ class _MyDataInfo extends State<DataInfo> {
         ),
       ),
     );
+  }
+
+  String getFormatDate(DateTime date) {
+    return DateFormat.yMMMd().format(date);
   }
 }
 

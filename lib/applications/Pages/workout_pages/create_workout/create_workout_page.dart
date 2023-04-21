@@ -308,7 +308,7 @@ class _MyCreateWorkoutPage extends State<CreateWorkoutPage> {
         style: ElevatedButton.styleFrom(
             backgroundColor: Colors.orange,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12))),
+                borderRadius: BorderRadius.circular(7))),
         child: Text(text),
       );
 

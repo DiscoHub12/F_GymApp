@@ -234,7 +234,7 @@ class _MyWoroutPage extends State<WorkoutPage> {
                                             backgroundColor: Colors.orange,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(12))),
+                                                    BorderRadius.circular(7))),
                                         child: const Icon(Icons.create))
                                   ],
                                 ),

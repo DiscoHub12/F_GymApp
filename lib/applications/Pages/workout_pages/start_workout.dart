@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 // ignore: library_prefixes
 import '../../Models/day_schedule.dart';
 
-class StartWorkout extends StatefulWidget {
-  const StartWorkout({super.key, required this.daySchedule});
+class StartWorkoutPage extends StatefulWidget {
+  const StartWorkoutPage({super.key, required this.daySchedule});
 
   final DaySchedule daySchedule;
 
   @override
-  State<StartWorkout> createState() => _MyStartWorkout();
+  State<StartWorkoutPage> createState() => _MyStartWorkoutPage();
 }
 
-class _MyStartWorkout extends State<StartWorkout> {
+class _MyStartWorkoutPage extends State<StartWorkoutPage> {
   final Stopwatch _stopwatch = Stopwatch();
   late Timer _timer;
   String _result = '00:00:00';

@@ -38,8 +38,9 @@ void main() async {
   var boxAccount = BoxesAccount.getAccount();
   if (boxAccount.isNotEmpty) {
     runApp(const MaterialApp(home: App()));
+    // ignore: avoid_print
     print(
-        'Account loggato : \nNome : ${boxAccount.getAt(0)!.nome}.\nCognome : ${boxAccount.getAt(0)!.cognome}.\nEmail : ${boxAccount.getAt(0)!.email}.\nData nascita: ${boxAccount.getAt(0)!.dataNascita}.\nFoto : ${boxAccount.getAt(0)!.profileImage}');
+        'Account loggato : \nNome : ${boxAccount.getAt(0)!.nome}.\nCognome : ${boxAccount.getAt(0)!.cognome}.\nEmail : ${boxAccount.getAt(0)!.email}.\nData nascita: ${boxAccount.getAt(0)!.dataNascita}.\nFoto : ${boxAccount.getAt(0)!.profileImage.path.toString()}');
   } else {
     runApp(const MaterialApp(home: CreateAccount()));
   }

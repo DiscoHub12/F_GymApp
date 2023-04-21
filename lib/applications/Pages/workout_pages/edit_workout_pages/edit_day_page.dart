@@ -8,10 +8,10 @@ class EditDayPage extends StatefulWidget {
   const EditDayPage({super.key, required this.day});
 
   @override
-  State<EditDayPage> createState() => _EditDayPageState();
+  State<EditDayPage> createState() => _MyEditDayPage();
 }
 
-class _EditDayPageState extends State<EditDayPage> {
+class _MyEditDayPage extends State<EditDayPage> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _muscoliController = TextEditingController();
