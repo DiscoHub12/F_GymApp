@@ -107,29 +107,6 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                   right: 5.0,
                   bottom: 20.0,
                 ),
-                decoration: BoxDecoration(
-                  // borderRadius: BorderRadius.circular(20),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(100),
-                    topRight: Radius.circular(100),
-                    bottomLeft: Radius.circular(60),
-                    bottomRight: Radius.circular(60),
-                  ),
-                  border: Border.all(width: 5, color: Colors.white),
-                ),
-                child: SizedBox(
-                    width: 80,
-                    height: 80,
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image.memory(box.getAt(0)!.profileImage))),
-                /**
-                *  child: Icon(
-                  _icon,
-                  color: Colors.white,
-                  size: 40.0,
-                ),
-                */
               ),
             ),
           ),
@@ -141,6 +118,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
 
 class ShapeClipper extends CustomClipper<Path> {
   ShapeClipper(this._offsets);
+  // ignore: prefer_final_fields
   List<Offset> _offsets = [];
   @override
   Path getClip(Size size) {
@@ -177,7 +155,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  bool _isVisible = false;
   final Color _primaryColor = Colors.orange;
   final Color _accentColor = const Color.fromARGB(255, 233, 164, 60);
 
@@ -186,8 +163,7 @@ class _SplashScreenState extends State<SplashScreen> {
   _SplashScreenState() {
     Timer(const Duration(milliseconds: 10), () {
       setState(() {
-        _isVisible =
-            true; // Now it is showing fade effect and navigating to Login page
+// Now it is showing fade effect and navigating to Login page
       });
     });
   }
@@ -205,38 +181,6 @@ class _SplashScreenState extends State<SplashScreen> {
           end: const FractionalOffset(1.0, 0.0),
           stops: const [0.0, 1.0],
           tileMode: TileMode.clamp,
-        ),
-      ),
-      child: AnimatedOpacity(
-        opacity: _isVisible ? 1.0 : 0,
-        duration: const Duration(milliseconds: 1200),
-        child: Center(
-          child: Container(
-            height: 140.0,
-            width: 140.0,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
-                    blurRadius: 2.0,
-                    offset: const Offset(5.0, 3.0),
-                    spreadRadius: 2.0,
-                  )
-                ]),
-            child: Center(
-              child: ClipOval(
-                child: SizedBox(
-                    width: 80,
-                    height: 80,
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child:
-                            Image.memory(boxAccount.getAt(0)!.profileImage))),
-              ),
-            ),
-          ),
         ),
       ),
     );

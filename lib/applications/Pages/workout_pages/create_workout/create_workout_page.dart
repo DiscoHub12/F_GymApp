@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:gymapp/applications/Utils/print_message.dart';
 
 import '../../../../app.dart';
+import '../../../Data/boxes_account.dart';
 import '../../../Data/boxes_workout.dart';
 import '../../../Models/day_schedule.dart';
 import '../../../Models/exercise.dart';
 import '../../../Models/workout.dart';
 // ignore: library_prefixes
 import '../../../Utils/drawer.dart' as Drawer;
+import '../../../Utils/splash_screen.dart';
 
 class CreateWorkoutPage extends StatefulWidget {
   const CreateWorkoutPage({super.key});
@@ -28,278 +30,336 @@ class _MyCreateWorkoutPage extends State<CreateWorkoutPage> {
 
   final Map<DaySchedule, _CompleteDay> _controllerMap = {};
 
+  final boxAccount = BoxesAccount.getAccount();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer.NavigationDrawer(),
-      appBar: AppBar(
-        title: const Text('New Workout'),
-        centerTitle: true,
-        backgroundColor: Colors.orange,
-        actions: <Widget>[
-          IconButton(
-            onPressed: _salvaScheda,
-            icon: const Icon(Icons.save),
+        drawer: Drawer.NavigationDrawer(),
+        appBar: AppBar(
+          title: const Text('New Workout'),
+          centerTitle: true,
+          backgroundColor: Colors.orange,
+          actions: <Widget>[
+            IconButton(
+              onPressed: _salvaScheda,
+              icon: const Icon(Icons.save),
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
+            child: Stack(children: [
+          const SizedBox(
+            height: 150,
+            child: HeaderWidget(150, true),
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              TextFormField(
-                controller: _nameWorkout,
-                decoration: const InputDecoration(
-                  labelText: 'Name',
+          Container(
+            alignment: Alignment.center,
+            margin: const EdgeInsets.fromLTRB(25, 10, 25, 10),
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 40,
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Enter a valid name';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _dayWorkout,
-                decoration: const InputDecoration(
-                  labelText: "Number of days",
+                const Center(
+                  child: Text(
+                    'CREATE SCHEDULE',
+                    style: TextStyle(
+                        fontSize: 34,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400),
+                  ),
                 ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Enter number of days";
-                  }
-                  if (int.tryParse(value) == null) {
-                    return "Enter a valid number";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 16.0,
-              ),
-              const Text(
-                "Workout Day",
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
+                const SizedBox(
+                  height: 60,
                 ),
-              ),
-              const SizedBox(height: 16.0),
-              ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: _controllerMap.keys.length,
-                  itemBuilder: (context, indexGiorno) {
-                    return Card(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Text(
-                                  "Day ${indexGiorno + 1}",
-                                  style: const TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.delete),
-                                color: Colors.red,
-                                onPressed: () {
-                                  _rimuoviGiorno(indexGiorno);
-                                },
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            width: 300,
-                            child: TextFormField(
-                              decoration: const InputDecoration(
-                                labelText: "Muscles",
-                              ),
-                              initialValue: _controllerMap.entries
-                                  .elementAt(indexGiorno)
-                                  .value
-                                  .muscles
-                                  .text,
-                              onChanged: (value) {
-                                setState(() {
-                                  _controllerMap.entries
-                                      .elementAt(indexGiorno)
-                                      .value
-                                      .muscles
-                                      .text = value;
-                                });
-                              },
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 16.0,
-                          ),
-                          ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: _controllerMap.entries
-                                  .elementAt(indexGiorno)
-                                  .value
-                                  .exercises
-                                  .length,
-                              itemBuilder: (context, indexEsercizio) {
-                                return Card(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      TextFormField(
+                        controller: _nameWorkout,
+                        decoration: const InputDecoration(
+                          labelText: 'Name',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter a valid name';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16.0),
+                      TextFormField(
+                        controller: _dayWorkout,
+                        decoration: const InputDecoration(
+                          labelText: "Number of days",
+                        ),
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Enter number of days";
+                          }
+                          if (int.tryParse(value) == null) {
+                            return "Enter a valid number";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      const Text(
+                        "Workout Day",
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 16.0),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: _controllerMap.keys.length,
+                          itemBuilder: (context, indexGiorno) {
+                            return Card(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(16.0),
-                                            child: Text(
-                                              "Exercise ${indexEsercizio + 1}",
-                                              style: const TextStyle(
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                          IconButton(
-                                              onPressed: () {
-                                                _rimuoviEsercizio(indexGiorno,
-                                                    indexEsercizio);
-                                              },
-                                              icon: const Icon(Icons.delete)),
-                                        ],
-                                      ),
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            TextFormField(
-                                              decoration: const InputDecoration(
-                                                labelText: "Exercise name",
-                                              ),
-                                              initialValue: _controllerMap
-                                                  .entries
-                                                  .elementAt(indexGiorno)
-                                                  .value
-                                                  .exercises
-                                                  .elementAt(indexEsercizio)
-                                                  .nomeEsercizio
-                                                  .text,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  _controllerMap.entries
-                                                      .elementAt(indexGiorno)
-                                                      .value
-                                                      .exercises
-                                                      .elementAt(indexEsercizio)
-                                                      .nomeEsercizio
-                                                      .text = value;
-                                                });
-                                              },
-                                            ),
-                                            TextFormField(
-                                              decoration: const InputDecoration(
-                                                  labelText: "Reps"),
-                                              initialValue: _controllerMap
-                                                  .entries
-                                                  .elementAt(indexGiorno)
-                                                  .value
-                                                  .exercises
-                                                  .elementAt(indexEsercizio)
-                                                  .reps
-                                                  .text,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  _controllerMap.entries
-                                                      .elementAt(indexGiorno)
-                                                      .value
-                                                      .exercises
-                                                      .elementAt(indexEsercizio)
-                                                      .reps
-                                                      .text = value;
-                                                });
-                                              },
-                                            ),
-                                            TextFormField(
-                                                decoration:
-                                                    const InputDecoration(
-                                                        labelText: "Weight"),
-                                                initialValue: _controllerMap
-                                                    .entries
-                                                    .elementAt(indexGiorno)
-                                                    .value
-                                                    .exercises
-                                                    .elementAt(indexEsercizio)
-                                                    .width
-                                                    .text,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    _controllerMap.entries
-                                                        .elementAt(indexGiorno)
-                                                        .value
-                                                        .exercises
-                                                        .elementAt(
-                                                            indexEsercizio)
-                                                        .width
-                                                        .text = value;
-                                                  });
-                                                }),
-                                          ],
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Text(
+                                          "Day ${indexGiorno + 1}",
+                                          style: const TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold),
                                         ),
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.delete),
+                                        color: Colors.red,
+                                        onPressed: () {
+                                          _rimuoviGiorno(indexGiorno);
+                                        },
                                       )
                                     ],
                                   ),
-                                );
-                              }),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              _elevated(() {
-                                _aggiungiEsercizio(indexGiorno);
-                              }, 'Add Exercise'),
-                              _elevated(() {
-                                _salvaGiorno(indexGiorno);
-                              }, 'Save day'),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 16.0,
-                          ),
-                        ],
+                                  SizedBox(
+                                    width: 300,
+                                    child: TextFormField(
+                                      decoration: const InputDecoration(
+                                        labelText: "Muscles",
+                                      ),
+                                      initialValue: _controllerMap.entries
+                                          .elementAt(indexGiorno)
+                                          .value
+                                          .muscles
+                                          .text,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _controllerMap.entries
+                                              .elementAt(indexGiorno)
+                                              .value
+                                              .muscles
+                                              .text = value;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 16.0,
+                                  ),
+                                  ListView.builder(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: _controllerMap.entries
+                                          .elementAt(indexGiorno)
+                                          .value
+                                          .exercises
+                                          .length,
+                                      itemBuilder: (context, indexEsercizio) {
+                                        return Card(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16.0),
+                                                    child: Text(
+                                                      "Exercise ${indexEsercizio + 1}",
+                                                      style: const TextStyle(
+                                                        fontSize: 16.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        _rimuoviEsercizio(
+                                                            indexGiorno,
+                                                            indexEsercizio);
+                                                      },
+                                                      icon: const Icon(
+                                                          Icons.delete)),
+                                                ],
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 16.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    TextFormField(
+                                                      decoration:
+                                                          const InputDecoration(
+                                                        labelText:
+                                                            "Exercise name",
+                                                      ),
+                                                      initialValue:
+                                                          _controllerMap.entries
+                                                              .elementAt(
+                                                                  indexGiorno)
+                                                              .value
+                                                              .exercises
+                                                              .elementAt(
+                                                                  indexEsercizio)
+                                                              .nomeEsercizio
+                                                              .text,
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          _controllerMap.entries
+                                                              .elementAt(
+                                                                  indexGiorno)
+                                                              .value
+                                                              .exercises
+                                                              .elementAt(
+                                                                  indexEsercizio)
+                                                              .nomeEsercizio
+                                                              .text = value;
+                                                        });
+                                                      },
+                                                    ),
+                                                    TextFormField(
+                                                      decoration:
+                                                          const InputDecoration(
+                                                              labelText:
+                                                                  "Reps"),
+                                                      initialValue:
+                                                          _controllerMap.entries
+                                                              .elementAt(
+                                                                  indexGiorno)
+                                                              .value
+                                                              .exercises
+                                                              .elementAt(
+                                                                  indexEsercizio)
+                                                              .reps
+                                                              .text,
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          _controllerMap.entries
+                                                              .elementAt(
+                                                                  indexGiorno)
+                                                              .value
+                                                              .exercises
+                                                              .elementAt(
+                                                                  indexEsercizio)
+                                                              .reps
+                                                              .text = value;
+                                                        });
+                                                      },
+                                                    ),
+                                                    TextFormField(
+                                                        decoration:
+                                                            const InputDecoration(
+                                                                labelText:
+                                                                    "Weight"),
+                                                        initialValue:
+                                                            _controllerMap
+                                                                .entries
+                                                                .elementAt(
+                                                                    indexGiorno)
+                                                                .value
+                                                                .exercises
+                                                                .elementAt(
+                                                                    indexEsercizio)
+                                                                .width
+                                                                .text,
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        onChanged: (value) {
+                                                          setState(() {
+                                                            _controllerMap
+                                                                .entries
+                                                                .elementAt(
+                                                                    indexGiorno)
+                                                                .value
+                                                                .exercises
+                                                                .elementAt(
+                                                                    indexEsercizio)
+                                                                .width
+                                                                .text = value;
+                                                          });
+                                                        }),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      }),
+                                  const SizedBox(
+                                    height: 20.0,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      _elevated(() {
+                                        _aggiungiEsercizio(indexGiorno);
+                                      }, 'Add Exercise'),
+                                      _elevated(() {
+                                        _salvaGiorno(indexGiorno);
+                                      }, 'Save day'),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 16.0,
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
+                      const SizedBox(
+                        height: 23.0,
                       ),
-                    );
-                  }),
-              const SizedBox(
-                height: 23.0,
-              ),
-              Center(
-                child: _elevated(_aggiungiGiorno, 'Add Day'),
-              )
-            ],
+                      Center(
+                        child: _elevated(_aggiungiGiorno, 'Add Day'),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
-    );
+        ])));
   }
 
   //WIDGET FOR THIS CLASS
@@ -307,8 +367,8 @@ class _MyCreateWorkoutPage extends State<CreateWorkoutPage> {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
             backgroundColor: Colors.orange,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(7))),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(7))),
         child: Text(text),
       );
 

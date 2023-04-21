@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gymapp/app.dart';
 import 'package:gymapp/applications/Data/boxes_account.dart';
 import 'package:gymapp/applications/Models/FileAdapter/file_adapter.dart';
+import 'package:gymapp/applications/Pages/account_pages/account_pages.dart';
 import 'package:gymapp/applications/Pages/chart_page.dart';
 import 'package:gymapp/applications/Pages/change_image_page.dart';
 import 'package:gymapp/applications/Pages/workout_pages/create_workout/create_workout_page.dart';
-import 'package:gymapp/applications/Pages/data_information.dart';
 import 'package:gymapp/applications/Pages/workout_pages/workout_page.dart';
 import 'package:gymapp/applications/Pages/settings_pages/settings_pages.dart';
 
@@ -123,12 +123,12 @@ class NavigationDrawer extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.info_outline),
-              title: const Text('Data info'),
+              leading: const Icon(Icons.account_box_rounded),
+              title: const Text('Account'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const DataInfoPage()));
+                    builder: (context) => const AccountPage()));
               },
             ),
             const Divider(color: Colors.black),
