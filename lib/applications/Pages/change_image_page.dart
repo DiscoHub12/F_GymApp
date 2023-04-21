@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:gymapp/applications/Data/boxes_account.dart';
@@ -8,14 +9,16 @@ import '../Models/account.dart';
 // ignore: library_prefixes
 
 class ProfileImagePage extends StatefulWidget {
-  const ProfileImagePage({super.key});
+  const ProfileImagePage({super.key, required this.booleanChoice});
+  // ignore: prefer_typing_uninitialized_variables
+  final booleanChoice;
 
   @override
   State<ProfileImagePage> createState() => _MyProfileImagePage();
 }
 
 class _MyProfileImagePage extends State<ProfileImagePage> {
-  late File _pickedImage = File('');
+  late Uint8List _pickedImage = Uint8List(1);
   late Account account =
       Account('', '', '', DateTime.now(), DateTime.now(), _pickedImage);
 
@@ -25,7 +28,7 @@ class _MyProfileImagePage extends State<ProfileImagePage> {
     final pickedImage = await ProfileImagePicker.pickImage();
     if (pickedImage != null) {
       setState(() {
-        _pickedImage = pickedImage;
+        _pickedImage = pickedImage as Uint8List;
         account.profileImage = _pickedImage;
       });
     }
@@ -44,20 +47,21 @@ class _MyProfileImagePage extends State<ProfileImagePage> {
           const SizedBox(
             height: 30,
           ),
+          // ignore: unnecessary_null_comparison
           if (account.profileImage != null)
-            Image.file(boxAccount.getAt(0)!.profileImage)
+            Image.memory(boxAccount.getAt(0)!.profileImage)
           else
             const Placeholder(),
-          /**
-           * ElevatedButton(
-            onPressed: _pickImage,
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(7))),
-            child: const Text('Choice Image'),
-          ),@
-           */
+          widget.booleanChoice
+              ? ElevatedButton(
+                  onPressed: _pickImage,
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7))),
+                  child: const Text('Choice Image'),
+                )
+              : const SizedBox(),
         ],
       ),
     );

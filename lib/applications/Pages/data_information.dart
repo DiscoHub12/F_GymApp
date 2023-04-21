@@ -77,7 +77,7 @@ class _MyDataInfoPage extends State<DataInfoPage> {
                         height: 80,
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
-                            child: Image.file(box.getAt(0)!.profileImage))),
+                            child: Image.memory(box.getAt(0)!.profileImage))),
                   ),
                   const SizedBox(
                     width: 30,

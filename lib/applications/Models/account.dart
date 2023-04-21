@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:hive/hive.dart';
 
 part 'account.g.dart';
@@ -21,7 +21,7 @@ class Account extends HiveObject {
   DateTime dataNascita;
 
   @HiveField(5)
-  File profileImage;
+  Uint8List profileImage;
 
   Account(this.nome, this.cognome, this.email, this.dataIscrizione,
       this.dataNascita, this.profileImage);
@@ -58,11 +58,11 @@ class Account extends HiveObject {
     return dataNascita;
   }
 
-  File getImageProfile() {
+  Uint8List getImageProfile() {
     return profileImage;
   }
 
-  void setImageProfile(File image) {
+  void setImageProfile(Uint8List image) {
     profileImage = image;
   }
 }

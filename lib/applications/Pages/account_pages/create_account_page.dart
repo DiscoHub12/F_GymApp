@@ -210,12 +210,14 @@ class _MyCreateAccount extends State<CreateAccount> {
   }
 
   void _submit() async {
+    // ignore: prefer_typing_uninitialized_variables
     var finalFile;
     if (choiceImage) {
       finalFile = _pickedImage;
     } else {
       finalFile = File('Assets/nullBackground.png');
     }
+    var bytes = await _pickedImage.readAsBytes();
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       // creare un oggetto Account con un campo File
@@ -225,7 +227,7 @@ class _MyCreateAccount extends State<CreateAccount> {
         _emailController.text,
         DateTime.now(),
         dateTime,
-        finalFile,
+        bytes,
       );
 
       // aprire il box Hive e aggiungere l'oggetto Account

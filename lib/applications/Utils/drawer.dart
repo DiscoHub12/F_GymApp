@@ -41,14 +41,16 @@ class NavigationDrawer extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ProfileImagePage()));
+                    builder: (context) => const ProfileImagePage(
+                          booleanChoice: false,
+                        )));
               },
               child: SizedBox(
                   width: 100,
                   height: 100,
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child: Image.file(box.getAt(0)!.profileImage))),
+                      child: Image.memory(box.getAt(0)!.profileImage))),
             ),
             const SizedBox(
               height: 12,
@@ -139,7 +141,6 @@ class NavigationDrawer extends StatelessWidget {
                     builder: (context) => const SettingsPage()));
               },
             ),
-            
           ],
         ),
       );

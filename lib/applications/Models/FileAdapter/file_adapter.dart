@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:hive/hive.dart';
 
 class FileAdapter extends TypeAdapter<File> {
@@ -8,13 +7,15 @@ class FileAdapter extends TypeAdapter<File> {
 
   @override
   File read(BinaryReader reader) {
-    final bytes = reader.readByteList(reader.availableBytes);
+    final length = reader.readByte();
+    final bytes = reader.readByteList(length.toInt());
     return File.fromRawPath(bytes);
   }
 
   @override
   void write(BinaryWriter writer, File obj) {
-    writer.writeByte(obj.path.length);
-    writer.write(obj.path.codeUnits);
+    final bytes = obj.readAsBytesSync();
+    writer.writeByte(bytes.length);
+    writer.writeByteList(bytes);
   }
 }

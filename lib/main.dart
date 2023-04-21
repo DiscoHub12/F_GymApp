@@ -12,15 +12,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'applications/Data/boxes_account.dart';
 import 'applications/Pages/account_pages/create_account_page.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //Hive Options:
   await Hive.initFlutter();
-
-  final appDocumentDirectory =
-      await path_provider.getApplicationDocumentsDirectory();
 
   Hive.registerAdapter(AccountAdapter());
   Hive.registerAdapter(DayScheduleAdapter());
@@ -29,7 +25,7 @@ void main() async {
   Hive.registerAdapter(FavouriteWorkoutAdapter());
   Hive.registerAdapter(FileAdapter());
   //Open the Hive Box :
-  await Hive.openBox<Account>('getAccount', path: appDocumentDirectory.path);
+  await Hive.openBox<Account>('getAccount');
   await Hive.openBox<Exercise>('getExercise');
   await Hive.openBox<DaySchedule>('getDaySchedule');
   await Hive.openBox<Workout>('getWorkout');
@@ -40,7 +36,7 @@ void main() async {
     runApp(const MaterialApp(home: App()));
     // ignore: avoid_print
     print(
-        'Account loggato : \nNome : ${boxAccount.getAt(0)!.nome}.\nCognome : ${boxAccount.getAt(0)!.cognome}.\nEmail : ${boxAccount.getAt(0)!.email}.\nData nascita: ${boxAccount.getAt(0)!.dataNascita}.\nFoto : ${boxAccount.getAt(0)!.profileImage.path.toString()}');
+        'Account loggato : \nNome : ${boxAccount.getAt(0)!.nome}.\nCognome : ${boxAccount.getAt(0)!.cognome}.\nEmail : ${boxAccount.getAt(0)!.email}.\nData nascita: ${boxAccount.getAt(0)!.dataNascita}.\nFoto : ${boxAccount.getAt(0)!.profileImage.toString()}');
   } else {
     runApp(const MaterialApp(home: CreateAccount()));
   }
