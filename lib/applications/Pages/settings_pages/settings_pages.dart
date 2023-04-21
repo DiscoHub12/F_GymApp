@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 // ignore: library_prefixes
 import '../../Utils/drawer.dart' as Drawer;
-import '../account_pages/account_pages.dart';
 import 'settings_widget.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -26,7 +25,6 @@ class _MySettingsPage extends State<SettingsPage> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              
               const SizedBox(
                 height: 40,
               ),
@@ -36,13 +34,6 @@ class _MySettingsPage extends State<SettingsPage> {
               const SizedBox(
                 height: 10,
               ),
-              SettingsMenuWidget(
-                  title: 'Account',
-                  icon: Icons.account_box_rounded,
-                  onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const AccountPage()));
-                  }),
               SettingsMenuWidget(
                   title: 'Languages', icon: Icons.settings, onPress: () {}),
               SettingsMenuWidget(
