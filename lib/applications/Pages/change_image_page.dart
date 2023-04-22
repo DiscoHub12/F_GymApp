@@ -1,11 +1,12 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:gymapp/applications/Data/boxes_account.dart';
+import 'package:gymapp/applications/Pages/account_pages/account_pages.dart';
 import 'package:image_picker/image_picker.dart';
-// ignore: library_prefixes
+
 import '../Models/account.dart';
+// ignore: library_prefixes
 // ignore: library_prefixes
 
 class ProfileImagePage extends StatefulWidget {
@@ -18,18 +19,16 @@ class ProfileImagePage extends StatefulWidget {
 }
 
 class _MyProfileImagePage extends State<ProfileImagePage> {
-  late Uint8List _pickedImage = Uint8List(1);
-  late Account account =
-      Account('', '', '', DateTime.now(), DateTime.now(), _pickedImage);
-
   final boxAccount = BoxesAccount.getAccount();
+  bool isChoiced = false;
+  late final File _newImages;
 
   void _pickImage() async {
     final pickedImage = await ProfileImagePicker.pickImage();
     if (pickedImage != null) {
       setState(() {
-        _pickedImage = pickedImage as Uint8List;
-        account.profileImage = _pickedImage;
+        _newImages = pickedImage;
+        isChoiced = true;
       });
     }
   }
@@ -41,30 +40,60 @@ class _MyProfileImagePage extends State<ProfileImagePage> {
         title: const Text('Profile Image'),
         centerTitle: true,
         backgroundColor: Colors.orange,
+        /**
+         * actions: <Widget>[
+          widget.booleanChoice && isChoiced
+              ? IconButton(
+                  onPressed: () {
+                    _saveImageProfile(context);
+                  },
+                  icon: const Icon(Icons.save))
+              : const SizedBox(),
+        ],
+         */
       ),
       body: Column(
         children: [
           const SizedBox(
             height: 30,
           ),
-          // ignore: unnecessary_null_comparison
-          if (account.profileImage != null)
+          if (!isChoiced)
             Image.memory(boxAccount.getAt(0)!.profileImage)
+          else if (isChoiced)
+            Image.file(_newImages)
+          // ignore: unnecessary_null_comparison
+          else if (boxAccount.getAt(0)!.profileImage == null && !isChoiced)
+            Image.asset('Assets/nullBackground.png')
           else
             const Placeholder(),
+          const SizedBox(
+            height: 20,
+          ),
           widget.booleanChoice
               ? ElevatedButton(
-                  onPressed: _pickImage,
+                  onPressed: !isChoiced ? _pickImage : _saveImageProfile,
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7))),
-                  child: const Text('Choice Image'),
+                  child: isChoiced
+                      ? const Text('Save')
+                      : const Text('Choice Image'),
                 )
               : const SizedBox(),
         ],
       ),
     );
+  }
+
+  void _saveImageProfile() async {
+    var bytes = await _newImages.readAsBytes();
+    Account account = boxAccount.getAt(0)!;
+    account.setImageProfile(bytes);
+    account.save();
+    // ignore: use_build_context_synchronously
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const AccountPage()));
   }
 }
 
