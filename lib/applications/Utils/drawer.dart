@@ -4,7 +4,6 @@ import 'package:gymapp/applications/Data/boxes_account.dart';
 import 'package:gymapp/applications/Models/FileAdapter/file_adapter.dart';
 import 'package:gymapp/applications/Pages/account_pages/account_pages.dart';
 import 'package:gymapp/applications/Pages/chart_page.dart';
-import 'package:gymapp/applications/Pages/change_image_page.dart';
 import 'package:gymapp/applications/Pages/workout_pages/create_workout/create_workout_page.dart';
 import 'package:gymapp/applications/Pages/workout_pages/workout_page.dart';
 import 'package:gymapp/applications/Pages/settings_pages/settings_pages.dart';
@@ -41,9 +40,7 @@ class NavigationDrawer extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ProfileImagePage(
-                          booleanChoice: false,
-                        )));
+                    builder: (context) => const AccountPage()));
               },
               child: SizedBox(
                   width: 100,
