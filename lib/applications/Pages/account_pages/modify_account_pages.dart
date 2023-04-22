@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gymapp/applications/Data/boxes_account.dart';
+import 'package:gymapp/applications/Pages/account_pages/account_pages.dart';
 import 'package:gymapp/applications/Utils/print_message.dart';
 // ignore: library_prefixes
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 // ignore: library_prefixes
-import '../../../app.dart';
+import '../../Models/account.dart';
+import '../../Utils/splash_screen.dart';
+import '../change_image_page.dart';
 
 class ModifyAccountPage extends StatefulWidget {
   const ModifyAccountPage({super.key});
@@ -20,6 +22,9 @@ class _MyModifyAccountPage extends State<ModifyAccountPage> {
   final TextEditingController name = TextEditingController();
   final TextEditingController cognome = TextEditingController();
   final TextEditingController email = TextEditingController();
+  final TextEditingController birthDay = TextEditingController();
+
+  var dateTime = DateTime.now();
 
   //File for change Photo:
   late File image;
@@ -27,168 +32,171 @@ class _MyModifyAccountPage extends State<ModifyAccountPage> {
   //Variable for print message :
   final PrintStatus printMessage = PrintStatus();
 
+  final boxAccount = BoxesAccount.getAccount();
+
+  @override
+  void initState() {
+    super.initState();
+    name.text = boxAccount.getAt(0)!.nome;
+    cognome.text = boxAccount.getAt(0)!.cognome;
+    email.text = boxAccount.getAt(0)!.email;
+    dateTime = boxAccount.getAt(0)!.dataNascita;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Update'),
+        title: const Text('Update Account'),
         centerTitle: true,
         backgroundColor: Colors.orange,
+        elevation: 0.5,
+        iconTheme: const IconThemeData(color: Colors.white),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[
+                Colors.orange,
+                Color.fromARGB(255, 255, 153, 0)
+              ])),
+        ),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 50,
-              ),
-              Stack(
-                children: [
-                  SizedBox(
-                    width: 120,
-                    height: 120,
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image.asset('Assets/imageProfile.png')),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () async {
-                        await getImage();
-                        await saveImage();
-                      },
-                      child: Container(
-                          width: 35,
-                          height: 35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: Colors.orange,
-                          ),
-                          child: const Icon(
-                            Icons.create_outlined,
-                            size: 20.0,
-                            color: Colors.black,
-                          )),
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              Form(
+        child: Stack(
+          children: <Widget>[
+            const SizedBox(
+              height: 150,
+              child: HeaderWidget(150, true),
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.fromLTRB(25, 10, 25, 10),
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    _formField('Nome', name, Icons.person),
                     const SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
-                    _formField('Cognome', cognome, Icons.person),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(width: 3, color: Colors.white),
+                          color: Colors.white,
+                          boxShadow: const [
+                            BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 10,
+                                offset: Offset(5, 5)),
+                          ]),
+                      child: Stack(
+                        children: [
+                          SizedBox(
+                            width: 120,
+                            height: 120,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: Image.memory(
+                                    boxAccount.getAt(0)!.profileImage)),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: GestureDetector(
+                              onTap: () async {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ProfileImagePage(
+                                          booleanChoice: true,
+                                        )));
+                              },
+                              child: Container(
+                                  width: 35,
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    color: Colors.orange,
+                                  ),
+                                  child: const Icon(
+                                    Icons.create_outlined,
+                                    size: 20.0,
+                                    color: Colors.black,
+                                  )),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                     const SizedBox(
-                      height: 10,
+                      height: 35,
                     ),
-                    _formField('Email', email, Icons.email),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const SizedBox(
-                      height: 17,
-                    ),
-                    _buttonSave(),
+                    Container(
+                      padding: const EdgeInsets.all(1),
+                      child: Column(
+                        children: <Widget>[
+                          _textFormWidget(name, 'Enter name'),
+                          _constSizedBox(),
+                          _textFormWidget(cognome, 'Enter surname'),
+                          _constSizedBox(),
+                          _textFormWidget(email, 'Enter email'),
+                          _constSizedBox(),
+                        ],
+                      ),
+                    )
                   ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _updateAccount();
+        },
+        backgroundColor: Colors.orange,
+        child: const Icon(Icons.save),
       ),
     );
   }
 
-  //Widget for this Class :
-  Widget _formField(String text, TextEditingController controller, icons) =>
+  Widget _textFormWidget(TextEditingController controller, String labelText) =>
       TextFormField(
         controller: controller,
         decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15.0),
-            borderSide: const BorderSide(color: Colors.black),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15.0),
-            borderSide: const BorderSide(color: Colors.black),
-          ),
-          label: Text(text),
-          labelStyle: const TextStyle(color: Colors.black),
-          prefixIcon: Icon(
-            icons,
-            color: Colors.black,
-          ),
-        ),
+            hintStyle: const TextStyle(color: Colors.black),
+            labelText: labelText),
       );
 
-  Widget _buttonSave() => ElevatedButton.icon(
-        label: const Text('Save'),
-        icon: const Icon(Icons.save),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.orange,
-        ),
-        onPressed: () {
-          _saveUpdate();
-        },
+  Widget _constSizedBox() => const SizedBox(
+        height: 15,
       );
 
-  //Method for this Class :
-  Future getImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        image = File(pickedFile.path);
-      } else {
-        // ignore: avoid_print
-        print('No image selected.');
-      }
-    });
-  }
+  Future<DateTime?> pickDate() => showDatePicker(
+      context: context,
+      initialDate: boxAccount.getAt(0)!.dataNascita,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2024),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+              colorScheme: const ColorScheme.light(primary: Colors.orange),
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(backgroundColor: Colors.white),
+              )),
+          child: child!,
+        );
+      });
 
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-    return directory.path;
-  }
-
-  Future<File> get _localFile async {
-    final path = await _localPath;
-    return File('$path/profile.png');
-  }
-
-  Future<void> saveImage() async {
-    final file = await _localFile;
-    await file.writeAsBytes(image.readAsBytesSync());
-  }
-
-  void _saveUpdate() {
-    //Todo implementare
-    // ignore: prefer_interpolation_to_compose_strings, avoid_print
-    print('Nome : ' +
-        name.text +
-        "Cognome : " +
-        cognome.text +
-        "Email : " +
-        email.text);
-    resetController();
-    Navigator.pop(context);
+  void _updateAccount() {
+    Account account = boxAccount.getAt(0)!;
+    account.setNome(name.text);
+    account.setCognome(cognome.text);
+    account.setEmail(email.text);
+    account.save();
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const App()));
-    printMessage.printCorrect(context, 'Updated Data Correctly.');
-  }
-
-  void resetController() {
-    name.clear();
-    cognome.clear();
-    email.clear();
+        .push(MaterialPageRoute(builder: (context) => const AccountPage()));
   }
 }
