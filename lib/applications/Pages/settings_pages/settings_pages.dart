@@ -35,7 +35,11 @@ class _MySettingsPage extends State<SettingsPage> {
                 height: 10,
               ),
               SettingsMenuWidget(
-                  title: 'Languages', icon: Icons.settings, onPress: () {}),
+                  title: 'Languages',
+                  icon: Icons.settings,
+                  onPress: () {
+                    _dialogNumberExercise(context);
+                  }),
               SettingsMenuWidget(
                   title: 'Privacy', icon: Icons.language, onPress: () {}),
               SettingsMenuWidget(
@@ -56,5 +60,67 @@ class _MySettingsPage extends State<SettingsPage> {
         ),
       ),
     );
+  }
+
+  Widget _requestLanguages(BuildContext context) => Container(
+        padding: const EdgeInsets.all(8),
+        height: 140,
+        width: 300,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              const SizedBox(height: 10),
+              const Text(
+                'Change Language',
+                style: TextStyle(fontSize: 23),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              SingleChildScrollView(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {},
+                    child: const CircleAvatar(
+                      radius: 32,
+                      backgroundColor: Colors.black,
+                      child: CircleAvatar(
+                        radius: 29,
+                        backgroundImage: AssetImage('Assets/italian.png'),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: const CircleAvatar(
+                      radius: 32,
+                      backgroundColor: Colors.black,
+                      child: CircleAvatar(
+                        radius: 29,
+                        backgroundImage:
+                            AssetImage('Assets/icon-english-10.png'),
+                      ),
+                    ),
+                  )
+                ],
+              ))
+            ],
+          ),
+        ),
+      );
+
+  void _dialogNumberExercise(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            content: _requestLanguages(context),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          );
+        });
   }
 }

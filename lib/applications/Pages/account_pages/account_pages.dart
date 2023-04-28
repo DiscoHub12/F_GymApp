@@ -127,27 +127,9 @@ class _MyAccountPage extends State<AccountPage> {
                                         color: Color.fromARGB(255, 22, 22, 22),
                                       ),
                                     ),
-                                    title: Text(boxAccount.getAt(0)!.nome),
-                                    subtitle: const Text('Name'),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 80,
-                                child: Card(
-                                  color:
-                                      const Color.fromARGB(255, 235, 235, 235),
-                                  child: ListTile(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 2),
-                                    leading: const SizedBox(
-                                      height: double.infinity,
-                                      child: Icon(Icons.account_circle_outlined,
-                                          color:
-                                              Color.fromARGB(255, 22, 22, 22)),
-                                    ),
-                                    title: Text(boxAccount.getAt(0)!.cognome),
-                                    subtitle: const Text('Surname'),
+                                    title: Text(
+                                        '${boxAccount.getAt(0)!.nome}  ${boxAccount.getAt(0)!.cognome}'),
+                                    subtitle: const Text('Name - Surname'),
                                   ),
                                 ),
                               ),
@@ -200,7 +182,7 @@ class _MyAccountPage extends State<AccountPage> {
                                         horizontal: 12, vertical: 2),
                                     leading: const SizedBox(
                                       height: double.infinity,
-                                      child: Icon(Icons.date_range,
+                                      child: Icon(Icons.date_range_outlined,
                                           color:
                                               Color.fromARGB(255, 22, 22, 22)),
                                     ),

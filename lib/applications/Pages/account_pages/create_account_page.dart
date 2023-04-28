@@ -29,6 +29,7 @@ class _MyCreateAccount extends State<CreateAccount> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _surnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
 
   bool choiceBirthDay = false;
   late File _pickedImage;
@@ -149,6 +150,23 @@ class _MyCreateAccount extends State<CreateAccount> {
                         ),
                       ),
                       const SizedBox(height: 16.0),
+                      TextField(
+                        controller: _dateController,
+                        decoration: const InputDecoration(
+                            icon: Icon(Icons.calendar_today),
+                            labelText: 'BirthDay'),
+                        onTap: () async {
+                          final date = await pickDate();
+                          if (date == null) return;
+                          setState(() {
+                            dateTime = date;
+                            _dateController.text = date.toString();
+                            // ignore: avoid_print
+                            print("Date : $dateTime");
+                          });
+                          setState(() {});
+                        },
+                      ),
                       ElevatedButton(
                         onPressed: () async {
                           final date = await pickDate();
