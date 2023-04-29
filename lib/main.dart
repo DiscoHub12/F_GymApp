@@ -41,3 +41,10 @@ void main() async {
     runApp(const MaterialApp(home: CreateAccount()));
   }
 }
+
+/**
+ * Mettere la Home come Workout e mettere la nuova grafica con
+ * barra di ricerca. Quindi eliminare la pagina Workout. 
+ * La grafica della pagina di Workout, aggiungerla per 
+ * la lista di Favoriti.
+ */
