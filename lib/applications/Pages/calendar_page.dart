@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gymapp/applications/Models/day_schedule.dart';
 import 'package:table_calendar/table_calendar.dart';
 // ignore: library_prefixes
-import '../Models/workout.dart';
 import '../Utils/drawer.dart' as Drawer;
 
 class CalendarPage extends StatefulWidget {
@@ -13,64 +11,169 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _MyCalendarPage extends State<CalendarPage> {
-  DateTime today = DateTime.now();
+  Map<DateTime, List<Event>> selectedEvents = {};
+  CalendarFormat format = CalendarFormat.month;
+  DateTime selectedDay = DateTime.now();
+  DateTime focusedDay = DateTime.now();
 
-  late Map<DateTime, List<Event>> selectedEvents;
+  final TextEditingController _eventController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     selectedEvents = {};
-    List<DaySchedule> tmp = [];
-    selectedEvents[DateTime(2023, 3, 29)]?.add(
-        Event(date: DateTime(2023, 3, 29), workout: Workout('Prova1', 4, tmp)));
-    selectedEvents[DateTime(2023, 4, 22)]?.add(
-        Event(date: DateTime(2023, 4, 22), workout: Workout('Prova2', 4, tmp)));
-    selectedEvents[DateTime(2023, 4, 23)]?.add(
-        Event(date: DateTime(2023, 4, 23), workout: Workout('Prova3', 4, tmp)));
+    List<Event> tmpEvents = [];
+    tmpEvents.add(Event(title: 'Titolo1'));
+    selectedEvents[DateTime(2023, 4, 29)] = [Event(title: 'Titolo1')];
+    selectedEvents[DateTime(2023, 4, 29)]!.add(Event(title: 'Titolo2'));
+    selectedEvents.putIfAbsent(DateTime(2023, 4, 27), () => tmpEvents);
+    // ignore: avoid_print
+    print(selectedEvents.toString());
+  }
+
+  List<Event> _getEventsfromDay(DateTime date) {
+    return selectedEvents[date] ?? [];
   }
 
   @override
-  Widget build(Object context) {
+  void dispose() {
+    _eventController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Calendar'),
+        title: const Text("Calendar"),
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
       drawer: Drawer.NavigationDrawer(),
       body: Column(
-        children: <Widget>[
+        children: [
           TableCalendar(
-            focusedDay: today,
-            firstDay: DateTime(2010, 10, 1),
-            lastDay: DateTime(2030, 3, 14),
-            headerStyle: const HeaderStyle(
-                formatButtonVisible: false, titleCentered: true),
-            availableGestures: AvailableGestures.all,
-            onDaySelected: _onDaySelected,
-            selectedDayPredicate: (day) => isSameDay(day, today),
-            eventLoader: _getEventsFromCalendar,
+            focusedDay: selectedDay,
+            firstDay: DateTime(1990),
+            lastDay: DateTime(2050),
+            calendarFormat: format,
+            onFormatChanged: (CalendarFormat newFormat) {
+              setState(() {
+                format = newFormat;
+              });
+            },
+            startingDayOfWeek: StartingDayOfWeek.sunday,
+            daysOfWeekVisible: true,
+
+            //Day Changed
+            onDaySelected: (DateTime selectDay, DateTime focusDay) {
+              setState(() {
+                selectedDay = selectDay;
+                focusedDay = focusDay;
+              });
+              // ignore: avoid_print
+              print(focusedDay);
+            },
+            selectedDayPredicate: (DateTime date) {
+              return isSameDay(selectedDay, date);
+            },
+
+            eventLoader: _getEventsfromDay,
+
+            //To style the Calendar
+            calendarStyle: CalendarStyle(
+              isTodayHighlighted: true,
+              selectedDecoration: BoxDecoration(
+                color: const Color.fromARGB(255, 255, 169, 41),
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              selectedTextStyle: const TextStyle(color: Colors.white),
+              todayDecoration: BoxDecoration(
+                color: const Color.fromARGB(255, 251, 207, 64),
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              defaultDecoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              weekendDecoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+            ),
+            headerStyle: HeaderStyle(
+              formatButtonVisible: true,
+              titleCentered: true,
+              formatButtonShowsNext: false,
+              formatButtonDecoration: BoxDecoration(
+                color: const Color.fromARGB(255, 255, 169, 41),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              formatButtonTextStyle: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+          ..._getEventsfromDay(selectedDay).map(
+            (Event event) => ListTile(
+              title: Text(
+                event.title,
+              ),
+            ),
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.orange,
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Add Event"),
+            content: TextFormField(
+              controller: _eventController,
+            ),
+            actions: [
+              TextButton(
+                child: const Text("Cancel"),
+                onPressed: () => Navigator.pop(context),
+              ),
+              TextButton(
+                child: const Text("Ok"),
+                onPressed: () {
+                  if (_eventController.text.isEmpty) {
+                  } else {
+                    if (selectedEvents[selectedDay] != null) {
+                      selectedEvents[selectedDay]!.add(
+                        Event(title: _eventController.text),
+                      );
+                    } else {
+                      selectedEvents[selectedDay] = [
+                        Event(title: _eventController.text)
+                      ];
+                    }
+                  }
+                  Navigator.pop(context);
+                  _eventController.clear();
+                  setState(() {});
+                  return;
+                },
+              ),
+            ],
+          ),
+        ),
+        label: const Text("Add Event"),
+        icon: const Icon(Icons.add),
+      ),
     );
-  }
-
-  void _onDaySelected(DateTime day, DateTime focusedDay) {
-    setState(() {
-      today = day;
-    });
-  }
-
-  List<Event> _getEventsFromCalendar(DateTime date) {
-    return selectedEvents[date] ?? [];
   }
 }
 
 class Event {
-  final DateTime date;
-  final Workout workout;
+  final String title;
+  Event({required this.title});
 
-  Event({required this.date, required this.workout});
+  @override
+  String toString() => title;
 }

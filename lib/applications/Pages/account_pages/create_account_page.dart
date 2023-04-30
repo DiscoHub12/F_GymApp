@@ -208,6 +208,7 @@ class _MyCreateAccount extends State<CreateAccount> {
   void _submit() async {
     // ignore: prefer_typing_uninitialized_variables
     var finalFile;
+    // ignore: prefer_typing_uninitialized_variables
     var bytes;
     if (choiceImage) {
       finalFile = _pickedImage;
