@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gymapp/applications/Models/account.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -29,6 +30,7 @@ class _MyCreateAccount extends State<CreateAccount> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _surnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
 
   bool choiceBirthDay = false;
   late File _pickedImage;
@@ -76,8 +78,7 @@ class _MyCreateAccount extends State<CreateAccount> {
                                 child: ClipRRect(
                                     borderRadius: BorderRadius.circular(100),
                                     child: !choiceImage
-                                        ? Image.asset(
-                                            'Assets/nullBackground.png')
+                                        ? Image.asset('Assets/profile.png')
                                         : Image.file(_pickedImage))),
                             Positioned(
                               bottom: 0,
@@ -107,8 +108,8 @@ class _MyCreateAccount extends State<CreateAccount> {
                       TextFormField(
                         controller: _nameController,
                         decoration: const InputDecoration(
-                          labelText: "Name",
-                        ),
+                            labelText: "Name",
+                            icon: Icon(Icons.person_2_outlined)),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Name required";
@@ -119,8 +120,8 @@ class _MyCreateAccount extends State<CreateAccount> {
                       TextFormField(
                         controller: _surnameController,
                         decoration: const InputDecoration(
-                          labelText: "Surname",
-                        ),
+                            labelText: "Surname",
+                            icon: Icon(Icons.person_2_outlined)),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Surname required";
@@ -131,6 +132,7 @@ class _MyCreateAccount extends State<CreateAccount> {
                       TextFormField(
                         controller: _emailController,
                         decoration: const InputDecoration(
+                          icon: Icon(Icons.email),
                           labelText: "Email",
                         ),
                         validator: (value) {
@@ -141,29 +143,23 @@ class _MyCreateAccount extends State<CreateAccount> {
                         },
                       ),
                       const SizedBox(height: 16.0),
-                      const Center(
-                        child: Text(
-                          'Year of birth',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                      const SizedBox(height: 16.0),
-                      ElevatedButton(
-                        onPressed: () async {
+                      TextField(
+                        controller: _dateController,
+                        decoration: const InputDecoration(
+                            icon: Icon(Icons.calendar_today),
+                            labelText: 'BirthDay'),
+                        onTap: () async {
                           final date = await pickDate();
                           if (date == null) return;
                           setState(() {
                             dateTime = date;
+                            _dateController.text =
+                                '${date.day}/${date.month}/${date.year}';
                             // ignore: avoid_print
                             print("Date : $dateTime");
                           });
                           setState(() {});
                         },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orange),
-                        child: Text(
-                            '${dateTime.day}/${dateTime.month}/${dateTime.year}'),
                       ),
                       const SizedBox(height: 16.0),
                       ElevatedButton(
@@ -212,12 +208,17 @@ class _MyCreateAccount extends State<CreateAccount> {
   void _submit() async {
     // ignore: prefer_typing_uninitialized_variables
     var finalFile;
+    // ignore: prefer_typing_uninitialized_variables
+    var bytes;
     if (choiceImage) {
       finalFile = _pickedImage;
+      bytes = await finalFile.readAsBytes();
     } else {
-      finalFile = File('Assets/nullBackground.png');
+      finalFile = File('Assets/profile.png');
+      bytes = await rootBundle.load('Assets/profile.png');
+      bytes = bytes.buffer.asUint8List();
     }
-    var bytes = await _pickedImage.readAsBytes();
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       // creare un oggetto Account con un campo File

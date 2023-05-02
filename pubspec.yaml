@@ -45,6 +45,7 @@ dependencies:
   sizer: ^2.0.15
   hidden_drawer_menu: ^3.0.1
   rive: ^0.10.4
+  table_calendar: ^3.0.9
   
 
 dev_dependencies:
@@ -80,6 +81,10 @@ flutter:
    - 'Assets/student_profile.png'
    - 'Assets/nullImage.png'
    - 'Assets/nullBackground.png'
+   - 'Assets/icon-english-10.png'
+   - 'Assets/italian.png'
+   - 'Assets/profileImageStock.png'
+   - 'Assets/profile.png'
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

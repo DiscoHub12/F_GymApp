@@ -31,47 +31,43 @@ class _MyHiddenDrawer extends State<HiddenDrawer> {
       ScreenHiddenDrawer(
           ItemHiddenMenu(
             name: 'Home',
-            baseStyle: const TextStyle(
-             
-            ),
-            
-            selectedStyle: TextStyle(),
+            baseStyle: const TextStyle(),
+            selectedStyle: const TextStyle(),
           ),
-          
           const App()),
       ScreenHiddenDrawer(
           ItemHiddenMenu(
             name: 'Workout',
-            baseStyle: TextStyle(),
-            selectedStyle: TextStyle(),
+            baseStyle: const TextStyle(),
+            selectedStyle: const TextStyle(),
           ),
           const WorkoutPage()),
       ScreenHiddenDrawer(
           ItemHiddenMenu(
             name: 'New Workout',
-            baseStyle: TextStyle(),
-            selectedStyle: TextStyle(),
+            baseStyle: const TextStyle(),
+            selectedStyle: const TextStyle(),
           ),
           const CreateWorkoutPage()),
       ScreenHiddenDrawer(
           ItemHiddenMenu(
             name: 'Chart',
-            baseStyle: TextStyle(),
-            selectedStyle: TextStyle(),
+            baseStyle: const TextStyle(),
+            selectedStyle: const TextStyle(),
           ),
           const ChartPage()),
       ScreenHiddenDrawer(
           ItemHiddenMenu(
             name: 'Favourite',
-            baseStyle: TextStyle(),
-            selectedStyle: TextStyle(),
+            baseStyle: const TextStyle(),
+            selectedStyle: const TextStyle(),
           ),
           const FavouriteWorkoutPage()),
       ScreenHiddenDrawer(
           ItemHiddenMenu(
             name: 'Account',
-            baseStyle: TextStyle(),
-            selectedStyle: TextStyle(),
+            baseStyle: const TextStyle(),
+            selectedStyle: const TextStyle(),
           ),
           const AccountPage()),
     ];
@@ -81,24 +77,11 @@ class _MyHiddenDrawer extends State<HiddenDrawer> {
   Widget build(BuildContext context) {
     return HiddenDrawerMenu(
       backgroundColorMenu: const Color.fromARGB(255, 255, 179, 65),
-
       screens: _pages,
       initPositionSelected: 0,
-      styleAutoTittleName: TextStyle(color: Colors.white),
+      styleAutoTittleName: const TextStyle(color: Colors.white),
     );
   }
-
-  /**
-   *  return Drawer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          buildHeader(context),
-          buildMenuItems(context),
-        ],
-      ),
-    );
-   */
 
   Widget buildHeader(BuildContext context) => Container(
         color: Colors.orange,

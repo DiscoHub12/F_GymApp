@@ -18,6 +18,11 @@ class _MyFavouriteWorkoutPage extends State<FavouriteWorkoutPage> {
 
   final _boxFavourite = BoxesFavourite.getWorkout();
 
+  double getSmallDiameter(BuildContext context) =>
+      MediaQuery.of(context).size.width * 2 / 3;
+  double getBigDiameter(BuildContext context) =>
+      MediaQuery.of(context).size.width * 7 / 8;
+
   @override
   void initState() {
     super.initState();
@@ -26,6 +31,7 @@ class _MyFavouriteWorkoutPage extends State<FavouriteWorkoutPage> {
     } else {
       isEmpty = false;
     }
+
     for (int i = 0; i < _boxFavourite.getAt(0)!.workoutList.length; i++) {
       //print('WORKOUT $i DETAILS : ' +
       // "\n Nome Workout : " +
@@ -36,34 +42,80 @@ class _MyFavouriteWorkoutPage extends State<FavouriteWorkoutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer.NavigationDrawer(),
-      appBar: AppBar(
-        title: const Text('Favourite'),
-        centerTitle: true,
-        backgroundColor: Colors.orange,
-      ),
-      body: !isEmpty
-          ? AnimatedList(
-              key: listKey,
-              initialItemCount: _boxFavourite.getAt(0)!.workoutList.length,
-              itemBuilder: (context, index, animation) => ListItemWidget(
-                  workout: _boxFavourite.getAt(0)!.workoutList.elementAt(index),
-                  animation: animation,
-                  onClicked: () => _removeItem(
-                      _boxFavourite.getAt(0)!.workoutList.elementAt(index),
-                      index)))
-          : const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Center(
-                  child: Text(
-                    "You don't have any favourite Workout",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        drawer: Drawer.NavigationDrawer(),
+        appBar: AppBar(
+          title: const Text('Favourite'),
+          centerTitle: true,
+          backgroundColor: Colors.orange,
+        ),
+        body: Stack(
+          children: [
+            Positioned(
+                right: -getSmallDiameter(context) / 3.3,
+                top: -getSmallDiameter(context) / 3.1,
+                child: Container(
+                  width: getSmallDiameter(context),
+                  height: getSmallDiameter(context),
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                          colors: [
+                            Color.fromARGB(255, 255, 168, 37),
+                            Color.fromARGB(255, 253, 192, 101),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter)),
+                )),
+            Positioned(
+                left: -getBigDiameter(context) / 3,
+                top: -getBigDiameter(context) / 2.7,
+                child: Container(
+                  width: getBigDiameter(context),
+                  height: getBigDiameter(context),
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                          colors: [
+                            Colors.orange,
+                            Color.fromARGB(255, 255, 181, 70),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter)),
+                  child: const Center(
+                    child: Text('Hello'),
                   ),
-                ),
-              ],
-            ),
-    );
+                )),
+            !isEmpty
+                ? AnimatedList(
+                    key: listKey,
+                    initialItemCount:
+                        _boxFavourite.getAt(0)!.workoutList.length,
+                    itemBuilder: (context, index, animation) => ListItemWidget(
+                        workout: _boxFavourite
+                            .getAt(0)!
+                            .workoutList
+                            .elementAt(index),
+                        animation: animation,
+                        onClicked: () => _removeItem(
+                            _boxFavourite
+                                .getAt(0)!
+                                .workoutList
+                                .elementAt(index),
+                            index)))
+                : const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Center(
+                        child: Text(
+                          "You don't have any favourite Workout",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+          ],
+        ));
   }
 
   //Metodo del Widget:
@@ -106,12 +158,12 @@ class ListItemWidget extends StatelessWidget {
                     workout: workout,
                   )));
         },
-        child: Container(
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          elevation: 12,
           margin: const EdgeInsets.all(13),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(11),
-              border: Border.all(width: 1, color: Colors.orange),
-              color: const Color.fromARGB(255, 235, 233, 233)),
           child: ListTile(
             contentPadding: const EdgeInsets.all(8.0),
             title: Text(

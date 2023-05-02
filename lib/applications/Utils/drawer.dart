@@ -3,9 +3,9 @@ import 'package:gymapp/app.dart';
 import 'package:gymapp/applications/Data/boxes_account.dart';
 import 'package:gymapp/applications/Models/FileAdapter/file_adapter.dart';
 import 'package:gymapp/applications/Pages/account_pages/account_pages.dart';
+import 'package:gymapp/applications/Pages/calendar_page.dart';
 import 'package:gymapp/applications/Pages/chart_page.dart';
 import 'package:gymapp/applications/Pages/workout_pages/create_workout/create_workout_page.dart';
-import 'package:gymapp/applications/Pages/workout_pages/workout_page.dart';
 import 'package:gymapp/applications/Pages/settings_pages/settings_pages.dart';
 
 import '../Pages/favourite_page.dart';
@@ -83,7 +83,8 @@ class NavigationDrawer extends StatelessWidget {
                     .push(MaterialPageRoute(builder: (context) => const App()));
               },
             ),
-            ListTile(
+            /**
+           ListTile(
               leading: const Icon(Icons.schedule),
               title: const Text('Workout'),
               onTap: () {
@@ -92,6 +93,7 @@ class NavigationDrawer extends StatelessWidget {
                     builder: (context) => const WorkoutPage()));
               },
             ),
+            */
             ListTile(
               leading: const Icon(Icons.add),
               title: const Text('New Workout'),
@@ -102,21 +104,30 @@ class NavigationDrawer extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.bar_chart),
-              title: const Text('Chart'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const ChartPage()));
-              },
-            ),
-            ListTile(
               leading: const Icon(Icons.favorite),
               title: const Text('Favourite'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const FavouriteWorkoutPage()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.calendar_month_outlined),
+              title: const Text('Calendar'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const CalendarPage()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.bar_chart),
+              title: const Text('Chart'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const ChartPage()));
               },
             ),
             ListTile(
