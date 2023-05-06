@@ -34,6 +34,7 @@ class _MyApp extends State<App> {
     } else {
       isWorkoutEmpty = false;
     }
+    // ignore: avoid_print
     print(isWorkoutEmpty);
   }
 

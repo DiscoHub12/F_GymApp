@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gymapp/applications/Data/boxes_event.dart';
 import 'package:gymapp/applications/Data/boxes_workout.dart';
 import 'package:gymapp/applications/Models/workout.dart';
+import 'package:hive/hive.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../Models/event.dart';
 // ignore: library_prefixes
 import '../Utils/drawer.dart' as Drawer;
 
@@ -13,41 +16,40 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _MyCalendarPage extends State<CalendarPage> {
+  CalendarFormat format = CalendarFormat.month;
+  DateTime selectedDay = DateTime.now();
+  DateTime focusedDay = DateTime.now();
+
+  Map<DateTime, List<Event>> selectedEvents = {};
+
+  final TextEditingController _eventController = TextEditingController();
+
+  final boxWorkout = BoxesWorkout.getWorkout();
+  final boxEvent = BoxesEvent.getEvent();
+
+  bool haveLast = false;
+  DateTime lastDay = DateTime.now();
+
   double getSmallDiameter(BuildContext context) =>
       MediaQuery.of(context).size.width * 2 / 3;
   double getBigDiameter(BuildContext context) =>
       MediaQuery.of(context).size.width * 7 / 8;
 
-  Map<DateTime, List<Event>> selectedEvents = {};
-  CalendarFormat format = CalendarFormat.month;
-  DateTime selectedDay = DateTime.now();
-  DateTime focusedDay = DateTime.now();
-
-  final TextEditingController _eventController = TextEditingController();
-
-  final boxWorkout = BoxesWorkout.getWorkout();
-
-  DateTime lastsWorkout = DateTime.now();
-
   @override
   void initState() {
     super.initState();
     selectedEvents = {};
-    List<Event> tmpEvents = [];
-    tmpEvents.add(Event(title: 'Titolo1'));
-    selectedEvents[DateTime(2023, 4, 29)] = [Event(title: 'Titolo1')];
-    selectedEvents[DateTime(2023, 4, 29)]!.add(Event(title: 'Titolo2'));
-    selectedEvents.putIfAbsent(DateTime(2023, 4, 27), () => tmpEvents);
-    if (lastWorkout() != DateTime.now()) {
-      lastsWorkout = lastWorkout()!;
+    for (int i = 0; i < boxEvent.length; i++) {
+      DateTime tmp = boxEvent.getAt(i)!.dateEvent;
+      List<Event> tmpList = [];
+      tmpList.add(boxEvent.getAt(i)!);
+      selectedEvents.putIfAbsent(tmp, () => tmpList);
+      // ignore: avoid_print
+      print('Ecco gli Eventi : \nNome Evento $i' +
+          boxEvent.getAt(i)!.title +
+          "\nData Evento : " +
+          boxEvent.getAt(i)!.dateEvent.toString());
     }
-
-    // ignore: avoid_print
-    print(selectedEvents.toString());
-  }
-
-  List<Event> _getEventsfromDay(DateTime date) {
-    return selectedEvents[date] ?? [];
   }
 
   @override
@@ -119,8 +121,8 @@ class _MyCalendarPage extends State<CalendarPage> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        lastsWorkout.millisecond != DateTime.now().millisecond
-                            ? '${lastsWorkout.day}/${lastsWorkout.month}/${lastsWorkout.year}'
+                        haveLast
+                            ? '${lastDay.day}/${lastDay.month}/${lastDay.year}'
                             : 'Last Workout date not valid.',
                         //${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}
                         style: const TextStyle(
@@ -198,6 +200,7 @@ class _MyCalendarPage extends State<CalendarPage> {
                       ),
                       ..._getEventsfromDay(selectedDay).map(
                         (Event event) => ListTile(
+                          onLongPress: (){},
                           title: Text(
                             event.title,
                           ),
@@ -228,18 +231,7 @@ class _MyCalendarPage extends State<CalendarPage> {
               TextButton(
                 child: const Text("Ok"),
                 onPressed: () {
-                  if (_eventController.text.isEmpty) {
-                  } else {
-                    if (selectedEvents[selectedDay] != null) {
-                      selectedEvents[selectedDay]!.add(
-                        Event(title: _eventController.text),
-                      );
-                    } else {
-                      selectedEvents[selectedDay] = [
-                        Event(title: _eventController.text)
-                      ];
-                    }
-                  }
+                  _saveEvent();
                   Navigator.pop(context);
                   _eventController.clear();
                   setState(() {});
@@ -255,14 +247,14 @@ class _MyCalendarPage extends State<CalendarPage> {
     );
   }
 
-  DateTime? lastWorkout() {
-    DateTime? lastWorkout;
+  DateTime lastWorkout() {
+    DateTime lastWorkout = DateTime.now();
     for (int i = 0; i < boxWorkout.length; i++) {
       if (boxWorkout.getAt(i) != null) {
         Workout? tmp = boxWorkout.getAt(i);
         for (int j = 0; j < tmp!.listaGiorni.length; j++) {
           DateTime? last = tmp.listaGiorni.elementAt(i).lastUsage;
-          if (lastWorkout!.isBefore(last!)) {
+          if (lastWorkout.isBefore(last!)) {
             lastWorkout = last;
           }
         }
@@ -270,12 +262,27 @@ class _MyCalendarPage extends State<CalendarPage> {
     }
     return lastWorkout;
   }
-}
 
-class Event {
-  final String title;
-  Event({required this.title});
+  List<Event> _getEventsfromDay(DateTime date) {
+    return selectedEvents[date] ?? [];
+  }
 
-  @override
-  String toString() => title;
+  _saveEvent() {
+    if (_eventController.text.isEmpty) {
+    } else {
+      if (selectedEvents[selectedDay] != null) {
+        Event newTmp =
+            Event(title: _eventController.text, dateEvent: selectedDay);
+        selectedEvents[selectedDay]!.add(newTmp);
+        boxEvent.add(newTmp);
+        print(boxEvent);
+      } else {
+        Event newTmp =
+            Event(title: _eventController.text, dateEvent: selectedDay);
+        selectedEvents[selectedDay] = [newTmp];
+        boxEvent.add(newTmp);
+        print(boxEvent);
+      }
+    }
+  }
 }

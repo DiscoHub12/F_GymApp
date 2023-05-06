@@ -3,6 +3,7 @@ import 'package:gymapp/app.dart';
 import 'package:gymapp/applications/Models/FileAdapter/file_adapter.dart';
 import 'package:gymapp/applications/Models/account.dart';
 import 'package:gymapp/applications/Models/day_schedule.dart';
+import 'package:gymapp/applications/Models/event.dart';
 import 'package:gymapp/applications/Models/exercise.dart';
 import 'package:gymapp/applications/Models/favourite_list_workout.dart';
 import 'package:gymapp/applications/Models/workout.dart';
@@ -23,6 +24,7 @@ void main() async {
   Hive.registerAdapter(ExerciseAdapter());
   Hive.registerAdapter(WorkoutAdapter());
   Hive.registerAdapter(FavouriteWorkoutAdapter());
+  Hive.registerAdapter(EventAdapter());
   Hive.registerAdapter(FileAdapter());
   //Open the Hive Box :
   await Hive.openBox<Account>('getAccount');
@@ -30,6 +32,7 @@ void main() async {
   await Hive.openBox<DaySchedule>('getDaySchedule');
   await Hive.openBox<Workout>('getWorkout');
   await Hive.openBox<FavouriteWorkout>('getFavouriteWorkout');
+  await Hive.openBox<Event>('getEvent');
 
   var boxAccount = BoxesAccount.getAccount();
   if (boxAccount.isNotEmpty) {
