@@ -21,7 +21,17 @@ class _MyChartPage extends State<ChartPage> {
       ),
       body: const Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[Text("CHART PAGE")],
+        children: <Widget>[
+          Center(
+            child: Text(
+              'SOON',
+              style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black),
+            ),
+          ),
+        ],
       ),
     );
   }

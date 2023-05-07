@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/applications/Data/boxes_event.dart';
 import 'package:gymapp/applications/Data/boxes_workout.dart';
+import 'package:gymapp/applications/Models/day_schedule.dart';
 import 'package:gymapp/applications/Models/workout.dart';
-import 'package:hive/hive.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../Models/event.dart';
 // ignore: library_prefixes
@@ -21,6 +21,7 @@ class _MyCalendarPage extends State<CalendarPage> {
   DateTime focusedDay = DateTime.now();
 
   Map<DateTime, List<Event>> selectedEvents = {};
+  Map<DateTime, List<Event>> trailingDay = {};
 
   final TextEditingController _eventController = TextEditingController();
 
@@ -39,16 +40,32 @@ class _MyCalendarPage extends State<CalendarPage> {
   void initState() {
     super.initState();
     selectedEvents = {};
+    trailingDay = {};
     for (int i = 0; i < boxEvent.length; i++) {
       DateTime tmp = boxEvent.getAt(i)!.dateEvent;
       List<Event> tmpList = [];
       tmpList.add(boxEvent.getAt(i)!);
       selectedEvents.putIfAbsent(tmp, () => tmpList);
-      // ignore: avoid_print
+      // ignore: avoid_print, prefer_interpolation_to_compose_strings
       print('Ecco gli Eventi : \nNome Evento $i' +
           boxEvent.getAt(i)!.title +
           "\nData Evento : " +
           boxEvent.getAt(i)!.dateEvent.toString());
+    }
+
+    for (int i = 0; i < boxWorkout.length; i++) {
+      Workout tmp = boxWorkout.getAt(i)!;
+      for (int j = 0; j < tmp.listaGiorni.length; j++) {
+        DaySchedule tmpDay = tmp.listaGiorni.elementAt(i);
+        if (tmpDay.lastUsage != null) {
+          DateTime tmpDate = tmpDay.lastUsage!;
+          List<Event> tmpEventWorkout = [];
+          Event newEvent = Event(
+              title: tmpDay.muscoliAllenati, dateEvent: tmpDay.lastUsage!);
+          tmpEventWorkout.add(newEvent);
+          trailingDay.putIfAbsent(tmpDate, () => tmpEventWorkout);
+        }
+      }
     }
   }
 
@@ -200,7 +217,7 @@ class _MyCalendarPage extends State<CalendarPage> {
                       ),
                       ..._getEventsfromDay(selectedDay).map(
                         (Event event) => ListTile(
-                          onLongPress: (){},
+                          onLongPress: () {},
                           title: Text(
                             event.title,
                           ),
@@ -265,6 +282,16 @@ class _MyCalendarPage extends State<CalendarPage> {
 
   List<Event> _getEventsfromDay(DateTime date) {
     return selectedEvents[date] ?? [];
+  }
+
+  Map<DateTime, List> _groupEventsByDate(List<DateTime> events) {
+    Map<DateTime, List> data = {};
+    for (DateTime event in events) {
+      DateTime date = DateTime(event.year, event.month, event.day);
+      data[date] = data[date] ?? [];
+      data[date]!.add(event);
+    }
+    return data;
   }
 
   _saveEvent() {
