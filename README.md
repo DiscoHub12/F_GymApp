@@ -37,8 +37,8 @@ Inside, the application allows you to mark the cards, edit them, see them, start
 <br>
 
 ## Installation guide
-See the description of the repository at the following link : 
+On the left, under the "Release" section, press the only available tag. 
 <br>
-<center>https://github.com/DiscoHub12/F_Expense_App</center>
-
-where there is the guide to install the application.
+Inside the tag, go to the v1.0.0 section and download the APK.
+<br>
+At the moment, the application is in Beta development, and for the moment there is only an Android Beta version.
