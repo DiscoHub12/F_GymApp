@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymapp/applications/Pages/workout_pages/workout_page.dart';
 import 'package:gymapp/applications/Utils/print_message.dart';
 
 import '../../../../app.dart';
@@ -12,7 +13,9 @@ import '../../../Utils/drawer.dart' as Drawer;
 import '../../../Utils/splash_screen.dart';
 
 class CreateWorkoutPage extends StatefulWidget {
-  const CreateWorkoutPage({super.key});
+  const CreateWorkoutPage({super.key, required this.firstWorkout});
+
+  final bool firstWorkout;
 
   @override
   State<StatefulWidget> createState() => _MyCreateWorkoutPage();
@@ -487,7 +490,7 @@ class _MyCreateWorkoutPage extends State<CreateWorkoutPage> {
     statusMessage.printCorrect(context, 'Workout Created.');
     // ignore: use_build_context_synchronously
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const App()));
+        .push(MaterialPageRoute(builder: (context) => const WorkoutPage()));
   }
 }
 

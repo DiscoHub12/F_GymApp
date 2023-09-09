@@ -48,7 +48,7 @@ class _MyHiddenDrawer extends State<HiddenDrawer> {
             baseStyle: const TextStyle(),
             selectedStyle: const TextStyle(),
           ),
-          const CreateWorkoutPage()),
+          const CreateWorkoutPage(firstWorkout: false,)),
       ScreenHiddenDrawer(
           ItemHiddenMenu(
             name: 'Chart',
@@ -152,7 +152,7 @@ class _MyHiddenDrawer extends State<HiddenDrawer> {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const CreateWorkoutPage()));
+                    builder: (context) => const CreateWorkoutPage(firstWorkout: false,)));
               },
             ),
             ListTile(

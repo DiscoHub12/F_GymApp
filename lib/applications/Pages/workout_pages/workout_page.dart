@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymapp/app.dart';
 import 'package:gymapp/applications/Data/boxes_workout.dart';
 import 'package:gymapp/applications/Data/boxes_favourite.dart';
 import 'package:gymapp/applications/Models/favourite_list_workout.dart';
@@ -42,6 +43,8 @@ class _MyWoroutPage extends State<WorkoutPage> {
       _box_favourite.add(favourite);
       //print('Ho creato la lista di allenamenti preferiti.');
     }
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const App()));
   }
 
   @override
@@ -231,7 +234,7 @@ class _MyWoroutPage extends State<WorkoutPage> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const CreateWorkoutPage()));
+                                                      const CreateWorkoutPage(firstWorkout: true,)));
                                           setState(() {});
                                         },
                                         style: ElevatedButton.styleFrom(

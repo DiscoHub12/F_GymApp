@@ -100,7 +100,7 @@ class NavigationDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const CreateWorkoutPage()));
+                    builder: (context) => const CreateWorkoutPage(firstWorkout: false)));
               },
             ),
             ListTile(

@@ -278,7 +278,7 @@ class _MyApp extends State<App> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const CreateWorkoutPage()));
+                                               const CreateWorkoutPage(firstWorkout: true)));
                                   setState(() {});
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -315,6 +315,10 @@ class _MyApp extends State<App> {
               ElevatedButton(
                 onPressed: () => setState(() {
                   boxWorkout.getAt(index)!.delete();
+                  setState(() {});
+                  if(boxWorkout.isEmpty){
+                    isWorkoutEmpty = true;
+                  }
                   setState(() {});
                   Navigator.pop(context);
                 }),

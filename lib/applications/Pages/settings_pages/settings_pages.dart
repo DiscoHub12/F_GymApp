@@ -48,10 +48,7 @@ class _MySettingsPage extends State<SettingsPage> {
               SettingsMenuWidget(
                   title: 'Licenses', icon: Icons.feedback, onPress: () {}),
               SettingsMenuWidget(
-                  title: 'Information', icon: Icons.info, onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const WorkoutPage()));
-                  }),
+                  title: 'Information', icon: Icons.info, onPress: () {}),
               const Divider(color: Colors.black),
               SettingsMenuWidget(
                   title: 'Quit',
