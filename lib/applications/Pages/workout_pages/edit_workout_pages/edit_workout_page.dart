@@ -29,20 +29,21 @@ class _MyEditWorkoutPage extends State<EditWorkoutPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Workout Schedule '),
-        centerTitle: true,
-        backgroundColor: Colors.orange,
-        actions: [
-          IconButton(
-            onPressed: _updateWorkout,
-            icon: const Icon(Icons.save),
-          ),
-        ],
-      ),
-      body: Padding(
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('Edit Workout Schedule'),
+      centerTitle: true,
+      backgroundColor: Colors.orange,
+      actions: [
+        IconButton(
+          onPressed: _updateWorkout,
+          icon: const Icon(Icons.save),
+        ),
+      ],
+    ),
+    body: SingleChildScrollView(
+      child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,49 +64,50 @@ class _MyEditWorkoutPage extends State<EditWorkoutPage> {
                 style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
               ),
             ),
-            const SizedBox(
-              height: 16,
-            ),
-            // ignore: sized_box_for_whitespace
+            const SizedBox(height: 16),
             Container(
-              height: MediaQuery.of(context).size.height - 380,
-              width: MediaQuery.of(context).size.width,
+              height: 400,
+              width: 380,
+              color: const Color.fromARGB(255, 240, 224, 200),
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: _days.length,
                 itemBuilder: (context, index) {
                   DaySchedule day = _days[index];
                   return ListTile(
-                      title: Text(day.muscoliAllenati),
-                      subtitle: Text('${day.esercizi.length} esercizi'),
-                      onTap: () async {
-                        // Apriamo la pagina per modificare il singolo giorno
-                        await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) => EditDayPage(day: day))));
-                        setState(() {});
-                      },
-                      onLongPress: () => setState(() {
-                            _dialogNumberExercise(context, index, day);
-                          }));
+                    title: Text(day.muscoliAllenati),
+                    subtitle: Text('${day.esercizi.length} esercizi'),
+                    onTap: () async {
+                      // Apriamo la pagina per modificare il singolo giorno
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: ((context) => EditDayPage(day: day)),
+                        ),
+                      );
+                      setState(() {});
+                    },
+                    onLongPress: () => setState(() {
+                      _dialogNumberExercise(context, index, day);
+                    }),
+                  );
                 },
               ),
             ),
-            const SizedBox(
-              height: 15.0,
-            ),
+            const SizedBox(height: 30.0),
             Center(
-                child: ElevatedButton(
-              onPressed: () => _addNewDay(context),
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-              child: const Text('Add Day'),
-            ))
+              child: ElevatedButton(
+                onPressed: () => _addNewDay(context),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+                child: const Text('Add Day'),
+              ),
+            ),
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _requestRemoving(BuildContext context, index, DaySchedule day) =>
       Container(

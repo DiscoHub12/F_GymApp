@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymapp/applications/Pages/workout_pages/workout_page.dart';
 // ignore: library_prefixes
 import '../../Utils/drawer.dart' as Drawer;
 import 'settings_widget.dart';
@@ -47,7 +48,10 @@ class _MySettingsPage extends State<SettingsPage> {
               SettingsMenuWidget(
                   title: 'Licenses', icon: Icons.feedback, onPress: () {}),
               SettingsMenuWidget(
-                  title: 'Information', icon: Icons.info, onPress: () {}),
+                  title: 'Information', icon: Icons.info, onPress: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const WorkoutPage()));
+                  }),
               const Divider(color: Colors.black),
               SettingsMenuWidget(
                   title: 'Quit',

@@ -105,8 +105,8 @@ class _MyAccountPage extends State<AccountPage> {
                               'User Information',
                               style: TextStyle(
                                   color: Colors.black87,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16),
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 18),
                               textAlign: TextAlign.left,
                             ),
                           ),

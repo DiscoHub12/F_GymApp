@@ -115,7 +115,7 @@ class _MyCreateWorkoutPage extends State<CreateWorkoutPage> {
                         "Workout Day",
                         style: TextStyle(
                           fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                       const SizedBox(height: 16.0),

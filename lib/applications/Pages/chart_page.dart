@@ -24,7 +24,7 @@ class _MyChartPage extends State<ChartPage> {
         children: <Widget>[
           Center(
             child: Text(
-              'SOON',
+              'COMING SOON',
               style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.w300,

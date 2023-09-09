@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gymapp/applications/Data/boxes_account.dart';
 import 'package:gymapp/applications/Pages/account_pages/account_pages.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../Models/account.dart';
-// ignore: library_prefixes
-// ignore: library_prefixes
 
 class ProfileImagePage extends StatefulWidget {
   const ProfileImagePage({super.key, required this.booleanChoice});
@@ -40,17 +37,6 @@ class _MyProfileImagePage extends State<ProfileImagePage> {
         title: const Text('Profile Image'),
         centerTitle: true,
         backgroundColor: Colors.orange,
-        /**
-         * actions: <Widget>[
-          widget.booleanChoice && isChoiced
-              ? IconButton(
-                  onPressed: () {
-                    _saveImageProfile(context);
-                  },
-                  icon: const Icon(Icons.save))
-              : const SizedBox(),
-        ],
-         */
       ),
       body: Column(
         children: [

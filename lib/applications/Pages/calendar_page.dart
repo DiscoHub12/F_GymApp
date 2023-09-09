@@ -3,6 +3,7 @@ import 'package:gymapp/applications/Data/boxes_event.dart';
 import 'package:gymapp/applications/Data/boxes_workout.dart';
 import 'package:gymapp/applications/Models/day_schedule.dart';
 import 'package:gymapp/applications/Models/workout.dart';
+import 'package:gymapp/applications/Utils/print_message.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../Models/event.dart';
 // ignore: library_prefixes
@@ -36,34 +37,41 @@ class _MyCalendarPage extends State<CalendarPage> {
   double getBigDiameter(BuildContext context) =>
       MediaQuery.of(context).size.width * 7 / 8;
 
+      final printMessage = PrintStatus();
+
   @override
   void initState() {
     super.initState();
-    selectedEvents = {};
-    trailingDay = {};
-    for (int i = 0; i < boxEvent.length; i++) {
-      DateTime tmp = boxEvent.getAt(i)!.dateEvent;
-      List<Event> tmpList = [];
-      tmpList.add(boxEvent.getAt(i)!);
-      selectedEvents.putIfAbsent(tmp, () => tmpList);
-      // ignore: avoid_print, prefer_interpolation_to_compose_strings
-      print('Ecco gli Eventi : \nNome Evento $i' +
-          boxEvent.getAt(i)!.title +
-          "\nData Evento : " +
-          boxEvent.getAt(i)!.dateEvent.toString());
-    }
+  }
 
-    for (int i = 0; i < boxWorkout.length; i++) {
-      Workout tmp = boxWorkout.getAt(i)!;
-      for (int j = 0; j < tmp.listaGiorni.length; j++) {
-        DaySchedule tmpDay = tmp.listaGiorni.elementAt(i);
-        if (tmpDay.lastUsage != null) {
-          DateTime tmpDate = tmpDay.lastUsage!;
-          List<Event> tmpEventWorkout = [];
-          Event newEvent = Event(
-              title: tmpDay.muscoliAllenati, dateEvent: tmpDay.lastUsage!);
-          tmpEventWorkout.add(newEvent);
-          trailingDay.putIfAbsent(tmpDate, () => tmpEventWorkout);
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (selectedEvents.isEmpty || trailingDay.isEmpty) {
+      selectedEvents = {};
+      trailingDay = {};
+
+      for (int i = 0; i < boxEvent.length; i++) {
+        DateTime tmp = boxEvent.getAt(i)!.dateEvent;
+        List<Event> tmpList = [];
+        tmpList.add(boxEvent.getAt(i)!);
+        selectedEvents.putIfAbsent(tmp, () => tmpList);
+      }
+
+      for (int i = 0; i < boxWorkout.length; i++) {
+        Workout tmp = boxWorkout.getAt(i)!;
+        for (int j = 0; j < tmp.listaGiorni.length; j++) {
+          DaySchedule tmpDay = tmp.listaGiorni.elementAt(i);
+          if (tmpDay.lastUsage != null) {
+            DateTime tmpDate = tmpDay.lastUsage!;
+            List<Event> tmpEventWorkout = [];
+            Event newEvent = Event(
+              title: tmpDay.muscoliAllenati,
+              dateEvent: tmpDay.lastUsage!,
+            );
+            tmpEventWorkout.add(newEvent);
+            trailingDay.putIfAbsent(tmpDate, () => tmpEventWorkout);
+          }
         }
       }
     }
@@ -130,13 +138,15 @@ class _MyCalendarPage extends State<CalendarPage> {
                         height: 20,
                       ),
                       const Text(
-                        'Last Workout ',
+                        'EVENT CALENDAR ',
                         style: TextStyle(
                             fontSize: 32,
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w300,
                             color: Colors.white),
                       ),
-                      const SizedBox(height: 10),
+
+                      /**
+                       * const SizedBox(height: 10),@
                       Text(
                         haveLast
                             ? '${lastDay.day}/${lastDay.month}/${lastDay.year}'
@@ -147,6 +157,7 @@ class _MyCalendarPage extends State<CalendarPage> {
                             fontWeight: FontWeight.w400,
                             color: Colors.white),
                       ),
+                       */
                       const SizedBox(
                         height: 20,
                       ),
@@ -217,7 +228,9 @@ class _MyCalendarPage extends State<CalendarPage> {
                       ),
                       ..._getEventsfromDay(selectedDay).map(
                         (Event event) => ListTile(
-                          onLongPress: () {},
+                          onLongPress: () {
+                            _dialogRemoveEvent(context, selectedDay);
+                          },
                           title: Text(
                             event.title,
                           ),
@@ -236,17 +249,26 @@ class _MyCalendarPage extends State<CalendarPage> {
         onPressed: () => showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text("Add Event"),
+            title: const Text(
+              "Add Event",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+            ),
             content: TextFormField(
+              decoration: const InputDecoration(
+                  labelText: 'Event', hoverColor: Colors.orange),
               controller: _eventController,
             ),
             actions: [
               TextButton(
-                child: const Text("Cancel"),
+                child: const Text("Cancel",
+                    style: TextStyle(color: Colors.orange)),
                 onPressed: () => Navigator.pop(context),
               ),
               TextButton(
-                child: const Text("Ok"),
+                child: const Text(
+                  "Ok",
+                  style: TextStyle(color: Colors.orange),
+                ),
                 onPressed: () {
                   _saveEvent();
                   Navigator.pop(context);
@@ -271,6 +293,7 @@ class _MyCalendarPage extends State<CalendarPage> {
         Workout? tmp = boxWorkout.getAt(i);
         for (int j = 0; j < tmp!.listaGiorni.length; j++) {
           DateTime? last = tmp.listaGiorni.elementAt(i).lastUsage;
+          print(tmp.listaGiorni.elementAt(i).lastUsage);
           if (lastWorkout.isBefore(last!)) {
             lastWorkout = last;
           }
@@ -312,4 +335,67 @@ class _MyCalendarPage extends State<CalendarPage> {
       }
     }
   }
+
+  _removeEvent(BuildContext context, DateTime selectedDay) {
+    for (int i = 0; i < boxEvent.length; i++) {
+      Event tmp = boxEvent.getAt(i)!;
+      if (tmp.dateEvent == selectedDay) {
+        boxEvent.deleteAt(i);
+        break; // Esci dal ciclo dopo aver trovato ed eliminato l'evento
+      }
+    }
+    setState(() {
+      // Aggiorna lo stato dopo aver eliminato l'evento
+    });
+  }
+
+  void _dialogRemoveEvent(BuildContext context, DateTime selectedDay) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          content: _requestRemoving(context, selectedDay),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        );
+      },
+    ).then((value) {
+      if (value != null && value) {
+        setState(() {
+          _removeEvent(context, selectedDay);
+        });
+      }
+    });
+  }
+
+  Widget _requestRemoving(BuildContext context, selectedDay) => Container(
+        padding: const EdgeInsets.all(8),
+        height: 140,
+        width: 300,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              const SizedBox(height: 10),
+              const Text(
+                'Remove Event ?',
+                style: TextStyle(fontSize: 23),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              const Text('Are you sure you want to delete ? '),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context,
+                      true); // Passa il valore true alla schermata principale
+                      printMessage.printCorrect(context, 'Event delete. Refresh Page.');
+                },
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                child: const Icon(Icons.delete),
+              ),
+            ],
+          ),
+        ),
+      );
 }

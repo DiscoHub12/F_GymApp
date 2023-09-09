@@ -26,6 +26,11 @@ class _MyApp extends State<App> {
 
   bool isWorkoutEmpty = false;
 
+  final TextEditingController searchWorkoutController =TextEditingController();
+
+  bool isSearch = false;
+  late Workout searched;
+
   @override
   void initState() {
     super.initState();
@@ -108,138 +113,142 @@ class _MyApp extends State<App> {
                 height: 5,
               ),
               !isWorkoutEmpty
-                  ? Container(
-                      padding: const EdgeInsets.all(9.0),
-                      child: Column(
-                        children: <Widget>[
-                          Positioned(
-                              top: size.height / 4.5,
-                              left: 16,
-                              child: Container(
-                                width: size.width - 32,
-                                height: size.height / 1.4,
-                                decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 245, 244, 244),
-                                  borderRadius: BorderRadius.horizontal(
-                                    left: Radius.circular(10),
-                                    right: Radius.circular(10),
-                                  ),
+                  ? Stack(children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.all(9.0),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              width: size.width - 32,
+                              height: size.height / 1.4,
+                              decoration: const BoxDecoration(
+                                color: Color.fromARGB(255, 245, 244, 244),
+                                borderRadius: BorderRadius.horizontal(
+                                  left: Radius.circular(10),
+                                  right: Radius.circular(10),
                                 ),
-                                child: Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        children: <Widget>[
-                                          TextField(
-                                            decoration: InputDecoration(
-                                                filled: true,
-                                                fillColor: const Color.fromARGB(
-                                                    255, 223, 223, 223),
-                                                border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                  borderSide: BorderSide.none,
-                                                ),
-                                                hintText: "eg: Schedule 1",
-                                                prefixIcon:
-                                                    const Icon(Icons.search),
-                                                prefixIconColor: Colors.orange),
+                              ),
+                              child: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: <Widget>[
+                                        TextField(
+                                          controller: searchWorkoutController,
+                                          decoration: InputDecoration(
+                                            filled: true,
+                                            fillColor: const Color.fromARGB(
+                                                255, 223, 223, 223),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              borderSide: BorderSide.none,
+                                            ),
+                                            hintText: "eg: Schedule 1",
+                                            prefixIcon:
+                                                const Icon(Icons.search),
+                                            prefixIconColor: Colors.orange,
                                           ),
-                                          const SizedBox(
-                                            height: 7,
-                                          ),
-                                          SizedBox(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.75,
-                                              child: ListView.builder(
-                                                itemCount: boxWorkout.length,
-                                                itemBuilder: (context, index) {
-                                                  return Card(
-                                                    elevation: 5,
-                                                    child: ListTile(
-                                                      title: Text(boxWorkout
-                                                          .getAt(index)!
-                                                          .nome),
-                                                      subtitle: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Text(
-                                                              'Day : ${boxWorkout.getAt(index)!.listaGiorni.length}'),
-                                                          const SizedBox(
-                                                            width: 25.0,
-                                                          ),
-                                                          Text(
-                                                              'Total Exercise : ${totalExercise(boxWorkout.getAt(index)!)}')
-                                                        ],
-                                                      ),
-                                                      trailing: Wrap(
-                                                        spacing: 12,
-                                                        children: <Widget>[
-                                                          GestureDetector(
-                                                            child: isFavourite(
-                                                                    boxWorkout
-                                                                        .getAt(
-                                                                            index)!)
-                                                                ? const Icon(
-                                                                    Icons
-                                                                        .favorite_border,
-                                                                    color: Colors
-                                                                        .yellow,
-                                                                  )
-                                                                : const Icon(Icons
-                                                                    .favorite_border),
-                                                            onTap: () {
-                                                              _addRemoveFavourite(
-                                                                  context,
-                                                                  boxWorkout.getAt(
-                                                                      index)!);
-                                                            },
-                                                          ),
-                                                          GestureDetector(
-                                                            child: const Icon(
-                                                                Icons.delete,
-                                                                color:
-                                                                    Colors.red),
-                                                            onTap: () {
-                                                              _dialogNumberExercise(
-                                                                  context,
-                                                                  index,
+                                          onChanged: _searchWorkout(),
+                                        ),
+                                        const SizedBox(
+                                          height: 7,
+                                        ),
+                                        SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.75,
+                                            child: ListView.builder(
+                                              itemCount: boxWorkout.length,
+                                              itemBuilder: (context, index) {
+                                                return Card(
+                                                  elevation: 5,
+                                                  child: ListTile(
+                                                    title: Text(boxWorkout
+                                                        .getAt(index)!
+                                                        .nome),
+                                                    subtitle: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          'Day : ${boxWorkout.getAt(index)!.listaGiorni.length}',
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 25.0,
+                                                        ),
+                                                        Text(
+                                                          'Total Exercise : ${totalExercise(boxWorkout.getAt(index)!)}',
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    trailing: Wrap(
+                                                      spacing: 12,
+                                                      children: <Widget>[
+                                                        GestureDetector(
+                                                          child: isFavourite(
                                                                   boxWorkout
                                                                       .getAt(
-                                                                          index)!
-                                                                      .nome);
-                                                              setState(() {});
-                                                            },
+                                                                          index)!)
+                                                              ? const Icon(
+                                                                  Icons
+                                                                      .favorite_border,
+                                                                  color: Colors
+                                                                      .yellow,
+                                                                )
+                                                              : const Icon(Icons
+                                                                  .favorite_border),
+                                                          onTap: () {
+                                                            _addRemoveFavourite(
+                                                              context,
+                                                              boxWorkout.getAt(
+                                                                  index)!,
+                                                            );
+                                                          },
+                                                        ),
+                                                        GestureDetector(
+                                                          child: const Icon(
+                                                            Icons.delete,
+                                                            color: Colors.red,
                                                           ),
-                                                        ],
-                                                      ),
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        InsideWorkoutPage(
-                                                                          workout:
-                                                                              boxWorkout.getAt(index)!,
-                                                                        )));
-                                                      },
+                                                          onTap: () {
+                                                            _dialogNumberExercise(
+                                                              context,
+                                                              index,
+                                                              boxWorkout
+                                                                  .getAt(index)!
+                                                                  .nome,
+                                                            );
+                                                            setState(() {});
+                                                          },
+                                                        ),
+                                                      ],
                                                     ),
-                                                  );
-                                                },
-                                              )),
-                                        ],
-                                      ),
-                                    )),
-                              ))
-                        ],
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  InsideWorkoutPage(
+                                                                    workout: boxWorkout
+                                                                        .getAt(
+                                                                            index)!,
+                                                                  )));
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                            )),
+                                      ],
+                                    ),
+                                  )),
+                            )
+                          ],
+                        ),
                       ),
-                    )
+                    ])
                   : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -393,5 +402,16 @@ class _MyApp extends State<App> {
   String _getMonth(int number) {
     String month = months.elementAt(number - 1);
     return month;
+  }
+
+  _searchWorkout() {
+    isSearch = true;
+    final name = searchWorkoutController.value.text;
+    for (int i = 0; i < boxWorkout.length; i++) {
+      Workout tmp = boxWorkout.getAt(i)!;
+      if (tmp.nome == name) {
+        searched = tmp;
+      }
+    }
   }
 }

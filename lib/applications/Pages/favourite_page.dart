@@ -42,16 +42,19 @@ class _MyFavouriteWorkoutPage extends State<FavouriteWorkoutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: Drawer.NavigationDrawer(),
-        appBar: AppBar(
-          title: const Text('Favourite'),
-          centerTitle: true,
-          backgroundColor: Colors.orange,
-        ),
-        body: !isEmpty
-            ? SingleChildScrollView(
+      drawer: Drawer.NavigationDrawer(),
+      appBar: AppBar(
+        title: const Text('Favourite'),
+        centerTitle: true,
+        backgroundColor: Colors.orange,
+      ),
+      body: !isEmpty
+          ? SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.90,
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.90,
+                  height: MediaQuery.of(context).size.height *
+                      0.90, // Aggiunta dell'altezza al widget contenitore
                   child: ListView.builder(
                     itemCount: _boxFavourite.getAt(0)!.workoutList.length,
                     itemBuilder: (context, index) {
@@ -63,84 +66,62 @@ class _MyFavouriteWorkoutPage extends State<FavouriteWorkoutPage> {
                               .elementAt(index)
                               .nome),
                           subtitle: Text(
-                              '${_boxFavourite.getAt(0)!.workoutList.elementAt(index).giorni.toString()} days'),
+                            '${_boxFavourite.getAt(0)!.workoutList.elementAt(index).giorni.toString()} days',
+                          ),
                           trailing: GestureDetector(
-                            child: const Icon(Icons.delete, color: Colors.red),
+                            child: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
                             onTap: () {
                               setState(() {
                                 _removeItem(
-                                    _boxFavourite
-                                        .getAt(0)!
-                                        .workoutList
-                                        .elementAt(index),
-                                    index);
+                                  _boxFavourite
+                                      .getAt(0)!
+                                      .workoutList
+                                      .elementAt(index),
+                                  index,
+                                );
                               });
                               setState(() {});
                             },
                           ),
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => InsideWorkoutPage(
-                                        workout: _boxFavourite
-                                            .getAt(0)!
-                                            .workoutList
-                                            .elementAt(index))));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => InsideWorkoutPage(
+                                  workout: _boxFavourite
+                                      .getAt(0)!
+                                      .workoutList
+                                      .elementAt(index),
+                                ),
+                              ),
+                            );
                           },
                         ),
                       );
                     },
                   ),
                 ),
-              )
-            : const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Center(
-                    child: Text(
-                      'Any Favourite Workout',
-                      style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.black),
+              ),
+            )
+          : const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Center(
+                  child: Text(
+                    'Any Favourite Workout',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.black,
                     ),
-                  )
-                ],
-              )
-
-        /**
-            !isEmpty
-                ? AnimatedList(
-                    key: listKey,
-                    initialItemCount:
-                        _boxFavourite.getAt(0)!.workoutList.length,
-                    itemBuilder: (context, index, animation) => ListItemWidget(
-                        workout: _boxFavourite
-                            .getAt(0)!
-                            .workoutList
-                            .elementAt(index),
-                        animation: animation,
-                        onClicked: () => _removeItem(
-                            _boxFavourite
-                                .getAt(0)!
-                                .workoutList
-                                .elementAt(index),
-                            index)))
-                : const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Center(
-                        child: Text(
-                          "You don't have any favourite Workout",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
                   ),
-             */
-        );
+                ),
+              ],
+            ),
+    );
   }
 
   //Metodo del Widget:

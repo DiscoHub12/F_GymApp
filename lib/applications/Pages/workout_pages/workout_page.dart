@@ -20,7 +20,7 @@ class WorkoutPage extends StatefulWidget {
 class _MyWoroutPage extends State<WorkoutPage> {
   bool isEmpty = false;
 
-  final _box = BoxesWorkout.getWorkout();
+  final _boxWorkout = BoxesWorkout.getWorkout();
   // ignore: non_constant_identifier_names
   final _box_favourite = BoxesFavourite.getWorkout();
   final _date = DateTime.now();
@@ -30,10 +30,11 @@ class _MyWoroutPage extends State<WorkoutPage> {
   @override
   void initState() {
     super.initState();
-    if (_box.isEmpty) {
+    if (_boxWorkout.isEmpty) {
       isEmpty = true;
     } else {
       isEmpty = false;
+      print(_boxWorkout.length);
     }
     if (_box_favourite.isEmpty) {
       List<Workout> workoutFavourite = [];
@@ -141,22 +142,23 @@ class _MyWoroutPage extends State<WorkoutPage> {
                           height: MediaQuery.of(context).size.height * 0.75,
                           child: !isEmpty
                               ? ListView.builder(
-                                  itemCount: _box.length,
+                                  itemCount: _boxWorkout.length,
                                   itemBuilder: (context, index) {
                                     return Card(
                                       child: ListTile(
-                                        title: Text(_box.getAt(index)!.nome),
+                                        title: Text(
+                                            _boxWorkout.getAt(index)!.nome),
                                         subtitle: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                                'Day : ${_box.getAt(index)!.listaGiorni.length}'),
+                                                'Day : ${_boxWorkout.getAt(index)!.listaGiorni.length}'),
                                             const SizedBox(
                                               width: 25.0,
                                             ),
                                             Text(
-                                                'Total Exercise : ${totalExercise(_box.getAt(index)!)}')
+                                                'Total Exercise : ${totalExercise(_boxWorkout.getAt(index)!)}')
                                           ],
                                         ),
                                         trailing: Wrap(
@@ -164,7 +166,7 @@ class _MyWoroutPage extends State<WorkoutPage> {
                                           children: <Widget>[
                                             GestureDetector(
                                               child: isFavourite(
-                                                      _box.getAt(index)!)
+                                                      _boxWorkout.getAt(index)!)
                                                   ? const Icon(
                                                       Icons.favorite_border,
                                                       color: Colors.yellow,
@@ -173,7 +175,7 @@ class _MyWoroutPage extends State<WorkoutPage> {
                                                       Icons.favorite_border),
                                               onTap: () {
                                                 _addRemoveFavourite(context,
-                                                    _box.getAt(index)!);
+                                                    _boxWorkout.getAt(index)!);
                                               },
                                             ),
                                             GestureDetector(
@@ -183,7 +185,9 @@ class _MyWoroutPage extends State<WorkoutPage> {
                                                 _dialogNumberExercise(
                                                     context,
                                                     index,
-                                                    _box.getAt(index)!.nome);
+                                                    _boxWorkout
+                                                        .getAt(index)!
+                                                        .nome);
                                               },
                                             ),
                                           ],
@@ -194,8 +198,8 @@ class _MyWoroutPage extends State<WorkoutPage> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       InsideWorkoutPage(
-                                                        workout:
-                                                            _box.getAt(index)!,
+                                                        workout: _boxWorkout
+                                                            .getAt(index)!,
                                                       )));
                                         },
                                       ),
@@ -265,7 +269,7 @@ class _MyWoroutPage extends State<WorkoutPage> {
               const Text('Are you sure you want to delete ? '),
               ElevatedButton(
                 onPressed: () => setState(() {
-                  _box.getAt(index)!.delete();
+                  _boxWorkout.getAt(index)!.delete();
                   Navigator.pop(context);
                 }),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
@@ -291,6 +295,21 @@ class _MyWoroutPage extends State<WorkoutPage> {
         });
   }
 
+  void _addRemoveFavourite(BuildContext context, Workout workout) async {
+    if (_box_favourite.getAt(0)!.workoutList.contains(workout)) {
+      _box_favourite.getAt(0)!.deleteWorkoutFavourite(workout);
+      _printMessage.printError(context, 'Workout remove to Favourite page.');
+    } else {
+      _box_favourite.getAt(0)!.addWorkoutFavourite(workout);
+      _printMessage.printCorrect(context, 'Workout add to Favourite page.');
+    }
+    setState(() {});
+  }
+
+  bool isFavourite(Workout workout) {
+    return _box_favourite.getAt(0)!.workoutList.contains(workout);
+  }
+
   int totalExercise(Workout workout) {
     int totalExercise = 0;
     for (int i = 0; i < workout.listaGiorni.length; i++) {
@@ -300,12 +319,19 @@ class _MyWoroutPage extends State<WorkoutPage> {
   }
 
   DateTime? lastWorkoutDay() {
-    var lastWorkoutDay = _box.getAt(0)!.listaGiorni.elementAt(0).lastUsage;
-    for (var i = 0; i < _box.length; i++) {
-      for (var j = 0; j < _box.getAt(i)!.listaGiorni.length; j++) {
-        if (_box.getAt(i)!.listaGiorni.elementAt(j).lastUsage!.millisecond >
+    var lastWorkoutDay =
+        _boxWorkout.getAt(0)!.listaGiorni.elementAt(0).lastUsage;
+    for (var i = 0; i < _boxWorkout.length; i++) {
+      for (var j = 0; j < _boxWorkout.getAt(i)!.listaGiorni.length; j++) {
+        if (_boxWorkout
+                .getAt(i)!
+                .listaGiorni
+                .elementAt(j)
+                .lastUsage!
+                .millisecond >
             lastWorkoutDay!.millisecond) {
-          lastWorkoutDay = _box.getAt(i)!.listaGiorni.elementAt(j).lastUsage;
+          lastWorkoutDay =
+              _boxWorkout.getAt(i)!.listaGiorni.elementAt(j).lastUsage;
         }
       }
     }
@@ -330,20 +356,5 @@ class _MyWoroutPage extends State<WorkoutPage> {
   String _getMonth(int number) {
     String month = months.elementAt(number - 1);
     return month;
-  }
-
-  void _addRemoveFavourite(BuildContext context, Workout workout) async {
-    if (_box_favourite.getAt(0)!.workoutList.contains(workout)) {
-      _box_favourite.getAt(0)!.deleteWorkoutFavourite(workout);
-      _printMessage.printError(context, 'Workout remove to Favourite page.');
-    } else {
-      _box_favourite.getAt(0)!.addWorkoutFavourite(workout);
-      _printMessage.printCorrect(context, 'Workout add to Favourite page.');
-    }
-    setState(() {});
-  }
-
-  bool isFavourite(Workout workout) {
-    return _box_favourite.getAt(0)!.workoutList.contains(workout);
   }
 }

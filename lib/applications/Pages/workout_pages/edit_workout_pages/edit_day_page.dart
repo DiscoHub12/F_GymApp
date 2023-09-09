@@ -143,7 +143,7 @@ class _MyEditDayPage extends State<EditDayPage> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              _saveTwo(context);
+                              _saveNewWeight(context);
                             },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.orange),
@@ -170,7 +170,7 @@ class _MyEditDayPage extends State<EditDayPage> {
     });
   }
 
-  void _saveTwo(BuildContext context) {
+  void _saveNewWeight(BuildContext context) {
     List<Exercise> updated = [];
     //print("Save Two methods : \nNumero Esercizi : ${_esercizi.length}.\nLunghezza Controller : ${_controllerExercise.length}");
     for (int i = 0; i < _controllerExercise.length; i++) {
